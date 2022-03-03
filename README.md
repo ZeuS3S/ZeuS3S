@@ -21,3 +21,6 @@
   | Name             | Lien                              | Description                                                            |
   |------------------|-----------------------------------|------------------------------------------------------------------------|
   | MovixFR          | https://discord.gg/movixfr        | Discord Serveur Film & Série                                           |
+
+
+<p><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=zeus3S&theme=dark" alt="nzosim" /></p>
