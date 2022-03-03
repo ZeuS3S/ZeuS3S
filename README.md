@@ -1,4 +1,4 @@
-<h1 align="center">Salut, Je suis ZeuSSS</h1>
+<h1 align="center">ZeuSSS</h1>
 
   ## 🚩・Projets :
   | Name             | Lien                              | Description                                                            |
