@@ -1,5 +1,4 @@
-<h1 align="center">Hi 👋, I'm Nzosim</h1>
-<h3 align="center">I'm a computer science student</h3>
+<h1 align="center">Salut, Je suis ZeuSSS</h1>
 
   ## 🚩・Projets :
   | Name             | Lien                              | Description                                                            |
