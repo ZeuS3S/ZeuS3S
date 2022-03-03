@@ -1,5 +1,11 @@
 <h1 align="center">ZeuSSS</h1>
 
+ 📚     Lycéen en France
+
+ 🌐     Développeur Web/JS
+
+ 💻     Fondateur de [MovixFR](https://discord.gg/movixfr)
+
   ## 🚩・Projets :
   | Name             | Lien                              | Description                                                            |
   |------------------|-----------------------------------|------------------------------------------------------------------------|
