@@ -23,4 +23,4 @@
   | MovixFR          | https://discord.gg/movixfr        | Discord Serveur Film & Série                                           |
 
 <br>
-<p align="left"> <img src="https://komarev.com/ghpvc/?username=zeus3s&label=Profile%20views&color=ff0000&style=plastic" alt="zeus3s" /> /p>
+<p align="left"> <img src="https://komarev.com/ghpvc/?username=zeus3s&label=Profile%20views&color=ff0000&style=plastic" alt="zeus3s" /> </p>
