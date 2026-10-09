@@ -32,10 +32,10 @@ Les commandes sont en anglais, et en français pour les membres qui ont Discord 
 | `/sleep` · `/minuteur` | DJ | Arrête la radio dans X minutes (0 = annuler) |
 | `/nowplaying` | Tous | Affiche le panneau en cours |
 | `/lyrics` · `/paroles` | Tous | Paroles du titre en cours ([LRCLIB](https://lrclib.net)) |
-| `/favorites` · `/favoris` | Tous | `list` (un bouton par favori), `add`, `play`, `remove` : tes radios favorites, sur tous les serveurs |
+| `/favorites` · `/favoris` | Tous | `list` (un menu pour lancer), `add`, `play`, `remove` : tes radios favorites, sur tous les serveurs |
 | `/history` · `/historique` | Tous | Les 10 derniers titres, avec envoi d'un titre en MP (pochette + liens Deezer/Spotify) |
 | `/top` | Tous | Radios les plus écoutées du serveur (temps d'écoute × auditeurs) |
-| `/stations` | Tous | Grille des radios par genre (Chill, Hits, Rap, Info…) : un clic pour lancer |
+| `/stations` | Tous | Radios par genre (Chill, Hits, Rap, Info…) : un menu pour le genre, un menu pour lancer |
 | `/admin dj-role` | Admin | Rôle requis pour piloter la radio (vide = tout le monde) |
 | `/admin 247` | Admin 💎 | Reste dans le salon même vide, et revient après un redémarrage (**Premium**) |
 | `/admin status` | Admin | Message de statut en direct dans un salon (vide = désactiver) |
@@ -86,13 +86,14 @@ Le panneau utilise la nouvelle mise en page de Discord (Components V2) et se met
 - **Carte en image** générée par le bot : pochette floutée en fond, pochette, titre, artiste et égaliseur aux **couleurs de la radio**. L'égaliseur change toutes les 15 s.
 - **Barre de progression** `1:42 ━━━━●──── 3:28` et **paroles synchronisées** (ligne précédente, ligne en cours, ligne suivante, mises à jour toutes les 3 s) quand le bot a vu le titre commencer.
 - Ligne d'infos : salon, demandé par, diffusion (`24 h / 24` en 24/7), volume, effet, minuteur, 💎.
-- Boutons : **Pause**, **Station suivante**, **Volume**, **Stop**, **Paroles** · ⏮️ 🎲 💤 ⭐ 📜 · **Deezer** / **Spotify** (lien vers le titre) · menu des radios.
+- Liens **Deezer** / **Spotify** vers le titre en cours.
+- Un lecteur compact ⏮️ ⏯️ ⏭️ 🔊 ⏹️ et un seul menu **✨ Plus d'options** : choisir une radio, radio au hasard, minuteur, effet audio 💎, favori, paroles, historique.
 - **Écran d'attente** « ⏳ Connexion à NRJ… » jusqu'au premier son.
 - **Flux mort** : après 3 échecs de suite, le panneau passe en rouge, explique le problème et propose 🔄 Réessayer ou une autre radio du même genre en un clic.
 
 Les badges sont des émojis d'application que le bot crée tout seul au premier démarrage (images dans `assets/badges`, régénérables avec `python3 scripts/badges.py`). La carte utilise la police Inter (`assets/fonts`, licence OFL).
 
-💤 fait défiler 15 → 30 → 60 → 120 min → désactivé. ⭐, 📝 et 📜 marchent pour tout le monde ; les autres boutons demandent d'être dans le salon du bot (et d'avoir le rôle DJ s'il est défini).
+🔊 et 💤 ouvrent une petite fenêtre pour taper la valeur. Choisir une radio, favori, paroles et historique marchent pour tout le monde ; le reste demande d'être dans le salon du bot (et d'avoir le rôle DJ s'il est défini).
 
 ## Récap de la semaine
 

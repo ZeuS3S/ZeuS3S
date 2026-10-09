@@ -263,8 +263,6 @@ const button = (id, emoji, style = ButtonStyle.Secondary, label) => {
   if (emoji) b.setEmoji(emoji);
   return label ? b.setLabel(label.slice(0, 80)) : b;
 };
-const linkButton = (url, emoji, label) => new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(url).setEmoji(emoji).setLabel(label);
-const chunk = (list, size) => Array.from({ length: Math.ceil(list.length / size) }, (_, n) => list.slice(n * size, n * size + size));
 
 // --- Panneau « en cours » ---
 // Badges « EN DIRECT » : émojis d'application créés au démarrage (voir ensureBadges), sinon texte.
@@ -320,6 +318,7 @@ async function panelPayload(guild, { image = true } = {}) {
   if (cfg.effect !== 'normal' && isPremium) info.push(EFFECTS[cfg.effect].label);
   if (s.sleepAt) info.push(`💤 <t:${s.sleepAt}:R>`);
   if (isPremium) info.push('💎');
+  if (live && s.track) lines.push(`🎧 [Deezer](${s.track.deezerUrl}) · 🟢 [Spotify](${s.track.spotifyUrl})`);
   lines.push(`-# ${info.join(' · ')}`);
   c.addTextDisplayComponents(text(lines.join('\n')));
   c.addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small));
@@ -329,31 +328,29 @@ async function panelPayload(guild, { image = true } = {}) {
     c.addActionRowComponents(row(
       button('radio:retry', '🔄', ButtonStyle.Primary, t(lang, 'btnRetry')),
       ...(suggestion ? [button(`radio:goto:${suggestion}`, '▶️', ButtonStyle.Success, stations[suggestion].name)] : []),
-      button('radio:stop', '⏹️', ButtonStyle.Danger, t(lang, 'btnStop')),
+      button('radio:stop', '⏹️', ButtonStyle.Danger),
     ));
   } else {
-    c.addActionRowComponents(
-      row(
-        s.paused ? button('radio:toggle', '▶️', ButtonStyle.Secondary, t(lang, 'btnResume')) : button('radio:toggle', '⏸️', ButtonStyle.Secondary, t(lang, 'btnPause')),
-        button('radio:next', '⏭️', ButtonStyle.Primary, t(lang, 'btnNext')),
-        button('radio:volume', '🔊', ButtonStyle.Secondary, t(lang, 'btnVolume')),
-        button('radio:stop', '⏹️', ButtonStyle.Danger, t(lang, 'btnStop')),
-        button('radio:lyrics', '📝', ButtonStyle.Secondary, t(lang, 'btnLyrics')),
-      ),
-      row(
-        button('radio:prev', '⏮️'),
-        button('radio:random', '🎲'),
-        button('radio:sleep', '💤', s.sleepAt ? ButtonStyle.Success : ButtonStyle.Secondary, s.sleepMinutes ? `${s.sleepMinutes} min` : undefined),
-        button('radio:fav', '⭐'),
-        button('radio:history', '📜'),
-      ),
-    );
-    if (live && s.track) c.addActionRowComponents(row(linkButton(s.track.deezerUrl, '🎧', 'Deezer'), linkButton(s.track.spotifyUrl, '🟢', 'Spotify')));
+    // Lecteur compact : précédente, lecture/pause, suivante, volume, stop.
+    c.addActionRowComponents(row(
+      button('radio:prev', '⏮️'),
+      button('radio:toggle', s.paused ? '▶️' : '⏸️', ButtonStyle.Primary),
+      button('radio:next', '⏭️'),
+      button('radio:volume', '🔊'),
+      button('radio:stop', '⏹️', ButtonStyle.Danger),
+    ));
   }
-  c.addActionRowComponents(row(
-    new StringSelectMenuBuilder().setCustomId('radio:select').setPlaceholder(t(lang, 'changeRadio'))
-      .addOptions(Object.entries(stations).slice(0, 25).map(([k, st]) => ({ label: st.name.slice(0, 100), value: k, default: k === cfg.station }))),
-  ));
+  // Tout le reste dans un seul menu.
+  const option = (value, emoji, key, description) => ({ value, emoji, label: t(lang, key), description });
+  c.addActionRowComponents(row(new StringSelectMenuBuilder().setCustomId('radio:more').setPlaceholder(t(lang, 'morePh')).addOptions(
+    option('stations', '📻', 'moreStations', t(lang, 'moreStationsDesc')),
+    option('random', '🎲', 'moreRandom', t(lang, 'moreRandomDesc')),
+    option('sleep', '💤', 'moreSleep', s.sleepAt ? t(lang, 'moreSleepOn', s.sleepMinutes) : t(lang, 'moreSleepDesc')),
+    option('effect', '🎛️', 'moreEffect', `${EFFECTS[cfg.effect].label}${isPremium ? '' : ' · 💎 Premium'}`),
+    option('fav', '⭐', 'moreFav', t(lang, 'moreFavDesc')),
+    option('lyrics', '📝', 'moreLyrics', t(lang, 'moreLyricsDesc')),
+    option('history', '📜', 'moreHistory', t(lang, 'moreHistoryDesc')),
+  )));
 
   const payload = { components: [c], flags: V2 };
   if (!live) payload.attachments = []; // Retire l'ancienne carte pendant l'attente ou l'erreur.
@@ -508,9 +505,9 @@ async function onHistoryAction(i) {
   const track = await fetchTrack(item.title);
   const station = stationsOf(i.guildId)[cfgOf(i.guildId).station];
   const dm = new EmbedBuilder().setColor(stationColor(station ?? {})).setTitle(`🎵 ${item.title}`.slice(0, 256))
-    .setDescription(t(lang, 'dmFrom', station?.name ?? '📻', i.guild.name)).setThumbnail(track?.cover ?? null).setTimestamp();
-  const links = track ? [row(linkButton(track.deezerUrl, '🎧', 'Deezer'), linkButton(track.spotifyUrl, '🟢', 'Spotify'))] : [];
-  const sent = await i.user.send({ embeds: [dm], components: links }).then(() => true).catch(() => false);
+    .setDescription(`${t(lang, 'dmFrom', station?.name ?? '📻', i.guild.name)}${track ? `\n\n🎧 [Deezer](${track.deezerUrl}) · 🟢 [Spotify](${track.spotifyUrl})` : ''}`)
+    .setThumbnail(track?.cover ?? null).setTimestamp();
+  const sent = await i.user.send({ embeds: [dm] }).then(() => true).catch(() => false);
   return reply(i, t(lang, sent ? 'dmSent' : 'dmClosed'), true);
 }
 
@@ -519,11 +516,13 @@ async function onPanelAction(i) {
   const cfg = cfgOf(i.guildId);
   const s = sessions.get(i.guildId);
   if (!s) return i.update(notice(t(lang, 'nothing'), OFF_COLOR));
-  const action = i.customId.slice('radio:'.length);
-  // Accessibles à tous les auditeurs.
+  // Le menu « Plus d'options » envoie son choix comme action.
+  const action = i.customId === 'radio:more' ? i.values[0] : i.customId.slice('radio:'.length);
+  // Accessibles à tous les auditeurs (réponses visibles par toi seul).
   if (action === 'fav') return toggleFavorite(i, cfg.station, stationsOf(i.guildId)[cfg.station]);
   if (action === 'lyrics') return sendLyrics(i);
   if (action === 'history') return i.reply(historyPayload(i));
+  if (action === 'stations') return i.reply({ ...stationsPayload(i), flags: V2 | MessageFlags.Ephemeral });
 
   if (!canControl(i.member, cfg)) return reply(i, t(lang, 'needDj', cfg.djRole), true);
   if (i.member.voice.channelId !== cfg.channelId) return reply(i, t(lang, 'joinMine', cfg.channelId), true);
@@ -536,94 +535,95 @@ async function onPanelAction(i) {
     stop(i.guild);
     return i.update(notice(t(langOf(i.guild), 'stoppedBy', i.user), OFF_COLOR));
   }
+  // Fenêtres à remplir : volume et minuteur.
+  const modal = (id, title, label, value, max) => i.showModal(new ModalBuilder().setCustomId(id).setTitle(title).addComponents(
+    row(new TextInputBuilder().setCustomId('value').setLabel(label).setStyle(TextInputStyle.Short)
+      .setValue(String(value)).setMinLength(1).setMaxLength(String(max).length).setRequired(true)),
+  ));
+  if (action === 'volume') return modal('radio:volmodal', t(lang, 'btnVolume'), t(lang, 'volumeModalLabel', premium.maxVolume(i.guildId)), cfg.volume, 200);
+  if (action === 'sleep') return modal('radio:sleepmodal', t(lang, 'moreSleep'), t(lang, 'sleepModalLabel'), s.sleepMinutes, 720);
+  if (action === 'effect') {
+    if (!premium.isPremium(i.guildId)) return reply(i, t(lang, 'premiumOnly'), true);
+    return i.reply({
+      components: [container(COLOR).addTextDisplayComponents(text(`**${t(lang, 'moreEffect')}**`)).addActionRowComponents(row(
+        new StringSelectMenuBuilder().setCustomId('radio:effectpick').setPlaceholder(t(lang, 'chooseEffect'))
+          .addOptions(Object.entries(EFFECTS).map(([k, fx]) => ({ label: fx.label, value: k, default: k === cfg.effect }))),
+      ))],
+      flags: V2 | MessageFlags.Ephemeral,
+    });
+  }
+
   if (action === 'prev') switchStation(i.guild, keys.at(idx - 1));
   if (action === 'next') switchStation(i.guild, keys[(idx + 1) % keys.length]);
   if (action === 'random') {
     const others = keys.filter((k) => k !== cfg.station);
     switchStation(i.guild, others[Math.floor(Math.random() * others.length)] ?? cfg.station);
   }
-  if (action === 'select') switchStation(i.guild, i.values[0]);
+  if (action === 'select') switchStation(i.guild, i.values[0]); // Anciens panneaux.
   if (action.startsWith('goto:') && stations[action.slice(5)]) switchStation(i.guild, action.slice(5));
   if (action === 'retry') retry(i.guild);
-  if (action === 'effect') {
-    if (i.values[0] !== 'normal' && !premium.isPremium(i.guildId)) return reply(i, t(lang, 'premiumOnly'), true);
-    setEffect(i.guild, i.values[0]);
-  }
   if (action === 'toggle') togglePause(i.guild);
-  if (action === 'voldown') setVolume(i.guildId, cfg.volume - 10);
-  if (action === 'volup') setVolume(i.guildId, cfg.volume + 10);
-  if (action === 'sleep') setSleep(i.guild, SLEEP_STEPS[(SLEEP_STEPS.indexOf(s.sleepMinutes) + 1) % SLEEP_STEPS.length]);
-  if (action === 'volume') {
-    return i.showModal(new ModalBuilder().setCustomId('radio:volmodal').setTitle(t(lang, 'btnVolume')).addComponents(
-      row(new TextInputBuilder().setCustomId('value').setLabel(t(lang, 'volumeModalLabel', premium.maxVolume(i.guildId)))
-        .setStyle(TextInputStyle.Short).setValue(String(cfg.volume)).setMinLength(1).setMaxLength(3).setRequired(true)),
-    ));
-  }
-  if (action === 'volmodal') {
+  if (action === 'effectpick' || action === 'effect') setEffect(i.guild, i.values[0]);
+  if (action === 'volmodal' || action === 'sleepmodal') {
     const value = Number(i.fields.getTextInputValue('value'));
-    const max = premium.maxVolume(i.guildId);
-    if (Number.isInteger(value) && value > max && value <= 200) return reply(i, t(lang, 'premiumOnly'), true);
-    if (!Number.isInteger(value) || value < 0 || value > max) return reply(i, t(lang, 'badVolume', max), true);
-    setVolume(i.guildId, value);
+    const max = action === 'volmodal' ? premium.maxVolume(i.guildId) : 720;
+    if (action === 'volmodal' && Number.isInteger(value) && value > max && value <= 200) return reply(i, t(lang, 'premiumOnly'), true);
+    if (!Number.isInteger(value) || value < 0 || value > max) return reply(i, t(lang, 'badNumber', max), true);
+    if (action === 'volmodal') setVolume(i.guildId, value); else setSleep(i.guild, value);
   }
 
+  // Choix fait depuis un message privé à toi (menu des effets) : on met à jour le vrai panneau à part.
+  if (i.message?.flags.has(MessageFlags.Ephemeral)) {
+    editPanel(i.guild).catch(console.error);
+    return i.update(notice(t(lang, 'effectSet', EFFECTS[cfg.effect].label)));
+  }
   s.panel = i.message;
   const payload = await panelPayload(i.guild);
   Object.assign(s, { lastRender: renderOf(payload), hasImage: Boolean(payload.files) });
   return i.update(payload);
 }
 
-// --- /stations : grille par genres ---
-const PER_PAGE = 15;
-function stationsPayload(i, genre = 'all', page = 0) {
+// --- /stations : par genre, avec deux menus (genre, radio) ---
+function stationsPayload(i, genre = 'all') {
   const lang = langFor(i);
   const names = t(lang, 'genres');
   const all = Object.entries(stationsOf(i.guildId));
   const present = Object.keys(names).filter((g) => g === 'all' || all.some(([k, st]) => genreOf(k, st) === g));
-  const list = genre === 'all' ? all : all.filter(([k, st]) => genreOf(k, st) === genre);
-  const pages = Math.max(1, Math.ceil(list.length / PER_PAGE));
-  const p = Math.min(Math.max(0, page), pages - 1);
+  const list = (genre === 'all' ? all : all.filter(([k, st]) => genreOf(k, st) === genre)).slice(0, 25);
   const c = container(COLOR)
-    .addTextDisplayComponents(text(`## ${t(lang, 'stationsTitle')}\n-# ${names[genre] ?? genre} · ${list.length} · ${t(lang, 'stationsHint')}`))
+    .addTextDisplayComponents(text(`## ${t(lang, 'stationsTitle')}\n-# ${names[genre] ?? genre} · ${list.length}\n${list.map(([, st]) => st.name).join('  ·  ')}`))
     .addActionRowComponents(row(new StringSelectMenuBuilder().setCustomId('st:genre').setPlaceholder(t(lang, 'genrePh'))
-      .addOptions(present.map((g) => ({ label: names[g], value: g, default: g === genre })))));
-  for (const line of chunk(list.slice(p * PER_PAGE, (p + 1) * PER_PAGE), 5)) {
-    c.addActionRowComponents(row(...line.map(([k, st]) => button(`st:play:${k}`, null, ButtonStyle.Secondary, st.name))));
-  }
-  if (pages > 1) {
-    c.addActionRowComponents(row(
-      button(`st:page:${genre}:${p - 1}`, '◀️').setDisabled(p === 0),
-      button('st:noop', null, ButtonStyle.Secondary, `${p + 1} / ${pages}`).setDisabled(true),
-      button(`st:page:${genre}:${p + 1}`, '▶️').setDisabled(p === pages - 1),
-    ));
-  }
-  c.addTextDisplayComponents(text(`-# ${t(lang, 'stationsFooter')}`));
+      .addOptions(present.map((g) => ({ label: names[g], value: g, default: g === genre })))))
+    .addActionRowComponents(row(new StringSelectMenuBuilder().setCustomId('st:play').setPlaceholder(t(lang, 'pickStation'))
+      .addOptions(list.map(([k, st]) => ({ label: st.name.slice(0, 100), value: k, description: names[genreOf(k, st)] })))))
+    .addTextDisplayComponents(text(`-# ${t(lang, 'stationsFooter')}`));
   return { components: [c], flags: V2 };
 }
 
 async function onStationsAction(i) {
-  const [, action, ...rest] = i.customId.split(':');
-  if (action === 'genre') return i.update(stationsPayload(i, i.values[0], 0));
-  if (action === 'page') return i.update(stationsPayload(i, rest[0], Number(rest[1])));
-  const key = rest.join(':');
+  if (i.customId === 'st:genre') return i.update(stationsPayload(i, i.values[0]));
+  const key = i.values[0];
   const station = stationsOf(i.guildId)[key];
   if (!station) return reply(i, t(langFor(i), 'unknownStation'), true);
   return playFor(i, key, station);
 }
 
-// --- Favoris en boutons ---
+// --- Favoris : liste + un menu pour lancer ---
 function favoritesPayload(i) {
   const lang = langFor(i);
   const favs = Object.entries(db.user(i.user.id).favs);
-  const c = container(COLOR).addTextDisplayComponents(text(`## ${t(lang, 'favTitle')}\n-# ${favs.length ? t(lang, 'favHint') : t(lang, 'favEmpty')}`));
-  for (const line of chunk(favs.slice(0, 20), 5)) {
-    c.addActionRowComponents(row(...line.map(([k, st]) => button(`fav:play:${k}`, null, ButtonStyle.Secondary, st.name))));
+  const c = container(COLOR).addTextDisplayComponents(text(favs.length
+    ? `## ${t(lang, 'favTitle')}\n${favs.map(([, st]) => st.name).join('  ·  ')}\n-# ${t(lang, 'favHint')}`
+    : `## ${t(lang, 'favTitle')}\n-# ${t(lang, 'favEmpty')}`));
+  if (favs.length) {
+    c.addActionRowComponents(row(new StringSelectMenuBuilder().setCustomId('fav:play').setPlaceholder(t(lang, 'pickFav'))
+      .addOptions(favs.map(([k, st]) => ({ label: st.name.slice(0, 100), value: k })))));
   }
   return { components: [c], flags: V2 | MessageFlags.Ephemeral };
 }
 
 async function onFavAction(i) {
-  const key = i.customId.split(':').slice(2).join(':');
+  const key = i.values?.[0] ?? i.customId.split(':').slice(2).join(':'); // Menu, ou bouton d'un ancien message.
   const station = db.user(i.user.id).favs[key];
   if (!station) return reply(i, t(langFor(i), 'favUnknown'), true);
   return playFor(i, key, station);
