@@ -1,12 +1,12 @@
 # 📻 Radio Bot
 
-Bot Discord de radio en slash commands : LoFi, NRJ, Skyrock, Fun Radio, FIP, Mouv'… avec mode 24/7, rôle DJ et radios perso par serveur.
+Bot Discord de radio en slash commands : LoFi, NRJ, Skyrock, Fun Radio, FIP, Mouv'… plus 40 000 radios du monde entier, avec panneau interactif, pochettes, paroles, effets audio, favoris, top, minuteur, message de statut, français/anglais et sharding.
 
 ## Installation
 
 1. Crée une application sur le [portail développeur Discord](https://discord.com/developers/applications), onglet **Bot** → copie le token.
-2. Invite le bot avec les scopes `bot` + `applications.commands` et les permissions **Se connecter** et **Parler**.
-3. Lance-le (Node.js 22+) :
+2. Invite le bot avec les scopes `bot` + `applications.commands` et les permissions **Se connecter**, **Parler**, **Envoyer des messages**, **Intégrer des liens** et **Définir le statut du salon vocal**.
+3. Lance-le (Node.js 22.13+) :
 
 ```bash
 cd radio-bot
@@ -15,21 +15,31 @@ cp .env.example .env   # puis colle ton token dans .env
 npm start
 ```
 
-Les commandes s'enregistrent toutes seules au démarrage (comptent jusqu'à 1 h pour apparaître partout la première fois).
+Les commandes s'enregistrent toutes seules au démarrage (jusqu'à 1 h pour apparaître partout la première fois).
 
 ## Commandes
+
+Les commandes sont en anglais, et en français pour les membres qui ont Discord en français (`/monde`, `/favoris`, `/paroles`…).
 
 | Commande | Qui | Rôle |
 |---|---|---|
 | `/play station:` | DJ | Lance une radio dans ton salon vocal (autocomplétion) |
+| `/world` · `/monde` | DJ | Cherche et lance une radio parmi 40 000 dans le monde ([Radio Browser](https://www.radio-browser.info)) |
 | `/stop` | DJ | Arrête et quitte le salon |
-| `/volume valeur:` | DJ | Volume de 1 à 100 |
+| `/volume` | DJ | Volume de 0 à 100 |
+| `/effect` · `/effet` | DJ | Normal, Bass boost, Nightcore, Vaporwave, 8D, Night |
+| `/sleep` · `/minuteur` | DJ | Arrête la radio dans X minutes (0 = annuler) |
+| `/nowplaying` | Tous | Affiche le panneau en cours |
+| `/lyrics` · `/paroles` | Tous | Paroles du titre en cours ([LRCLIB](https://lrclib.net)) |
+| `/favorites` · `/favoris` | Tous | `list`, `add`, `play`, `remove` : tes radios favorites, sur tous les serveurs |
+| `/top` | Tous | Radios les plus écoutées du serveur (temps d'écoute × auditeurs) |
 | `/stations` | Tous | Liste des radios |
-| `/nowplaying` | Tous | Radio en cours |
-| `/admin dj-role role:` | Admin | Rôle requis pour `/play`, `/stop`, `/volume` (vide = tout le monde) |
-| `/admin 247 actif:` | Admin | Reste dans le salon même vide, et revient après un redémarrage |
-| `/admin add-station nom: url:` | Admin | Ajoute une radio perso (25 max) |
-| `/admin remove-station station:` | Admin | Supprime une radio perso |
+| `/admin dj-role` | Admin | Rôle requis pour piloter la radio (vide = tout le monde) |
+| `/admin 247` | Admin | Reste dans le salon même vide, et revient après un redémarrage |
+| `/admin add-station` | Admin | Ajoute une radio perso, avec logo optionnel (25 max) |
+| `/admin remove-station` | Admin | Supprime une radio perso |
+| `/admin status` | Admin | Message de statut en direct dans un salon (vide = désactiver) |
+| `/admin language` | Admin | Langue du bot : auto, français ou anglais |
 | `/admin config` | Admin | Affiche la config du serveur |
 
 « Admin » = permission **Gérer le serveur** (modifiable dans Paramètres du serveur → Intégrations).
@@ -38,20 +48,29 @@ Les commandes s'enregistrent toutes seules au démarrage (comptent jusqu'à 1 h 
 
 `/play` et `/nowplaying` affichent un panneau qui se met à jour tout seul toutes les 15 s :
 
-- 🔴 **EN DIRECT** / ⏸️ **EN PAUSE**, nom de la radio et **titre en cours** (lu dans le flux quand la radio le donne)
-- Salon, nombre d'auditeurs, depuis quand la radio tourne, barre de volume `▰▰▰▰▱▱▱▱▱▱`
+- 🔴 **EN DIRECT** / ⏸️ **EN PAUSE** avec le logo de la radio, le **titre en cours** et sa **pochette** (iTunes)
+- Salon, auditeurs, depuis quand ça tourne, volume `▰▰▰▰▱▱▱▱▱▱`, effet, minuteur
 - 📜 Les 3 derniers titres passés
-- Boutons : ⏮️ ⏯️ ⏭️ 🎲 (radio au hasard) ⏹️ · 🔉 🔊 🔇 🔄 · menu pour changer de radio
+- Boutons : ⏮️ ⏯️ ⏭️ 🎲 ⏹️ · 🔉 🔊 💤 ⭐ 📝 · menu des radios · menu des effets
 
-Les boutons demandent d'être dans le salon du bot (et d'avoir le rôle DJ s'il est défini).
+💤 fait défiler 15 → 30 → 60 → 120 min → désactivé. ⭐ et 📝 marchent pour tout le monde ; les autres boutons demandent d'être dans le salon du bot (et d'avoir le rôle DJ s'il est défini).
 
-Le bot affiche aussi la radio et le titre dans le **statut du salon vocal** (donne-lui la permission *Définir le statut du salon vocal*) et le nombre de radios en direct dans son statut.
+## Message de statut
+
+`/admin status salon:#radio` publie un message qui se met à jour tout seul : radio et titre en cours, pochette, auditeurs, top 3 du serveur, nombre de serveurs et de radios en direct. S'il est supprimé, le bot le republie.
+
+Le bot affiche aussi la radio et le titre dans le **statut du salon vocal** et ses totaux dans son propre statut.
+
+## Plusieurs serveurs
+
+- `npm start` lance le bot en **shards** automatiquement (`SHARDS=4 npm start` pour forcer un nombre).
+- Les données sont dans **SQLite** (`radio.db`, intégré à Node, rien à installer), partagé entre les shards. Un ancien `data.json` est importé automatiquement.
 
 ## Fonctionnement
 
-- Si le flux coupe, le bot se reconnecte tout seul à la radio au bout de 3 s.
+- Si le flux coupe, ffmpeg se reconnecte, puis le bot relance la radio au bout de 3 s si besoin.
 - Sans 24/7, il quitte le salon quand il ne reste plus personne.
-- La config de chaque serveur est sauvegardée dans `data.json`.
 - Les radios intégrées sont dans `stations.js` : une URL qui ne marche plus se change là.
+- Les radios lancées via `/world` ou un favori restent dans le menu (les 10 dernières).
 
 Tests : `npm test`.

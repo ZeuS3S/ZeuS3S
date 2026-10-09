@@ -14,4 +14,13 @@ const isStreamUrl = (url) => {
 // ▰▰▰▱▱▱▱▱▱▱ pour un volume de 0 à 100.
 const volumeBar = (volume) => '▰'.repeat(Math.round(volume / 10)) + '▱'.repeat(10 - Math.round(volume / 10));
 
-module.exports = { canControl, stationKey, isStreamUrl, volumeBar };
+// 🇫🇷 depuis un code pays ISO (FR).
+const flag = (code) => (/^[a-z]{2}$/i.test(code ?? '') ? String.fromCodePoint(...[...code.toUpperCase()].map((c) => 127397 + c.charCodeAt(0))) : '🌍');
+
+// 754 → « 12 h 34 min ».
+const formatMinutes = (minutes) => {
+  const m = Math.floor(minutes);
+  return m >= 60 ? `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')} min` : `${m} min`;
+};
+
+module.exports = { canControl, stationKey, isStreamUrl, volumeBar, flag, formatMinutes };
