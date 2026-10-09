@@ -508,6 +508,7 @@ const loc = (builder, name, en, fr, frName) => {
 const stationOption = (o) => loc(o, 'station', 'The station', 'La radio').setRequired(true).setAutocomplete(true);
 
 const commands = [
+  loc(new SlashCommandBuilder(), 'help', 'All the bot commands', 'Toutes les commandes du bot', 'aide'),
   loc(new SlashCommandBuilder(), 'play', 'Play a station in your voice channel', 'Lance une radio dans ton salon vocal').addStringOption(stationOption),
   loc(new SlashCommandBuilder(), 'world', 'Search 40,000 stations worldwide', 'Cherche parmi 40 000 radios du monde entier', 'monde')
     .addStringOption((o) => loc(o, 'search', 'Station name', 'Nom de la radio', 'recherche').setRequired(true).setAutocomplete(true)),
@@ -516,7 +517,7 @@ const commands = [
   loc(new SlashCommandBuilder(), 'nowplaying', 'Show the live panel', 'Affiche le panneau en cours'),
   loc(new SlashCommandBuilder(), 'volume', 'Set the volume', 'Règle le volume')
     .addIntegerOption((o) => loc(o, 'value', '0 to 100 (200 with Premium)', '0 à 100 (200 en Premium)', 'valeur').setRequired(true).setMinValue(0).setMaxValue(200)),
-  loc(new SlashCommandBuilder(), 'effect', 'Apply an audio effect', 'Applique un effet audio', 'effet')
+  loc(new SlashCommandBuilder(), 'effect', '💎 Apply an audio effect', '💎 Applique un effet audio', 'effet')
     .addStringOption((o) => loc(o, 'name', 'Effect', 'Effet', 'nom').setRequired(true)
       .addChoices(...Object.entries(EFFECTS).map(([value, fx]) => ({ name: value === 'normal' ? fx.label : `${fx.label} 💎`, value })))),
   loc(new SlashCommandBuilder(), 'sleep', 'Stop the radio after a while', 'Arrête la radio après un moment', 'minuteur')
@@ -575,6 +576,53 @@ const ownerCommand = loc(new SlashCommandBuilder(), 'owner', 'Bot owner tools', 
 // Owners : OWNER_IDS (séparés par des virgules) + propriétaire de l'application / membres de l'équipe.
 const owners = new Set((process.env.OWNER_IDS ?? '').split(',').map((id) => id.trim()).filter(Boolean));
 
+// --- /help : généré depuis les définitions des commandes, donc toujours à jour ---
+const HELP_CATEGORIES = {
+  helpRadio: ['play', 'world', 'stop', 'nowplaying', 'stations', 'volume', 'effect', 'sleep', 'lyrics'],
+  helpPerso: ['favorites', 'top'],
+  helpPremium: ['premium'],
+  helpAdmin: ['admin'],
+  helpOwner: ['owner'],
+};
+const commandIds = new Map(); // nom -> ID, pour des mentions cliquables </play:ID>
+
+function helpLines(command, lang) {
+  const json = command.toJSON();
+  const desc = (c) => (lang === 'fr' && c.description_localizations?.fr) || c.description;
+  const mention = (name) => (commandIds.has(json.name) ? `</${name}:${commandIds.get(json.name)}>` : `\`/${name}\``);
+  const subs = (json.options ?? []).filter((o) => o.type === 1);
+  if (!subs.length) return [`${mention(json.name)} — ${desc(json)}`];
+  return subs.map((sub) => `${mention(`${json.name} ${sub.name}`)} — ${desc(sub)}`);
+}
+
+function helpPayload(i) {
+  const lang = langFor(i);
+  const all = [...commands, ownerCommand];
+  const e = new EmbedBuilder()
+    .setColor(COLOR)
+    .setTitle(t(lang, 'helpTitle', client.user.username))
+    .setThumbnail(client.user.displayAvatarURL())
+    .setDescription(t(lang, 'helpIntro', Object.keys(stationsOf(i.guildId)).length));
+  for (const [category, names] of Object.entries(HELP_CATEGORIES)) {
+    if (category === 'helpOwner' && !owners.has(i.user.id)) continue;
+    const lines = names.flatMap((name) => helpLines(all.find((c) => c.name === name), lang));
+    e.addFields({ name: t(lang, category), value: lines.join('\n').slice(0, 1024) });
+  }
+  e.setFooter({ text: t(lang, 'helpFooter') });
+
+  const invite = `https://discord.com/oauth2/authorize?client_id=${client.user.id}&scope=bot+applications.commands&permissions=${INVITE_PERMISSIONS}`;
+  const row = new ActionRowBuilder().addComponents(
+    new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(invite).setEmoji('➕').setLabel(t(lang, 'helpInvite')),
+  );
+  if (isStreamUrl(process.env.SUPPORT_URL)) {
+    row.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(process.env.SUPPORT_URL).setEmoji('💬').setLabel(t(lang, 'helpSupport')));
+  }
+  return { embeds: [e], components: [row], flags: MessageFlags.Ephemeral };
+}
+// Voir les salons, envoyer des messages, intégrer des liens, se connecter, parler, définir le statut du salon vocal.
+const INVITE_PERMISSIONS = (PermissionFlagsBits.ViewChannel | PermissionFlagsBits.SendMessages | PermissionFlagsBits.EmbedLinks
+  | PermissionFlagsBits.Connect | PermissionFlagsBits.Speak | PermissionFlagsBits.SetVoiceChannelStatus).toString();
+
 const embed = (description) => new EmbedBuilder().setColor(COLOR).setDescription(description);
 const reply = (i, description, ephemeral = false) =>
   i.reply({ embeds: [embed(description)], flags: ephemeral ? MessageFlags.Ephemeral : undefined });
@@ -632,6 +680,7 @@ const handlers = {
     return reply(i, minutes ? t(langFor(i), 'sleepSet', sessions.get(i.guildId).sleepAt) : t(langFor(i), 'sleepOff'));
   },
   lyrics: sendLyrics,
+  help: (i) => i.reply(helpPayload(i)),
   async top(i, cfg) {
     const lang = langFor(i);
     const top = topOf(cfg).slice(0, 10);
@@ -827,6 +876,13 @@ client.once('clientReady', async () => {
     if (ownerGuild) await client.application.commands.set([ownerCommand], ownerGuild).catch((e) => console.error('OWNER_GUILD_ID :', e.message));
   }
   await ensureBadges().catch((e) => console.error('Badges :', e.message));
+  // IDs des commandes pour les mentions cliquables de /help.
+  const registered = await client.application.commands.fetch().catch(() => null);
+  for (const command of registered?.values() ?? []) commandIds.set(command.name, command.id);
+  if (ownerGuild) {
+    const ownerCmds = await client.application.commands.fetch({ guildId: ownerGuild }).catch(() => null);
+    for (const command of ownerCmds?.values() ?? []) commandIds.set(command.name, command.id);
+  }
   console.log(`Connecté en tant que ${client.user.tag}${client.shard ? ` (shard ${client.shard.ids})` : ''}`);
   // Reprend les radios 24/7 après un redémarrage.
   for (const guild of client.guilds.cache.values()) {

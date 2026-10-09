@@ -23,6 +23,7 @@ Les commandes sont en anglais, et en français pour les membres qui ont Discord 
 
 | Commande | Qui | Rôle |
 |---|---|---|
+| `/help` · `/aide` | Tous | Toutes les commandes par catégorie (cliquables), bouton pour inviter le bot |
 | `/play station:` | DJ | Lance une radio dans ton salon vocal (autocomplétion) |
 | `/world` · `/monde` | DJ | Cherche et lance une radio parmi 40 000 dans le monde ([Radio Browser](https://www.radio-browser.info)) |
 | `/stop` | DJ | Arrête et quitte le salon |
