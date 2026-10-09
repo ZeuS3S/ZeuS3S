@@ -3,7 +3,7 @@ const {
   InteractionContextType, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, ActivityType,
   AttachmentBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ContainerBuilder, TextDisplayBuilder, SectionBuilder,
   ThumbnailBuilder, MediaGalleryBuilder, MediaGalleryItemBuilder, SeparatorBuilder, SeparatorSpacingSize,
-  RoleSelectMenuBuilder, ChannelSelectMenuBuilder,
+  RoleSelectMenuBuilder, ChannelSelectMenuBuilder, Status,
 } = require('discord.js');
 const {
   joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, NoSubscriberBehavior,
@@ -20,6 +20,8 @@ const db = require('./db');
 const { t } = require('./i18n');
 const { renderCard, dominantColor, badgeFiles, BADGE_DIR } = require('./card');
 const premium = require('./premium');
+const { version: BOT_VERSION } = require('./package.json');
+const FFMPEG_VERSION = (() => { try { return require('prism-media').FFmpeg.getInfo().version.split(' ')[0]; } catch { return null; } })();
 
 const COLOR = 0xf5a623;
 const PAUSE_COLOR = 0x5865f2;
@@ -853,6 +855,7 @@ const stationOption = (o) => loc(o, 'station', 'The station', 'La radio').setReq
 
 const commands = [
   loc(new SlashCommandBuilder(), 'help', 'All the bot commands', 'Toutes les commandes du bot', 'aide'),
+  loc(new SlashCommandBuilder(), 'status', 'Is the bot working? Live health check', 'Le bot fonctionne-t-il ? État en temps réel', 'statut'),
   loc(new SlashCommandBuilder(), 'play', 'Play a station in your voice channel', 'Lance une radio dans ton salon vocal').addStringOption(stationOption),
   loc(new SlashCommandBuilder(), 'world', 'Search 40,000 stations worldwide', 'Cherche parmi 40 000 radios du monde entier', 'monde')
     .addStringOption((o) => loc(o, 'search', 'Station name', 'Nom de la radio', 'recherche').setRequired(true).setAutocomplete(true)),
@@ -923,12 +926,83 @@ const ownerCommand = loc(new SlashCommandBuilder(), 'owner', 'Bot owner tools', 
 // Owners : OWNER_IDS (séparés par des virgules) + propriétaire de l'application / membres de l'équipe.
 const owners = new Set((process.env.OWNER_IDS ?? '').split(',').map((id) => id.trim()).filter(Boolean));
 
+// --- /status : le bot fonctionne-t-il ? ---
+const STARTED_AT = now();
+const SLOW_MS = 500; // Au-delà, on signale un ralentissement.
+
+// Mesure un appel et renvoie sa durée en ms, ou null s'il échoue.
+async function timed(fn) {
+  const start = performance.now();
+  try {
+    await fn();
+    return Math.round((performance.now() - start) * 10) / 10;
+  } catch {
+    return null;
+  }
+}
+
+// État de chaque shard, interrogé un par un : un shard planté n'empêche pas d'afficher les autres.
+async function shardHealth() {
+  const probe = (c) => ({ status: c.ws.status, ping: c.ws.ping, guilds: c.guilds.cache.size, live: c.liveRadios ?? 0, ram: process.memoryUsage().rss });
+  if (!client.shard) return [{ id: 0, ...probe(client) }];
+  const results = await Promise.allSettled(Array.from({ length: client.shard.count }, (_, id) =>
+    Promise.race([client.shard.broadcastEval(probe, { shard: id }), new Promise((_, ko) => setTimeout(ko, 3000))])));
+  return results.map((r, id) => (r.status === 'fulfilled' ? { id, ...r.value } : { id, status: Status.Disconnected, ping: -1, guilds: 0, live: 0, ram: 0 }));
+}
+
+async function healthPayload(lang) {
+  const [api, dbMs, shards] = await Promise.all([
+    timed(() => client.rest.get('/gateway')),
+    timed(() => db.get('global', 'stations')),
+    shardHealth(),
+  ]);
+  const down = shards.filter((sh) => sh.status === Status.Disconnected).length;
+  const notReady = shards.filter((sh) => sh.status !== Status.Ready).length;
+  const slow = api > SLOW_MS || shards.some((sh) => sh.ping > SLOW_MS);
+  const state = api === null || dbMs === null || down === shards.length ? 'down' : notReady || slow || !FFMPEG_VERSION ? 'degraded' : 'ok';
+  const color = { ok: 0x23a55a, degraded: 0xf0b232, down: ERROR_COLOR }[state];
+  const dot = (ok, warn) => (ok ? (warn ? '🟠' : '🟢') : '🔴');
+  const ms = (v) => (v === null ? t(lang, 'healthFail') : `${v} ms`);
+  const sum = (key) => shards.reduce((a, sh) => a + sh[key], 0);
+  const gatewayPing = Math.round(shards.filter((sh) => sh.ping >= 0).reduce((a, sh) => a + sh.ping, 0) / Math.max(1, shards.length - down));
+
+  const services = [
+    `${dot(api !== null, api > SLOW_MS)} **${t(lang, 'healthApi')}** · ${ms(api)}`,
+    `${dot(down < shards.length, notReady || gatewayPing > SLOW_MS)} **${t(lang, 'healthGateway')}** · ${gatewayPing} ms`,
+    `${dot(dbMs !== null)} **${t(lang, 'healthDb')}** · ${ms(dbMs)}`,
+    `${dot(Boolean(FFMPEG_VERSION))} **${t(lang, 'healthAudio')}** · ${FFMPEG_VERSION ? `ffmpeg ${FFMPEG_VERSION}` : t(lang, 'healthFail')}`,
+  ];
+  const shardLines = shards.map((sh) => `${dot(sh.status !== Status.Disconnected, sh.status !== Status.Ready)} Shard ${sh.id} · ${
+    sh.status === Status.Disconnected ? t(lang, 'healthFail') : `${Status[sh.status]} · ${sh.ping} ms · ${sh.guilds} 🌐 · ${sh.live} 📻`}`);
+
+  const c = container(color)
+    .addTextDisplayComponents(text(`## ${t(lang, `health_${state}`)}\n-# ${t(lang, 'healthUpdated', now())}`))
+    .addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small))
+    .addTextDisplayComponents(text(services.join('\n')))
+    .addTextDisplayComponents(text(`**${t(lang, 'healthShards')}**\n${shardLines.join('\n')}`.slice(0, 3900)))
+    .addTextDisplayComponents(text(`-# 📻 ${sum('live')} ${t(lang, 'healthLive')} · 🌐 ${sum('guilds')} ${t(lang, 'healthServers')} · ⏱️ ${t(lang, 'healthUptime')} <t:${STARTED_AT}:R> · 💾 ${Math.round(sum('ram') / 1048576)} Mo · v${BOT_VERSION}`))
+    .addActionRowComponents(row(button('health:refresh', '🔄', ButtonStyle.Secondary, t(lang, 'btnRefresh'))));
+  return { components: [c], flags: V2 };
+}
+
+// Répond puis s'actualise toutes les 10 s pendant 1 min ; le bouton 🔄 prend le relais ensuite.
+async function sendHealth(i) {
+  const lang = langFor(i);
+  await i.reply(await healthPayload(lang));
+  let left = 6;
+  const timer = setInterval(async () => {
+    if (--left < 0) return clearInterval(timer);
+    await i.editReply(await healthPayload(lang)).catch(() => clearInterval(timer));
+  }, 10000);
+}
+
 // --- /help : généré depuis les définitions des commandes, donc toujours à jour ---
 const HELP_CATEGORIES = {
   helpRadio: ['play', 'world', 'stations', 'stop', 'nowplaying', 'volume', 'effect', 'sleep', 'lyrics'],
   helpPerso: ['favorites', 'history', 'top'],
   helpPremium: ['premium'],
   helpAdmin: ['admin'],
+  helpBot: ['status', 'help'],
   helpOwner: ['owner'],
 };
 const commandIds = new Map(); // nom -> ID, pour des mentions cliquables </play:ID>
@@ -1024,6 +1098,7 @@ const handlers = {
   lyrics: sendLyrics,
   history: (i) => i.reply(historyPayload(i)),
   help: (i) => i.reply(helpPayload(i)),
+  status: sendHealth,
   async top(i, cfg) {
     const lang = langFor(i);
     const top = topOf(cfg).slice(0, 10);
@@ -1234,7 +1309,10 @@ client.once('clientReady', async () => {
   setInterval(() => tick().catch(console.error), TICK_MS);
 });
 
-const COMPONENT_HANDLERS = { radio: onPanelAction, st: onStationsAction, fav: onFavAction, hist: onHistoryAction, cfg: onConfigAction };
+const COMPONENT_HANDLERS = {
+  radio: onPanelAction, st: onStationsAction, fav: onFavAction, hist: onHistoryAction, cfg: onConfigAction,
+  health: async (i) => i.update(await healthPayload(langFor(i))),
+};
 
 client.on('interactionCreate', async (i) => {
   if (!i.inGuild() || !i.guild) return;
