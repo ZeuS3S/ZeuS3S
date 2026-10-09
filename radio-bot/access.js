@@ -11,8 +11,11 @@ const isStreamUrl = (url) => {
   try { return ['http:', 'https:'].includes(new URL(url).protocol); } catch { return false; }
 };
 
-// ▰▰▰▱▱▱▱▱▱▱ pour un volume de 0 à 100.
-const volumeBar = (volume) => '▰'.repeat(Math.round(volume / 10)) + '▱'.repeat(10 - Math.round(volume / 10));
+// ▰▰▰▱▱▱▱▱▱▱ pour un volume de 0 à 100 (au-delà de 100 : barre pleine + 🔥).
+const volumeBar = (volume) => {
+  const full = Math.min(10, Math.round(volume / 10));
+  return '▰'.repeat(full) + '▱'.repeat(10 - full) + (volume > 100 ? ' 🔥' : '');
+};
 
 // 🇫🇷 depuis un code pays ISO (FR).
 const flag = (code) => (/^[a-z]{2}$/i.test(code ?? '') ? String.fromCodePoint(...[...code.toUpperCase()].map((c) => 127397 + c.charCodeAt(0))) : '🌍');

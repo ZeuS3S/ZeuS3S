@@ -132,3 +132,25 @@ test('égaliseur : PNG valide', () => {
   assert.equal(img.readUInt32BE(16), 24 * 9 - 3); // largeur
   assert.equal(img.readUInt32BE(20), 26); // hauteur
 });
+
+test('premium : essai, rappels et volume max', () => {
+  const premium = require('./premium');
+  assert.equal(premium.maxVolume('gT'), 100);
+  const trial = premium.startTrial('gT', 'Serveur test');
+  assert.ok(trial.until > Date.now() + 2.9 * 86400000);
+  assert.equal(premium.maxVolume('gT'), 200);
+  assert.deepEqual(premium.startTrial('gT'), { error: 'trialUsed' });
+  assert.equal(premium.pendingNotice('gT'), null); // Essai court : pas de rappel immédiat.
+  premium.addPremium('gW', 30);
+  assert.equal(premium.pendingNotice('gW'), null);
+  assert.equal(premium.pendingNotice('gW', premium.premiumUntil('gW') - 86400000), 'warn');
+  assert.equal(premium.pendingNotice('gT', trial.until - 86400000), null);
+  assert.equal(premium.pendingNotice('gT', trial.until + 1), 'expired');
+  premium.markRecord('gT', { expired: true });
+  assert.equal(premium.pendingNotice('gT', trial.until + 1), null);
+  assert.equal(premium.listPremium().find((r) => r.id === 'gT').name, 'Serveur test');
+  premium.removePremium('gT');
+  assert.deepEqual(premium.startTrial('gT'), { error: 'trialUsed' }); // L'essai reste consommé.
+  assert.equal(premium.addPremium('gP', 0), premium.FOREVER);
+  assert.equal(premium.pendingNotice('gP'), null); // À vie : jamais de rappel.
+});

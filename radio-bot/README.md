@@ -39,14 +39,26 @@ Les commandes sont en anglais, et en français pour les membres qui ont Discord 
 | `/admin status` | Admin | Message de statut en direct dans un salon (vide = désactiver) |
 | `/admin language` | Admin | Langue du bot : auto, français ou anglais |
 | `/admin config` | Admin | Affiche la config du serveur |
-| `/premium status` | Tous | Statut premium du serveur |
+| `/premium status` | Tous | Statut premium du serveur et avantages (✅ / 🔒) |
 | `/premium redeem key:` | Admin | Active une clé premium sur le serveur |
+| `/premium trial` | Admin | Essai Premium gratuit de 3 jours, une fois par serveur |
+| `/premium color hex:` | Admin 💎 | Couleur du panneau (`#ff3b3b`, ou `reset`) |
 
 « Admin » = permission **Gérer le serveur** (modifiable dans Paramètres du serveur → Intégrations).
 
 ## 💎 Premium et owners
 
-Le mode **24/7** est réservé aux serveurs Premium. Un owner crée une clé, un admin du serveur l'active avec `/premium redeem`. À l'expiration, le 24/7 se coupe tout seul.
+Un owner crée une clé, un admin du serveur l'active avec `/premium redeem` (ou lance l'essai gratuit de 3 jours avec `/premium trial`). Une nouvelle clé prolonge le premium en cours.
+
+| Avantage | Gratuit | 💎 Premium |
+|---|---|---|
+| Mode 24/7 | ❌ | ✅ |
+| Effets audio (Bass boost, Nightcore, Vaporwave, 8D, Night) | ❌ | ✅ |
+| Volume | 100 % | 200 % |
+| Couleur du panneau | ❌ | ✅ |
+| Badge 💎 Premium sur le panneau | ❌ | ✅ |
+
+Le bot prévient le serveur 3 jours avant la fin (dans le salon du message de statut, sinon le salon système), puis à la fin, où il coupe tout seul le 24/7, les effets et le volume boosté. Avec `PREMIUM_LOG_CHANNEL_ID`, les owners reçoivent un journal : clés créées et activées, essais, premiums donnés, retirés et terminés.
 
 Les **owners** sont le propriétaire de l'application Discord (ou les membres de son équipe) et les IDs mis dans `OWNER_IDS` (`.env`). Ils ont `/owner` :
 
@@ -54,6 +66,7 @@ Les **owners** sont le propriétaire de l'application Discord (ou les membres de
 |---|---|
 | `key-create days: uses:` | Crée une clé `RADIO-XXXX-XXXX-XXXX` (0 jour = à vie, `uses` = nombre de serveurs) |
 | `keys` | Liste les clés et leurs utilisations |
+| `premium-list` | Liste les serveurs premium et leur date de fin |
 | `key-delete key:` | Supprime une clé |
 | `premium-add days: guild:` | Donne (ou prolonge) le premium d'un serveur sans clé |
 | `premium-remove guild:` | Retire le premium |

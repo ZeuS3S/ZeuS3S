@@ -111,7 +111,8 @@ function startResource(s, guildId) {
   const cfg = cfgOf(guildId);
   const station = stationsOf(guildId)[cfg.station];
   if (!station) return;
-  s.resource = createAudioResource(createStream(station.url, cfg.effect), { inputType: StreamType.Raw, inlineVolume: true });
+  const effect = premium.isPremium(guildId) ? cfg.effect : 'normal'; // Effets réservés au premium.
+  s.resource = createAudioResource(createStream(station.url, effect), { inputType: StreamType.Raw, inlineVolume: true });
   s.resource.volume.setVolume(cfg.volume / 100);
   s.player.play(s.resource);
 }
@@ -136,7 +137,7 @@ function togglePause(guild) {
 
 function setVolume(guildId, volume) {
   const cfg = cfgOf(guildId);
-  cfg.volume = Math.min(100, Math.max(0, volume));
+  cfg.volume = Math.min(premium.maxVolume(guildId), Math.max(0, volume)); // 200 % en premium.
   save(guildId);
   sessions.get(guildId)?.resource?.volume.setVolume(cfg.volume / 100);
 }
@@ -193,7 +194,7 @@ function panelPayload(guild) {
   const blank = { name: '\u200b', value: '\u200b', inline: true }; // Force 2 colonnes.
 
   const e = new EmbedBuilder()
-    .setColor(s.paused ? PAUSE_COLOR : COLOR)
+    .setColor(s.paused ? PAUSE_COLOR : (premium.isPremium(guild.id) && cfg.color) || COLOR)
     .setAuthor({ name: `${client.user.username} · ${channel?.name ?? '…'}` })
     .setDescription(`## ${badgeOf(lang, s.paused)} ${station.name}\n🎵 ${s.title ?? t(lang, 'noTitle')}`)
     .setThumbnail(s.cover ?? station.logo ?? null)
@@ -206,9 +207,10 @@ function panelPayload(guild) {
       blank,
     )
     .setImage('attachment://equalizer.png');
-  if (cfg.effect !== 'normal' || s.sleepAt) {
+  const showEffect = cfg.effect !== 'normal' && premium.isPremium(guild.id);
+  if (showEffect || s.sleepAt) {
     e.addFields(
-      { name: t(lang, 'cardEffect'), value: EFFECTS[cfg.effect].label, inline: true },
+      { name: t(lang, 'cardEffect'), value: showEffect ? EFFECTS[cfg.effect].label : '—', inline: true },
       { name: t(lang, 'cardSleep'), value: s.sleepAt ? `<t:${s.sleepAt}:R>` : '—', inline: true },
       blank,
     );
@@ -367,20 +369,25 @@ async function onPanelAction(i) {
     switchStation(i.guild, others[Math.floor(Math.random() * others.length)] ?? cfg.station);
   }
   if (action === 'select') switchStation(i.guild, i.values[0]);
-  if (action === 'effect') setEffect(i.guild, i.values[0]);
+  if (action === 'effect') {
+    if (i.values[0] !== 'normal' && !premium.isPremium(i.guildId)) return reply(i, t(lang, 'premiumOnly'), true);
+    setEffect(i.guild, i.values[0]);
+  }
   if (action === 'toggle') togglePause(i.guild);
   if (action === 'voldown') setVolume(i.guildId, cfg.volume - 10);
   if (action === 'volup') setVolume(i.guildId, cfg.volume + 10);
   if (action === 'sleep') setSleep(i.guild, SLEEP_STEPS[(SLEEP_STEPS.indexOf(s.sleepMinutes) + 1) % SLEEP_STEPS.length]);
   if (action === 'volume') {
     return i.showModal(new ModalBuilder().setCustomId('radio:volmodal').setTitle(t(lang, 'btnVolume')).addComponents(
-      new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId('value').setLabel(t(lang, 'volumeModalLabel'))
+      new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId('value').setLabel(t(lang, 'volumeModalLabel', premium.maxVolume(i.guildId)))
         .setStyle(TextInputStyle.Short).setValue(String(cfg.volume)).setMinLength(1).setMaxLength(3).setRequired(true)),
     ));
   }
   if (action === 'volmodal') {
     const value = Number(i.fields.getTextInputValue('value'));
-    if (!Number.isInteger(value) || value < 0 || value > 100) return reply(i, t(lang, 'badVolume'), true);
+    const max = premium.maxVolume(i.guildId);
+    if (Number.isInteger(value) && value > max && value <= 200) return reply(i, t(lang, 'premiumOnly'), true);
+    if (!Number.isInteger(value) || value < 0 || value > max) return reply(i, t(lang, 'badVolume', max), true);
     setVolume(i.guildId, value);
   }
 
@@ -445,6 +452,28 @@ async function updateStatusMessage(guild) {
   }
 }
 
+// Journal premium des owners (PREMIUM_LOG_CHANNEL_ID), via l'API : marche depuis n'importe quel shard.
+function logPremium(text) {
+  const channelId = process.env.PREMIUM_LOG_CHANNEL_ID;
+  if (channelId) client.rest.post(`/channels/${channelId}/messages`, { body: { embeds: [embed(text).setTimestamp().toJSON()] } }).catch(() => {});
+}
+
+// Prévient le serveur 3 jours avant la fin du premium, puis à la fin (et retire les avantages).
+async function premiumNotice(guild, notice) {
+  const lang = langOf(guild);
+  const cfg = cfgOf(guild.id);
+  premium.markRecord(guild.id, notice === 'warn' ? { warned: true } : { expired: true });
+  if (notice === 'expired') {
+    if (cfg.effect !== 'normal') setEffect(guild, 'normal');
+    setVolume(guild.id, cfg.volume); // Ramène à 100 % max.
+    refresh(guild).catch(console.error);
+    logPremium(`⌛ Premium terminé sur **${guild.name}** (\`${guild.id}\`)`);
+  }
+  const text = notice === 'warn' ? t(lang, 'premiumWarn', `<t:${Math.floor(premium.premiumUntil(guild.id) / 1000)}:R>`) : t(lang, 'premiumExpired');
+  const channel = guild.channels.cache.get(cfg.status?.channelId ?? guild.systemChannelId);
+  await channel?.send({ embeds: [embed(text).setColor(notice === 'warn' ? COLOR : OFF_COLOR)] }).catch(() => {});
+}
+
 // Toutes les minutes : totaux multi-shards, présence du bot, messages de statut.
 async function tick() {
   client.liveRadios = [...sessions.values()].filter((s) => !s.paused).length;
@@ -461,6 +490,8 @@ async function tick() {
   client.user.setActivity(`📻 ${totals.live} radios · ${totals.servers} serveurs`, { type: ActivityType.Custom });
   for (const guild of client.guilds.cache.values()) {
     const cfg = cfgOf(guild.id);
+    const notice = premium.pendingNotice(guild.id);
+    if (notice) await premiumNotice(guild, notice);
     if (cfg.stay247 && !cfg.forced247 && !premium.isPremium(guild.id)) { // Premium expiré : fin du 24/7.
       cfg.stay247 = false;
       save(guild.id);
@@ -484,10 +515,10 @@ const commands = [
   loc(new SlashCommandBuilder(), 'stations', 'List stations', 'Liste des radios'),
   loc(new SlashCommandBuilder(), 'nowplaying', 'Show the live panel', 'Affiche le panneau en cours'),
   loc(new SlashCommandBuilder(), 'volume', 'Set the volume', 'Règle le volume')
-    .addIntegerOption((o) => loc(o, 'value', '0 to 100', '0 à 100', 'valeur').setRequired(true).setMinValue(0).setMaxValue(100)),
+    .addIntegerOption((o) => loc(o, 'value', '0 to 100 (200 with Premium)', '0 à 100 (200 en Premium)', 'valeur').setRequired(true).setMinValue(0).setMaxValue(200)),
   loc(new SlashCommandBuilder(), 'effect', 'Apply an audio effect', 'Applique un effet audio', 'effet')
     .addStringOption((o) => loc(o, 'name', 'Effect', 'Effet', 'nom').setRequired(true)
-      .addChoices(...Object.entries(EFFECTS).map(([value, fx]) => ({ name: fx.label, value })))),
+      .addChoices(...Object.entries(EFFECTS).map(([value, fx]) => ({ name: value === 'normal' ? fx.label : `${fx.label} 💎`, value })))),
   loc(new SlashCommandBuilder(), 'sleep', 'Stop the radio after a while', 'Arrête la radio après un moment', 'minuteur')
     .addIntegerOption((o) => loc(o, 'minutes', 'Minutes (0 = cancel)', 'Minutes (0 = annuler)').setRequired(true).setMinValue(0).setMaxValue(720)),
   loc(new SlashCommandBuilder(), 'lyrics', 'Lyrics of the current song', 'Paroles du titre en cours', 'paroles'),
@@ -512,7 +543,10 @@ const commands = [
   loc(new SlashCommandBuilder(), 'premium', 'Server premium', 'Premium du serveur').setContexts(InteractionContextType.Guild)
     .addSubcommand((c) => loc(c, 'status', 'Premium status of this server', 'Statut premium du serveur', 'statut'))
     .addSubcommand((c) => loc(c, 'redeem', 'Activate a premium key', 'Active une clé premium', 'activer')
-      .addStringOption((o) => loc(o, 'key', 'RADIO-XXXX-XXXX-XXXX', 'RADIO-XXXX-XXXX-XXXX', 'clé').setRequired(true).setMaxLength(40))),
+      .addStringOption((o) => loc(o, 'key', 'RADIO-XXXX-XXXX-XXXX', 'RADIO-XXXX-XXXX-XXXX', 'clé').setRequired(true).setMaxLength(40)))
+    .addSubcommand((c) => loc(c, 'trial', 'Free 3-day Premium trial (once per server)', 'Essai Premium gratuit de 3 jours (une fois par serveur)', 'essai'))
+    .addSubcommand((c) => loc(c, 'color', '💎 Panel color', '💎 Couleur du panneau', 'couleur')
+      .addStringOption((o) => loc(o, 'hex', 'Hex color like #ff3b3b, or reset', 'Couleur hexadécimale comme #ff3b3b, ou reset', 'hex').setRequired(true).setMaxLength(7))),
 ];
 
 // Commandes des owners du bot : enregistrées seulement sur OWNER_GUILD_ID si défini, et vérifiées à chaque appel.
@@ -522,6 +556,7 @@ const ownerCommand = loc(new SlashCommandBuilder(), 'owner', 'Bot owner tools', 
     .addIntegerOption((o) => loc(o, 'days', 'Duration in days (0 = forever)', 'Durée en jours (0 = à vie)', 'jours').setRequired(true).setMinValue(0).setMaxValue(3650))
     .addIntegerOption((o) => loc(o, 'uses', 'Number of servers (default 1)', 'Nombre de serveurs (1 par défaut)', 'utilisations').setMinValue(1).setMaxValue(1000)))
   .addSubcommand((c) => loc(c, 'keys', 'List premium keys', 'Liste les clés premium', 'cles'))
+  .addSubcommand((c) => loc(c, 'premium-list', 'List premium servers', 'Liste les serveurs premium'))
   .addSubcommand((c) => loc(c, 'key-delete', 'Delete a key', 'Supprime une clé')
     .addStringOption((o) => loc(o, 'key', 'The key', 'La clé', 'cle').setRequired(true)))
   .addSubcommand((c) => loc(c, 'premium-add', 'Give premium to a server', 'Donne le premium à un serveur')
@@ -576,12 +611,15 @@ const handlers = {
     return sendPanel(i);
   },
   async volume(i, cfg) {
-    setVolume(i.guildId, i.options.getInteger('value'));
+    const value = i.options.getInteger('value');
+    if (value > premium.maxVolume(i.guildId)) return reply(i, t(langFor(i), 'premiumOnly'), true);
+    setVolume(i.guildId, value);
     refresh(i.guild).catch(console.error);
     return reply(i, t(langFor(i), 'volumeSet', cfg.volume, volumeBar(cfg.volume)));
   },
   async effect(i) {
     const effect = i.options.getString('name');
+    if (effect !== 'normal' && !premium.isPremium(i.guildId)) return reply(i, t(langFor(i), 'premiumOnly'), true);
     setEffect(i.guild, effect);
     refresh(i.guild).catch(console.error);
     return reply(i, t(langFor(i), 'effectSet', EFFECTS[effect].label));
@@ -660,14 +698,38 @@ const handlers = {
     }
     return reply(i, t(lang, 'config', cfg, premium.isPremium(i.guildId) ? t(lang, 'until', premium.premiumUntil(i.guildId)) : '—'), true);
   },
-  async premium(i) {
+  async premium(i, cfg) {
     const lang = langFor(i);
-    if (i.options.getSubcommand() === 'status') {
-      return reply(i, premium.isPremium(i.guildId) ? t(lang, 'premiumOn', t(lang, 'until', premium.premiumUntil(i.guildId))) : t(lang, 'premiumOff'), true);
+    const sub = i.options.getSubcommand();
+    const active = premium.isPremium(i.guildId);
+    if (sub === 'status') {
+      const e = embed(active ? t(lang, 'premiumOn', t(lang, 'until', premium.premiumUntil(i.guildId))) : t(lang, 'premiumOff'))
+        .setColor(active ? (cfg.color ?? COLOR) : OFF_COLOR)
+        .addFields({ name: t(lang, 'perksTitle'), value: t(lang, 'perks').map((p) => `${active ? '✅' : '🔒'} ${p}`).join('\n') });
+      if (!active && !premium.trialUsed(i.guildId)) e.setFooter({ text: t(lang, 'trialHint', premium.TRIAL_DAYS).replaceAll('`', '') });
+      return i.reply({ embeds: [e], flags: MessageFlags.Ephemeral });
     }
     if (!i.memberPermissions.has(PermissionFlagsBits.ManageGuild)) return reply(i, t(lang, 'needManage'), true);
-    const result = premium.redeemKey(i.options.getString('key'), i.guildId);
+    if (sub === 'color') {
+      if (!active) return reply(i, t(lang, 'premiumOnly'), true);
+      const value = i.options.getString('hex').trim().toLowerCase();
+      if (value === 'reset') cfg.color = null;
+      else if (/^#?[0-9a-f]{6}$/.test(value)) cfg.color = parseInt(value.replace('#', ''), 16);
+      else return reply(i, t(lang, 'badColor'), true);
+      save(i.guildId);
+      refresh(i.guild).catch(console.error);
+      return i.reply({ embeds: [embed(cfg.color === null ? t(lang, 'colorReset') : t(lang, 'colorSet', `#${value.replace('#', '')}`)).setColor(cfg.color ?? COLOR)], flags: MessageFlags.Ephemeral });
+    }
+    if (sub === 'trial') {
+      const result = premium.startTrial(i.guildId, i.guild.name);
+      if (result.error) return reply(i, t(lang, result.error), true);
+      logPremium(`🎁 Essai lancé sur **${i.guild.name}** (\`${i.guildId}\`) par ${i.user}`);
+      refresh(i.guild).catch(console.error);
+      return reply(i, t(lang, 'trialOk', t(lang, 'until', result.until)));
+    }
+    const result = premium.redeemKey(i.options.getString('key'), i.guildId, i.guild.name);
     if (result.error) return reply(i, t(lang, { invalid: 'keyInvalid', used: 'keyUsed', already: 'keyAlready' }[result.error]), true);
+    logPremium(`🔑 Clé activée sur **${i.guild.name}** (\`${i.guildId}\`) par ${i.user} · ${t('fr', 'duration', result.days)}`);
     refresh(i.guild).catch(console.error);
     return reply(i, t(lang, 'redeemOk', t(lang, 'until', result.until)));
   },
@@ -678,7 +740,9 @@ const handlers = {
     if (sub === 'key-create') {
       const days = i.options.getInteger('days');
       const uses = i.options.getInteger('uses') ?? 1;
-      return reply(i, t(lang, 'keyCreated', premium.createKey(days, uses, i.user.id), t(lang, 'duration', days), uses), true);
+      const key = premium.createKey(days, uses, i.user.id);
+      logPremium(`🔑 Clé créée par ${i.user} · ${t('fr', 'duration', days)} · ${uses} utilisation(s)`);
+      return reply(i, t(lang, 'keyCreated', key, t(lang, 'duration', days), uses), true);
     }
     if (sub === 'keys') {
       const keys = premium.listKeys().slice(-25);
@@ -686,13 +750,21 @@ const handlers = {
       return i.reply({ embeds: [embed(text || t(lang, 'keysEmpty')).setTitle(t(lang, 'keysTitle'))], flags: MessageFlags.Ephemeral });
     }
     if (sub === 'key-delete') return reply(i, t(lang, premium.deleteKey(i.options.getString('key')) ? 'keyDeleted' : 'keyNotFound'), true);
+    if (sub === 'premium-list') {
+      const list = premium.listPremium().slice(0, 25);
+      const text = list.map((r) => t(lang, 'premiumListLine', r.name, r.id, t(lang, 'until', r.until))).join('\n');
+      return i.reply({ embeds: [embed(text || t(lang, 'premiumListEmpty')).setTitle(t(lang, 'premiumListTitle'))], flags: MessageFlags.Ephemeral });
+    }
     if (sub === 'premium-add') {
       const guildId = i.options.getString('guild') ?? i.guildId;
-      return reply(i, t(lang, 'premiumGiven', guildId, t(lang, 'until', premium.addPremium(guildId, i.options.getInteger('days')))), true);
+      const until = premium.addPremium(guildId, i.options.getInteger('days'), client.guilds.cache.get(guildId)?.name);
+      logPremium(`💎 Premium donné à \`${guildId}\` par ${i.user} · fin : ${t('fr', 'until', until)}`);
+      return reply(i, t(lang, 'premiumGiven', guildId, t(lang, 'until', until)), true);
     }
     if (sub === 'premium-remove') {
       const guildId = i.options.getString('guild') ?? i.guildId;
       premium.removePremium(guildId);
+      logPremium(`⚪ Premium retiré de \`${guildId}\` par ${i.user}`);
       return reply(i, t(lang, 'premiumRemoved', guildId), true);
     }
     if (sub === '247') {
