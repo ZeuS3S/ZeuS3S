@@ -102,3 +102,33 @@ test('audio : chaque effet sort du son', async () => {
   }
   srv.close();
 });
+
+test('premium : clés, utilisations et durée', () => {
+  const premium = require('./premium'); // Utilise la base de test créée plus haut (DB_FILE).
+  const key = premium.createKey(30, 2, 'owner');
+  assert.match(key, /^RADIO-[A-Z2-9]{4}-[A-Z2-9]{4}-[A-Z2-9]{4}$/);
+  assert.equal(premium.isPremium('gA'), false);
+  const first = premium.redeemKey(key.toLowerCase(), 'gA');
+  assert.ok(first.until > Date.now() + 29 * 86400000);
+  assert.ok(premium.isPremium('gA'));
+  assert.deepEqual(premium.redeemKey(key, 'gA'), { error: 'already' });
+  assert.ok(premium.redeemKey(key, 'gB').until);
+  assert.deepEqual(premium.redeemKey(key, 'gC'), { error: 'used' });
+  assert.deepEqual(premium.redeemKey('RADIO-FAUX-FAUX-FAUX', 'gC'), { error: 'invalid' });
+  // Une 2e clé prolonge au lieu de remplacer.
+  const again = premium.addPremium('gA', 10);
+  assert.ok(again > first.until + 9 * 86400000);
+  assert.equal(premium.addPremium('gD', 0), premium.FOREVER);
+  premium.removePremium('gA');
+  assert.equal(premium.isPremium('gA'), false);
+  assert.ok(premium.deleteKey(key));
+  assert.equal(premium.listKeys().length, 0);
+});
+
+test('égaliseur : PNG valide', () => {
+  const { equalizer } = require('./card');
+  const img = equalizer(false);
+  assert.equal(img.subarray(1, 4).toString(), 'PNG');
+  assert.equal(img.readUInt32BE(16), 24 * 9 - 3); // largeur
+  assert.equal(img.readUInt32BE(20), 26); // hauteur
+});

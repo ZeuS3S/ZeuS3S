@@ -7,10 +7,32 @@ db.exec(`PRAGMA journal_mode = WAL; PRAGMA busy_timeout = 5000;
   CREATE TABLE IF NOT EXISTS store (scope TEXT NOT NULL, id TEXT NOT NULL, data TEXT NOT NULL, PRIMARY KEY (scope, id))`);
 const getStmt = db.prepare('SELECT data FROM store WHERE scope = ? AND id = ?');
 const setStmt = db.prepare('INSERT OR REPLACE INTO store (scope, id, data) VALUES (?, ?, ?)');
+const listStmt = db.prepare('SELECT id, data FROM store WHERE scope = ?');
+const delStmt = db.prepare('DELETE FROM store WHERE scope = ? AND id = ?');
 const read = (scope, id) => JSON.parse(getStmt.get(scope, id)?.data ?? '{}');
 
+// Accès bruts, relus à chaque appel (partagés entre shards) : premium, clés, radios globales.
+const get = (scope, id) => {
+  const row = getStmt.get(scope, id);
+  return row ? JSON.parse(row.data) : null;
+};
+const set = (scope, id, data) => setStmt.run(scope, id, JSON.stringify(data));
+const del = (scope, id) => delStmt.run(scope, id);
+const list = (scope) => listStmt.all(scope).map((r) => ({ id: r.id, ...JSON.parse(r.data) }));
+function transaction(fn) {
+  db.exec('BEGIN IMMEDIATE');
+  try {
+    const result = fn();
+    db.exec('COMMIT');
+    return result;
+  } catch (e) {
+    db.exec('ROLLBACK');
+    throw e;
+  }
+}
+
 const GUILD_DEFAULTS = () => ({
-  djRole: null, stay247: false, channelId: null, station: null, volume: 50, effect: 'normal', lang: 'auto',
+  djRole: null, stay247: false, forced247: false, channelId: null, station: null, volume: 50, effect: 'normal', lang: 'auto',
   custom: {}, recent: {}, stats: {}, status: null,
 });
 
@@ -35,4 +57,4 @@ if (fs.existsSync(OLD)) {
   try { fs.renameSync(OLD, `${OLD}.migrated`); } catch { /* déjà migré par un autre shard */ }
 }
 
-module.exports = { guild, saveGuild, user, saveUser };
+module.exports = { guild, saveGuild, user, saveUser, get, set, del, list, transaction };

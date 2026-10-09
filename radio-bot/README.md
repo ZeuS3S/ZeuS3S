@@ -35,23 +35,44 @@ Les commandes sont en anglais, et en français pour les membres qui ont Discord 
 | `/top` | Tous | Radios les plus écoutées du serveur (temps d'écoute × auditeurs) |
 | `/stations` | Tous | Liste des radios |
 | `/admin dj-role` | Admin | Rôle requis pour piloter la radio (vide = tout le monde) |
-| `/admin 247` | Admin | Reste dans le salon même vide, et revient après un redémarrage |
-| `/admin add-station` | Admin | Ajoute une radio perso, avec logo optionnel (25 max) |
-| `/admin remove-station` | Admin | Supprime une radio perso |
+| `/admin 247` | Admin 💎 | Reste dans le salon même vide, et revient après un redémarrage (**Premium**) |
 | `/admin status` | Admin | Message de statut en direct dans un salon (vide = désactiver) |
 | `/admin language` | Admin | Langue du bot : auto, français ou anglais |
 | `/admin config` | Admin | Affiche la config du serveur |
+| `/premium status` | Tous | Statut premium du serveur |
+| `/premium redeem key:` | Admin | Active une clé premium sur le serveur |
 
 « Admin » = permission **Gérer le serveur** (modifiable dans Paramètres du serveur → Intégrations).
+
+## 💎 Premium et owners
+
+Le mode **24/7** est réservé aux serveurs Premium. Un owner crée une clé, un admin du serveur l'active avec `/premium redeem`. À l'expiration, le 24/7 se coupe tout seul.
+
+Les **owners** sont le propriétaire de l'application Discord (ou les membres de son équipe) et les IDs mis dans `OWNER_IDS` (`.env`). Ils ont `/owner` :
+
+| Sous-commande | Rôle |
+|---|---|
+| `key-create days: uses:` | Crée une clé `RADIO-XXXX-XXXX-XXXX` (0 jour = à vie, `uses` = nombre de serveurs) |
+| `keys` | Liste les clés et leurs utilisations |
+| `key-delete key:` | Supprime une clé |
+| `premium-add days: guild:` | Donne (ou prolonge) le premium d'un serveur sans clé |
+| `premium-remove guild:` | Retire le premium |
+| `247 enabled:` | Active le 24/7 sur ce serveur sans premium |
+| `station-add name: url: logo:` | Ajoute une radio pour **tous** les serveurs |
+| `station-remove station:` | Supprime une radio ajoutée par un owner |
+
+Mets `OWNER_GUILD_ID` pour que `/owner` n'apparaisse que sur ton serveur.
 
 ## Panneau « en cours »
 
 `/play` et `/nowplaying` affichent un panneau qui se met à jour tout seul toutes les 15 s :
 
-- 🔴 **EN DIRECT** / ⏸️ **EN PAUSE** avec le logo de la radio, le **titre en cours** et sa **pochette** (iTunes)
-- Salon, auditeurs, depuis quand ça tourne, volume `▰▰▰▰▱▱▱▱▱▱`, effet, minuteur
-- 📜 Les 3 derniers titres passés
-- Boutons : ⏮️ ⏯️ ⏭️ 🎲 ⏹️ · 🔉 🔊 💤 ⭐ 📝 · menu des radios · menu des effets
+- Badge rouge **EN DIRECT** (bleu **EN PAUSE**), nom de la radio, **titre en cours**, **pochette** (iTunes) ou logo
+- Salon, demandé par, diffusion (`24 h / 24` en 24/7), volume, effet et minuteur s'ils sont actifs
+- Égaliseur orange (image générée par le bot)
+- Boutons : **Pause**, **Station suivante**, **Volume** (fenêtre pour taper la valeur), **Stop** · ⏮️ 🎲 💤 ⭐ 📝 · menu des radios
+
+Les badges sont des émojis d'application que le bot crée tout seul au premier démarrage (images dans `assets/badges`, régénérables avec `python3 scripts/badges.py`).
 
 💤 fait défiler 15 → 30 → 60 → 120 min → désactivé. ⭐ et 📝 marchent pour tout le monde ; les autres boutons demandent d'être dans le salon du bot (et d'avoir le rôle DJ s'il est défini).
 
