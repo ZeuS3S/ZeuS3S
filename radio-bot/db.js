@@ -33,7 +33,7 @@ function transaction(fn) {
 
 const GUILD_DEFAULTS = () => ({
   djRole: null, stay247: false, forced247: false, channelId: null, station: null, volume: 50, effect: 'normal', lang: 'auto',
-  custom: {}, recent: {}, stats: {}, status: null, color: null,
+  custom: {}, recent: {}, stats: {}, status: null, color: null, week: null,
 });
 
 // Un serveur n'appartient qu'à un shard : on peut le garder en mémoire.

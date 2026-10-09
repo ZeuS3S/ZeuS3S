@@ -125,13 +125,30 @@ test('premium : clés, utilisations et durée', () => {
   assert.equal(premium.listKeys().length, 0);
 });
 
-test('égaliseur : PNG valide', () => {
-  const { equalizer } = require('./card');
-  const img = equalizer(false);
-  assert.equal(img.subarray(1, 4).toString(), 'PNG');
-  assert.equal(img.readUInt32BE(16), 24 * 9 - 3); // largeur
-  assert.equal(img.readUInt32BE(20), 26); // hauteur
+test('carte « en cours » : PNG 1000×300, avec et sans pochette', async () => {
+  const { renderCard } = require('./card');
+  for (const cover of [null, require('node:fs').readFileSync(`${__dirname}/assets/badges/live_fr_1.png`)]) {
+    const img = await renderCard({ title: 'PNL - Au DD', station: '🎧 LoFi', label: 'En direct', color: 0xb388ff, paused: false, cover, logo: null });
+    assert.equal(img.subarray(1, 4).toString(), 'PNG');
+    assert.equal(img.readUInt32BE(16), 1000);
+    assert.equal(img.readUInt32BE(20), 300);
+  }
 });
+
+test('paroles LRC, progression, semaine', () => {
+  const { parseLrc, lineAt, progressBar, weekStart, stripEmoji } = require('./access');
+  const lines = parseLrc('[00:05.00] deux\n[00:01.50] un\ntexte sans temps\n[01:00.00]');
+  assert.deepEqual(lines.map((l) => l.line), ['un', 'deux', '']);
+  assert.equal(lineAt(lines, 0), -1);
+  assert.equal(lineAt(lines, 1500), 0);
+  assert.equal(lineAt(lines, 59999), 1);
+  assert.equal(progressBar(0, 60000, 5), '`0:00` ●──── `1:00`');
+  assert.equal(progressBar(90000, 60000, 5), '`1:00` ━━━━● `1:00`');
+  assert.equal(weekStart(Date.UTC(2026, 9, 11, 23, 59)), Date.UTC(2026, 9, 5)); // Dimanche → lundi précédent.
+  assert.equal(weekStart(Date.UTC(2026, 9, 5, 0, 0)), Date.UTC(2026, 9, 5));
+  assert.equal(stripEmoji('🇫🇷 France Inter'), 'France Inter');
+});
+
 
 test('premium : essai, rappels et volume max', () => {
   const premium = require('./premium');

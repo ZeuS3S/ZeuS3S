@@ -1,28 +1,35 @@
 const {
   Client, GatewayIntentBits, SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, MessageFlags, ChannelType,
   InteractionContextType, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, ActivityType,
-  AttachmentBuilder, ModalBuilder, TextInputBuilder, TextInputStyle,
+  AttachmentBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ContainerBuilder, TextDisplayBuilder, SectionBuilder,
+  ThumbnailBuilder, MediaGalleryBuilder, MediaGalleryItemBuilder, SeparatorBuilder, SeparatorSpacingSize,
+  RoleSelectMenuBuilder, ChannelSelectMenuBuilder,
 } = require('discord.js');
 const {
   joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, NoSubscriberBehavior,
   VoiceConnectionStatus, entersState, getVoiceConnection, StreamType,
 } = require('@discordjs/voice');
 const STATIONS = require('./stations');
-const { canControl, stationKey, isStreamUrl, volumeBar, flag, formatMinutes } = require('./access');
+const {
+  canControl, stationKey, isStreamUrl, volumeBar, flag, formatMinutes, parseLrc, lineAt, progressBar, weekStart,
+} = require('./access');
 const { fetchTitle } = require('./icy');
-const { fetchCover, fetchLyrics, searchWorld, worldStation } = require('./web');
+const { fetchTrack, fetchImage, cachedImage, fetchLyrics, searchWorld, worldStation } = require('./web');
 const { EFFECTS, createStream } = require('./audio');
 const db = require('./db');
 const { t } = require('./i18n');
-const { equalizer, badgeFiles, BADGE_DIR } = require('./card');
+const { renderCard, dominantColor, badgeFiles, BADGE_DIR } = require('./card');
 const premium = require('./premium');
 
 const COLOR = 0xf5a623;
 const PAUSE_COLOR = 0x5865f2;
 const OFF_COLOR = 0x2b2d31;
+const ERROR_COLOR = 0xed4245;
 const REFRESH_MS = 15000;
+const LYRICS_MS = 3000;
 const TICK_MS = 60000;
 const SLEEP_STEPS = [0, 15, 30, 60, 120];
+const V2 = MessageFlags.IsComponentsV2;
 const now = () => Math.floor(Date.now() / 1000);
 
 // --- Données ---
@@ -49,10 +56,29 @@ function addRecent(guildId, key, station) {
   save(guildId);
 }
 
-const listenersOf = (guild) =>
-  guild.channels.cache.get(cfgOf(guild.id).channelId)?.members.filter((m) => !m.user.bot).size ?? 0;
+const voiceMembers = (guild) =>
+  guild.channels.cache.get(cfgOf(guild.id).channelId)?.members.filter((m) => !m.user.bot) ?? new Map();
+const listenersOf = (guild) => voiceMembers(guild).size;
 
 const topOf = (cfg) => Object.values(cfg.stats).sort((a, b) => b.minutes - a.minutes || b.plays - a.plays);
+const genreOf = (key, station) => station.genre ?? (key.startsWith('rb-') ? 'world' : 'other');
+
+// Couleur de la radio : définie dans stations.js, sinon couleur moyenne de son logo, sinon orange.
+const logoColors = new Map();
+const stationColor = (station) => station.color ?? logoColors.get(station.logo) ?? COLOR;
+async function learnLogoColor(station) {
+  if (station.color || !station.logo || logoColors.has(station.logo)) return;
+  logoColors.set(station.logo, (await dominantColor(await fetchImage(station.logo))) ?? COLOR);
+}
+
+// Une autre radio à proposer quand un flux est mort : même genre si possible.
+function suggestionFor(guildId, key) {
+  const entries = Object.entries(stationsOf(guildId)).filter(([k]) => k !== key);
+  const genre = genreOf(key, stationsOf(guildId)[key] ?? {});
+  const same = entries.filter(([k, st]) => genreOf(k, st) === genre && STATIONS[k]);
+  const pool = same.length ? same : entries.filter(([k]) => STATIONS[k]);
+  return pool[Math.floor(Math.random() * pool.length)]?.[0] ?? null;
+}
 
 // --- Lecture ---
 const sessions = new Map(); // guildId -> session en cours
@@ -61,16 +87,29 @@ function playStation(guild, channelId, key, requester) {
   let s = sessions.get(guild.id);
   if (!s) {
     const player = createAudioPlayer({ behaviors: { noSubscriber: NoSubscriberBehavior.Play } });
-    s = { player, history: [], panel: null, lastRender: null, sleepAt: null, sleepMinutes: 0 };
+    s = { player, history: [], panel: null, lastRender: null, sleepAt: null, sleepMinutes: 0, failStreak: 0 };
     s.timer = setInterval(() => {
       countListening(guild);
       refresh(guild).catch(console.error);
     }, REFRESH_MS);
+    s.lyricTimer = setInterval(() => lyricTick(guild).catch(() => {}), LYRICS_MS);
     sessions.set(guild.id, s);
     player.on('error', (e) => console.error(`[${guild.name}] flux en erreur:`, e.message));
-    // Un flux live qui coupe passe en Idle : on relance la même station (auto-reconnexion).
+    player.on(AudioPlayerStatus.Playing, () => {
+      if (!s.loading) return;
+      s.loading = false;
+      refresh(guild).catch(console.error);
+    });
+    // Un flux live qui coupe passe en Idle : on relance la même station, sauf s'il échoue 3 fois de suite.
     player.on(AudioPlayerStatus.Idle, () => {
-      if (!s.stopped) setTimeout(() => !s.stopped && sessions.get(guild.id) === s && startResource(s, guild.id), 3000);
+      if (s.stopped) return;
+      s.failStreak = Date.now() - s.resourceStartedAt < 15000 ? s.failStreak + 1 : 0;
+      if (s.failStreak >= 3) {
+        Object.assign(s, { broken: true, loading: false });
+        refresh(guild).catch(console.error);
+        return;
+      }
+      setTimeout(() => !s.stopped && !s.broken && sessions.get(guild.id) === s && startResource(s, guild.id), 3000);
     });
   }
   s.requester = requester;
@@ -102,7 +141,9 @@ function switchStation(guild, key) {
   stats.plays++;
   stats.name = station.name;
   save(guild.id);
-  Object.assign(s, { stopped: false, paused: false, title: null, cover: null, history: [], startedAt: now() });
+  Object.assign(s, {
+    stopped: false, paused: false, broken: false, failStreak: 0, title: null, track: null, titleAt: null, lyrics: null, startedAt: now(),
+  });
   startResource(s, guild.id);
   refresh(guild).catch(console.error);
 }
@@ -112,18 +153,26 @@ function startResource(s, guildId) {
   const station = stationsOf(guildId)[cfg.station];
   if (!station) return;
   const effect = premium.isPremium(guildId) ? cfg.effect : 'normal'; // Effets réservés au premium.
+  s.loading = true; // Écran d'attente jusqu'au premier son (événement Playing).
+  s.resourceStartedAt = Date.now();
   s.resource = createAudioResource(createStream(station.url, effect), { inputType: StreamType.Raw, inlineVolume: true });
   s.resource.volume.setVolume(cfg.volume / 100);
   s.player.play(s.resource);
 }
 
-// Temps d'écoute cumulé (minutes × auditeurs) pour /top.
+// Temps d'écoute cumulé (minutes × auditeurs) pour /top et le récap de la semaine.
 function countListening(guild) {
   const s = sessions.get(guild.id);
   const cfg = cfgOf(guild.id);
-  const listeners = listenersOf(guild);
-  if (!s || s.paused || !listeners || !cfg.stats[cfg.station]) return;
-  cfg.stats[cfg.station].minutes += (listeners * REFRESH_MS) / 60000;
+  const members = voiceMembers(guild);
+  if (!s || s.paused || s.loading || s.broken || !members.size || !cfg.stats[cfg.station]) return;
+  const minutes = (members.size * REFRESH_MS) / 60000;
+  cfg.stats[cfg.station].minutes += minutes;
+  const week = cfg.week;
+  if (week) {
+    week.minutes[cfg.station] = (week.minutes[cfg.station] ?? 0) + minutes;
+    for (const id of members.keys()) if (!week.listeners.includes(id) && week.listeners.length < 1000) week.listeners.push(id);
+  }
   save(guild.id);
 }
 
@@ -133,6 +182,12 @@ function togglePause(guild) {
   s.paused = !s.paused;
   s.stopped = s.paused;
   if (s.paused) s.player.stop(); else startResource(s, guild.id);
+}
+
+function retry(guild) {
+  const s = sessions.get(guild.id);
+  Object.assign(s, { broken: false, failStreak: 0, stopped: false, paused: false });
+  startResource(s, guild.id);
 }
 
 function setVolume(guildId, volume) {
@@ -146,7 +201,7 @@ function setEffect(guild, effect) {
   cfgOf(guild.id).effect = effect;
   save(guild.id);
   const s = sessions.get(guild.id);
-  if (s && !s.paused) startResource(s, guild.id);
+  if (s && !s.paused && !s.broken) startResource(s, guild.id);
 }
 
 function setSleep(guild, minutes) {
@@ -164,8 +219,9 @@ function stop(guild, reason, forget = true) {
     s.stopped = true;
     s.player.stop();
     clearInterval(s.timer);
+    clearInterval(s.lyricTimer);
     clearTimeout(s.sleepTimer);
-    s.panel?.edit({ embeds: [embed(reason ?? t(langOf(guild), 'stopped'))], components: [], attachments: [] }).catch(() => {});
+    s.panel?.edit(notice(reason ?? t(langOf(guild), 'stopped'), OFF_COLOR)).catch(() => {});
     sessions.delete(guild.id);
   }
   getVoiceConnection(guild.id)?.destroy();
@@ -178,72 +234,147 @@ function stop(guild, reason, forget = true) {
   updateStatusMessage(guild).catch(console.error);
 }
 
+// Nouveau titre détecté : infos, pochette, paroles minutées, historique, stats de la semaine.
+async function onNewTitle(guild, s, title) {
+  const cfg = cfgOf(guild.id);
+  if (s.title) s.history = [{ title: s.title, cover: s.track?.cover ?? null, at: now() }, ...s.history].slice(0, 10);
+  // Début du titre connu seulement si on l'a vu changer (pas pour le premier titre, pris en cours).
+  s.titleAt = s.title ? Date.now() - REFRESH_MS / 2 : null;
+  Object.assign(s, { title, track: null, lyrics: null, lyricIdx: -1 });
+  s.track = await fetchTrack(title);
+  await fetchImage(s.track?.cover);
+  if (s.titleAt) {
+    const lines = parseLrc((await fetchLyrics(title))?.syncedLyrics);
+    s.lyrics = lines.length ? lines : null;
+  }
+  const titles = cfg.week?.titles;
+  if (titles && (titles[title] || Object.keys(titles).length < 300)) titles[title] = (titles[title] ?? 0) + 1;
+}
+
+// --- Composants (nouvelle mise en page Discord) ---
+const text = (content) => new TextDisplayBuilder().setContent(content);
+const container = (color) => new ContainerBuilder().setAccentColor(color);
+const notice = (content, color = COLOR) => ({
+  components: [container(color).addTextDisplayComponents(text(content))], flags: V2, files: [], attachments: [],
+});
+const row = (...components) => new ActionRowBuilder().addComponents(...components);
+const button = (id, emoji, style = ButtonStyle.Secondary, label) => {
+  const b = new ButtonBuilder().setCustomId(id).setStyle(style);
+  if (emoji) b.setEmoji(emoji);
+  return label ? b.setLabel(label.slice(0, 80)) : b;
+};
+const linkButton = (url, emoji, label) => new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(url).setEmoji(emoji).setLabel(label);
+const chunk = (list, size) => Array.from({ length: Math.ceil(list.length / size) }, (_, n) => list.slice(n * size, n * size + size));
+
 // --- Panneau « en cours » ---
 // Badges « EN DIRECT » : émojis d'application créés au démarrage (voir ensureBadges), sinon texte.
 const badges = {};
 const badgeOf = (lang, paused) => badges[`${paused ? 'pause' : 'live'}_${lang}`] ?? `\`${t(lang, paused ? 'paused' : 'live')}\``;
-const renderOf = (payload) => JSON.stringify([payload.embeds, payload.components]);
+const renderOf = (payload) => JSON.stringify(payload.components);
 
-function panelPayload(guild) {
+// image : false = met à jour le texte en gardant l'image déjà envoyée (paroles, progression).
+async function panelPayload(guild, { image = true } = {}) {
   const lang = langOf(guild);
   const cfg = cfgOf(guild.id);
   const s = sessions.get(guild.id);
   const stations = stationsOf(guild.id);
   const station = stations[cfg.station];
   const channel = guild.channels.cache.get(cfg.channelId);
-  const blank = { name: '\u200b', value: '\u200b', inline: true }; // Force 2 colonnes.
+  const isPremium = premium.isPremium(guild.id);
+  const live = !s.loading && !s.broken;
+  const accent = s.broken ? ERROR_COLOR : s.paused ? PAUSE_COLOR : (isPremium && cfg.color) || stationColor(station);
+  const c = container(accent);
 
-  const e = new EmbedBuilder()
-    .setColor(s.paused ? PAUSE_COLOR : (premium.isPremium(guild.id) && cfg.color) || COLOR)
-    .setAuthor({ name: `${client.user.username} · ${channel?.name ?? '…'}` })
-    .setDescription(`## ${badgeOf(lang, s.paused)} ${station.name}\n🎵 ${s.title ?? t(lang, 'noTitle')}`)
-    .setThumbnail(s.cover ?? station.logo ?? null)
-    .addFields(
-      { name: t(lang, 'cardChannel'), value: channel?.name ?? '—', inline: true },
-      { name: t(lang, 'requestedBy'), value: s.requester, inline: true },
-      blank,
-      { name: t(lang, 'broadcast'), value: cfg.stay247 ? t(lang, 'h24') : `<t:${s.startedAt}:R>`, inline: true },
-      { name: t(lang, 'cardVolume'), value: `${cfg.volume} %`, inline: true },
-      blank,
-    )
-    .setImage('attachment://equalizer.png');
-  const showEffect = cfg.effect !== 'normal' && premium.isPremium(guild.id);
-  if (showEffect || s.sleepAt) {
-    e.addFields(
-      { name: t(lang, 'cardEffect'), value: showEffect ? EFFECTS[cfg.effect].label : '—', inline: true },
-      { name: t(lang, 'cardSleep'), value: s.sleepAt ? `<t:${s.sleepAt}:R>` : '—', inline: true },
-      blank,
-    );
+  const head = [`-# ${client.user.username} · ${channel?.name ?? '…'}`];
+  if (s.broken) {
+    const suggestion = stations[suggestionFor(guild.id, cfg.station)];
+    head.push(`## ⚠️ ${station.name}`, t(lang, 'streamDown', station.name), suggestion ? t(lang, 'streamSuggest', suggestion.name) : '');
+  } else if (s.loading) {
+    head.push(`## ⏳ ${station.name}`, t(lang, 'connecting', station.name));
+  } else {
+    head.push(`## ${badgeOf(lang, s.paused)} ${station.name}`, `🎵 **${s.title ?? t(lang, 'noTitle')}**`);
   }
-  if (premium.isPremium(guild.id)) e.setFooter({ text: t(lang, 'premiumLabel') });
+  const headText = text(head.filter(Boolean).join('\n'));
+  if (station.logo) c.addSectionComponents(new SectionBuilder().addTextDisplayComponents(headText).setThumbnailAccessory(new ThumbnailBuilder().setURL(station.logo)));
+  else c.addTextDisplayComponents(headText);
 
-  const button = (id, emoji, style = ButtonStyle.Secondary, label) => {
-    const b = new ButtonBuilder().setCustomId(`radio:${id}`).setEmoji(emoji).setStyle(style);
-    return label ? b.setLabel(label) : b;
-  };
-  return {
-    embeds: [e],
-    files: [new AttachmentBuilder(equalizer(s.paused), { name: 'equalizer.png' })],
-    components: [
-      new ActionRowBuilder().addComponents(
-        s.paused ? button('toggle', '▶️', ButtonStyle.Secondary, t(lang, 'btnResume')) : button('toggle', '⏸️', ButtonStyle.Secondary, t(lang, 'btnPause')),
-        button('next', '⏭️', ButtonStyle.Primary, t(lang, 'btnNext')),
-        button('volume', '🔊', ButtonStyle.Secondary, t(lang, 'btnVolume')),
-        button('stop', '⏹️', ButtonStyle.Danger, t(lang, 'btnStop')),
+  if (live) c.addMediaGalleryComponents(new MediaGalleryBuilder().addItems(new MediaGalleryItemBuilder().setURL('attachment://card.png')));
+
+  const lines = [];
+  const elapsed = s.titleAt ? Date.now() - s.titleAt : null;
+  if (live && elapsed !== null && s.track?.durationMs) lines.push(progressBar(elapsed, s.track.durationMs));
+  if (live && !s.paused && elapsed !== null && s.lyrics) {
+    const idx = lineAt(s.lyrics, elapsed);
+    const prev = s.lyrics[idx - 1]?.line;
+    const next = s.lyrics[idx + 1]?.line;
+    if (prev) lines.push(`-# ${prev}`);
+    lines.push(`🎤 **${s.lyrics[idx]?.line || '♪'}**`);
+    if (next) lines.push(`-# ${next}`);
+  }
+  const info = [
+    `📍 ${channel?.name ?? '—'}`,
+    `👤 ${s.requester}`,
+    `⏱️ ${cfg.stay247 ? t(lang, 'h24') : `<t:${s.startedAt}:R>`}`,
+    `🔊 ${cfg.volume} %`,
+  ];
+  if (cfg.effect !== 'normal' && isPremium) info.push(EFFECTS[cfg.effect].label);
+  if (s.sleepAt) info.push(`💤 <t:${s.sleepAt}:R>`);
+  if (isPremium) info.push('💎');
+  lines.push(`-# ${info.join(' · ')}`);
+  c.addTextDisplayComponents(text(lines.join('\n')));
+  c.addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small));
+
+  if (s.broken) {
+    const suggestion = suggestionFor(guild.id, cfg.station);
+    c.addActionRowComponents(row(
+      button('radio:retry', '🔄', ButtonStyle.Primary, t(lang, 'btnRetry')),
+      ...(suggestion ? [button(`radio:goto:${suggestion}`, '▶️', ButtonStyle.Success, stations[suggestion].name)] : []),
+      button('radio:stop', '⏹️', ButtonStyle.Danger, t(lang, 'btnStop')),
+    ));
+  } else {
+    c.addActionRowComponents(
+      row(
+        s.paused ? button('radio:toggle', '▶️', ButtonStyle.Secondary, t(lang, 'btnResume')) : button('radio:toggle', '⏸️', ButtonStyle.Secondary, t(lang, 'btnPause')),
+        button('radio:next', '⏭️', ButtonStyle.Primary, t(lang, 'btnNext')),
+        button('radio:volume', '🔊', ButtonStyle.Secondary, t(lang, 'btnVolume')),
+        button('radio:stop', '⏹️', ButtonStyle.Danger, t(lang, 'btnStop')),
+        button('radio:lyrics', '📝', ButtonStyle.Secondary, t(lang, 'btnLyrics')),
       ),
-      new ActionRowBuilder().addComponents(
-        button('prev', '⏮️'),
-        button('random', '🎲'),
-        button('sleep', '💤', s.sleepAt ? ButtonStyle.Success : ButtonStyle.Secondary, s.sleepMinutes ? `${s.sleepMinutes} min` : undefined),
-        button('fav', '⭐'),
-        button('lyrics', '📝'),
+      row(
+        button('radio:prev', '⏮️'),
+        button('radio:random', '🎲'),
+        button('radio:sleep', '💤', s.sleepAt ? ButtonStyle.Success : ButtonStyle.Secondary, s.sleepMinutes ? `${s.sleepMinutes} min` : undefined),
+        button('radio:fav', '⭐'),
+        button('radio:history', '📜'),
       ),
-      new ActionRowBuilder().addComponents(
-        new StringSelectMenuBuilder().setCustomId('radio:select').setPlaceholder(t(lang, 'changeRadio'))
-          .addOptions(Object.entries(stations).slice(0, 25).map(([k, st]) => ({ label: st.name.slice(0, 100), value: k, default: k === cfg.station }))),
-      ),
-    ],
-  };
+    );
+    if (live && s.track) c.addActionRowComponents(row(linkButton(s.track.deezerUrl, '🎧', 'Deezer'), linkButton(s.track.spotifyUrl, '🟢', 'Spotify')));
+  }
+  c.addActionRowComponents(row(
+    new StringSelectMenuBuilder().setCustomId('radio:select').setPlaceholder(t(lang, 'changeRadio'))
+      .addOptions(Object.entries(stations).slice(0, 25).map(([k, st]) => ({ label: st.name.slice(0, 100), value: k, default: k === cfg.station }))),
+  ));
+
+  const payload = { components: [c], flags: V2 };
+  if (!live) payload.attachments = []; // Retire l'ancienne carte pendant l'attente ou l'erreur.
+  if (live && image) {
+    const card = await renderCard({
+      title: s.title, station: station.name, label: t(lang, s.paused ? 'cardPaused' : 'cardLive'), color: stationColor(station),
+      paused: s.paused, cover: cachedImage(s.track?.cover), logo: cachedImage(station.logo),
+    });
+    payload.files = [new AttachmentBuilder(card, { name: 'card.png' })];
+    payload.attachments = [];
+  }
+  return payload;
+}
+
+// Envoie le panneau mis à jour ; l'image n'est régénérée qu'avec image: true.
+async function editPanel(guild, opts) {
+  const s = sessions.get(guild.id);
+  if (!s?.panel) return;
+  const payload = await panelPayload(guild, opts);
+  s.lastRender = renderOf(payload);
+  await s.panel.edit(payload).then(() => { if (payload.files) s.hasImage = true; }).catch(() => { s.panel = null; });
 }
 
 // Crée une fois les émojis d'application des badges (assets/badges) et les assemble par badge.
@@ -260,30 +391,41 @@ async function ensureBadges() {
   for (const [badge, list] of Object.entries(parts)) badges[badge] = list.join('');
 }
 
-// Met à jour titre, pochette, panneau, statut du salon et message de statut.
+// Toutes les 15 s : titre, carte (l'égaliseur bouge), statut du salon et message de statut.
 async function refresh(guild) {
   const s = sessions.get(guild.id);
   if (!s) return;
   const cfg = cfgOf(guild.id);
   const station = stationsOf(guild.id)[cfg.station];
-  if (!s.paused) {
+  await learnLogoColor(station);
+  await fetchImage(station.logo);
+  if (!s.paused && !s.broken) {
     const title = await fetchTitle(station.url);
-    if (title && title !== s.title) {
-      if (s.title) s.history = [s.title, ...s.history].slice(0, 3);
-      s.title = title;
-      s.cover = await fetchCover(title);
-    }
+    if (title && title !== s.title) await onNewTitle(guild, s, title);
   }
   if (sessions.get(guild.id) !== s) return; // Arrêtée pendant la lecture du titre.
-  const status = s.paused ? '⏸️' : `📻 ${station.name}${s.title ? ` · ${s.title}` : ''}`;
+  const status = s.broken ? '⚠️' : s.paused ? '⏸️' : `📻 ${station.name}${s.title ? ` · ${s.title}` : ''}`;
   if (status !== s.lastStatus) setVoiceStatus(cfg.channelId, (s.lastStatus = status));
-  const payload = panelPayload(guild);
-  const render = renderOf(payload);
-  if (s.panel && render !== s.lastRender) {
-    s.lastRender = render;
-    await s.panel.edit({ ...payload, attachments: [] }).catch(() => { s.panel = null; }); // Panneau supprimé : on l'oublie.
+  if (s.panel) {
+    const animated = !s.paused && !s.loading && !s.broken;
+    const payload = await panelPayload(guild);
+    const render = renderOf(payload);
+    if (animated || render !== s.lastRender) {
+      s.lastRender = render;
+      await s.panel.edit(payload).then(() => { s.hasImage = Boolean(payload.files); }).catch(() => { s.panel = null; });
+    }
   }
   await updateStatusMessage(guild);
+}
+
+// Toutes les 3 s : fait avancer les paroles synchronisées et la barre de progression, sans renvoyer l'image.
+async function lyricTick(guild) {
+  const s = sessions.get(guild.id);
+  if (!s?.panel || !s.hasImage || !s.lyrics || !s.titleAt || s.paused || s.loading || s.broken) return;
+  const idx = lineAt(s.lyrics, Date.now() - s.titleAt);
+  if (idx === s.lyricIdx) return;
+  s.lyricIdx = idx;
+  await editPanel(guild, { image: false });
 }
 
 // Statut affiché sous le nom du salon vocal (permission « Définir le statut du salon vocal », sinon ignoré).
@@ -291,23 +433,22 @@ function setVoiceStatus(channelId, status) {
   client.rest.put(`/channels/${channelId}/voice-status`, { body: { status: status.slice(0, 500) } }).catch(() => {});
 }
 
-// Affiche le panneau en réponse et retire les boutons de l'ancien.
+// Affiche le panneau en réponse et remplace l'ancien par un petit message.
 async function sendPanel(i) {
   const s = sessions.get(i.guildId);
-  const payload = panelPayload(i.guild);
+  const payload = await panelPayload(i.guild);
   const message = i.deferred
-    ? await i.editReply({ ...payload, attachments: [] })
+    ? await i.editReply(payload)
     : (await i.reply({ ...payload, withResponse: true })).resource.message;
-  if (s.panel && s.panel.id !== message.id) s.panel.edit({ components: [] }).catch(() => {});
-  s.panel = message;
-  s.lastRender = renderOf(payload);
+  if (s.panel && s.panel.id !== message.id) s.panel.edit(notice(t(langOf(i.guild), 'panelMoved'), OFF_COLOR)).catch(() => {});
+  Object.assign(s, { panel: message, lastRender: renderOf(payload), hasImage: Boolean(payload.files) });
 }
 
 // Lance une station pour le membre de l'interaction, avec toutes les vérifications.
 async function playFor(i, key, station) {
   const lang = langFor(i);
   const cfg = cfgOf(i.guildId);
-  const respond = (text) => (i.deferred ? i.editReply({ embeds: [embed(text)] }) : reply(i, text, true));
+  const respond = (content) => (i.deferred ? i.editReply({ embeds: [embed(content)] }) : reply(i, content, true));
   if (!canControl(i.member, cfg)) return respond(t(lang, 'needDj', cfg.djRole));
   const channel = i.member.voice.channel;
   if (!channel) return respond(t(lang, 'joinVoice'));
@@ -326,7 +467,7 @@ function toggleFavorite(i, key, station) {
     return reply(i, t(lang, 'favRemoved', station.name), true);
   }
   if (Object.keys(user.favs).length >= 25) return reply(i, t(lang, 'favMax'), true);
-  user.favs[key] = { name: station.name, url: station.url, logo: station.logo };
+  user.favs[key] = { name: station.name, url: station.url, logo: station.logo, genre: station.genre, color: station.color };
   db.saveUser(i.user.id, user);
   return reply(i, t(lang, 'favAdded', station.name), true);
 }
@@ -337,30 +478,63 @@ async function sendLyrics(i) {
   if (!title) return reply(i, t(lang, 'lyricsNoTitle'), true);
   await i.deferReply({ flags: MessageFlags.Ephemeral });
   const lyrics = await fetchLyrics(title);
-  if (!lyrics) return i.editReply({ embeds: [embed(t(lang, 'lyricsNone', title))] });
-  const text = lyrics.plainLyrics.length > 4000 ? `${lyrics.plainLyrics.slice(0, 4000)}…` : lyrics.plainLyrics;
-  return i.editReply({ embeds: [embed(text).setTitle(`📝 ${lyrics.artistName} — ${lyrics.trackName}`.slice(0, 256))] });
+  const plain = lyrics?.plainLyrics ?? parseLrc(lyrics?.syncedLyrics).map((l) => l.line).join('\n');
+  if (!plain) return i.editReply({ embeds: [embed(t(lang, 'lyricsNone', title))] });
+  const body = plain.length > 4000 ? `${plain.slice(0, 4000)}…` : plain;
+  return i.editReply({ embeds: [embed(body).setTitle(`📝 ${lyrics.artistName} — ${lyrics.trackName}`.slice(0, 256))] });
+}
+
+// Historique : les 10 derniers titres, et un menu pour se faire envoyer un titre en MP.
+function historyPayload(i) {
+  const lang = langFor(i);
+  const s = sessions.get(i.guildId);
+  const items = [...(s?.title ? [{ title: s.title, at: null }] : []), ...(s?.history ?? [])];
+  const c = container(COLOR).addTextDisplayComponents(text(`## ${t(lang, 'historyTitle')}\n${items.length
+    ? items.map((h, n) => `${n === 0 && h.at === null ? '🔴' : `\`${n + 1}.\``} ${h.title}${h.at ? ` · <t:${h.at}:R>` : ''}`).join('\n')
+    : t(lang, 'historyEmpty')}`));
+  if (items.length) {
+    c.addActionRowComponents(row(new StringSelectMenuBuilder().setCustomId('hist:dm').setPlaceholder(t(lang, 'historyDm'))
+      .addOptions(items.map((h, n) => ({ label: h.title.slice(0, 100), value: String(n), emoji: '📩' })))));
+  }
+  return { components: [c], flags: V2 | MessageFlags.Ephemeral };
+}
+
+async function onHistoryAction(i) {
+  const lang = langFor(i);
+  const s = sessions.get(i.guildId);
+  const items = [...(s?.title ? [{ title: s.title }] : []), ...(s?.history ?? [])];
+  const item = items[Number(i.values[0])];
+  if (!item) return reply(i, t(lang, 'historyEmpty'), true);
+  const track = await fetchTrack(item.title);
+  const station = stationsOf(i.guildId)[cfgOf(i.guildId).station];
+  const dm = new EmbedBuilder().setColor(stationColor(station ?? {})).setTitle(`🎵 ${item.title}`.slice(0, 256))
+    .setDescription(t(lang, 'dmFrom', station?.name ?? '📻', i.guild.name)).setThumbnail(track?.cover ?? null).setTimestamp();
+  const links = track ? [row(linkButton(track.deezerUrl, '🎧', 'Deezer'), linkButton(track.spotifyUrl, '🟢', 'Spotify'))] : [];
+  const sent = await i.user.send({ embeds: [dm], components: links }).then(() => true).catch(() => false);
+  return reply(i, t(lang, sent ? 'dmSent' : 'dmClosed'), true);
 }
 
 async function onPanelAction(i) {
   const lang = langFor(i);
   const cfg = cfgOf(i.guildId);
   const s = sessions.get(i.guildId);
-  if (!s) return i.update({ embeds: [embed(t(lang, 'nothing'))], components: [], attachments: [] });
+  if (!s) return i.update(notice(t(lang, 'nothing'), OFF_COLOR));
   const action = i.customId.slice('radio:'.length);
   // Accessibles à tous les auditeurs.
   if (action === 'fav') return toggleFavorite(i, cfg.station, stationsOf(i.guildId)[cfg.station]);
   if (action === 'lyrics') return sendLyrics(i);
+  if (action === 'history') return i.reply(historyPayload(i));
 
   if (!canControl(i.member, cfg)) return reply(i, t(lang, 'needDj', cfg.djRole), true);
   if (i.member.voice.channelId !== cfg.channelId) return reply(i, t(lang, 'joinMine', cfg.channelId), true);
 
-  const keys = Object.keys(stationsOf(i.guildId));
+  const stations = stationsOf(i.guildId);
+  const keys = Object.keys(stations);
   const idx = keys.indexOf(cfg.station);
   if (action === 'stop') {
     s.panel = null; // Ce message est mis à jour juste en dessous.
     stop(i.guild);
-    return i.update({ embeds: [embed(t(langOf(i.guild), 'stoppedBy', i.user))], components: [], attachments: [] });
+    return i.update(notice(t(langOf(i.guild), 'stoppedBy', i.user), OFF_COLOR));
   }
   if (action === 'prev') switchStation(i.guild, keys.at(idx - 1));
   if (action === 'next') switchStation(i.guild, keys[(idx + 1) % keys.length]);
@@ -369,6 +543,8 @@ async function onPanelAction(i) {
     switchStation(i.guild, others[Math.floor(Math.random() * others.length)] ?? cfg.station);
   }
   if (action === 'select') switchStation(i.guild, i.values[0]);
+  if (action.startsWith('goto:') && stations[action.slice(5)]) switchStation(i.guild, action.slice(5));
+  if (action === 'retry') retry(i.guild);
   if (action === 'effect') {
     if (i.values[0] !== 'normal' && !premium.isPremium(i.guildId)) return reply(i, t(lang, 'premiumOnly'), true);
     setEffect(i.guild, i.values[0]);
@@ -379,7 +555,7 @@ async function onPanelAction(i) {
   if (action === 'sleep') setSleep(i.guild, SLEEP_STEPS[(SLEEP_STEPS.indexOf(s.sleepMinutes) + 1) % SLEEP_STEPS.length]);
   if (action === 'volume') {
     return i.showModal(new ModalBuilder().setCustomId('radio:volmodal').setTitle(t(lang, 'btnVolume')).addComponents(
-      new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId('value').setLabel(t(lang, 'volumeModalLabel', premium.maxVolume(i.guildId)))
+      row(new TextInputBuilder().setCustomId('value').setLabel(t(lang, 'volumeModalLabel', premium.maxVolume(i.guildId)))
         .setStyle(TextInputStyle.Short).setValue(String(cfg.volume)).setMinLength(1).setMaxLength(3).setRequired(true)),
     ));
   }
@@ -392,9 +568,144 @@ async function onPanelAction(i) {
   }
 
   s.panel = i.message;
-  const payload = panelPayload(i.guild);
-  s.lastRender = renderOf(payload);
-  return i.update({ ...payload, attachments: [] });
+  const payload = await panelPayload(i.guild);
+  Object.assign(s, { lastRender: renderOf(payload), hasImage: Boolean(payload.files) });
+  return i.update(payload);
+}
+
+// --- /stations : grille par genres ---
+const PER_PAGE = 15;
+function stationsPayload(i, genre = 'all', page = 0) {
+  const lang = langFor(i);
+  const names = t(lang, 'genres');
+  const all = Object.entries(stationsOf(i.guildId));
+  const present = Object.keys(names).filter((g) => g === 'all' || all.some(([k, st]) => genreOf(k, st) === g));
+  const list = genre === 'all' ? all : all.filter(([k, st]) => genreOf(k, st) === genre);
+  const pages = Math.max(1, Math.ceil(list.length / PER_PAGE));
+  const p = Math.min(Math.max(0, page), pages - 1);
+  const c = container(COLOR)
+    .addTextDisplayComponents(text(`## ${t(lang, 'stationsTitle')}\n-# ${names[genre] ?? genre} · ${list.length} · ${t(lang, 'stationsHint')}`))
+    .addActionRowComponents(row(new StringSelectMenuBuilder().setCustomId('st:genre').setPlaceholder(t(lang, 'genrePh'))
+      .addOptions(present.map((g) => ({ label: names[g], value: g, default: g === genre })))));
+  for (const line of chunk(list.slice(p * PER_PAGE, (p + 1) * PER_PAGE), 5)) {
+    c.addActionRowComponents(row(...line.map(([k, st]) => button(`st:play:${k}`, null, ButtonStyle.Secondary, st.name))));
+  }
+  if (pages > 1) {
+    c.addActionRowComponents(row(
+      button(`st:page:${genre}:${p - 1}`, '◀️').setDisabled(p === 0),
+      button('st:noop', null, ButtonStyle.Secondary, `${p + 1} / ${pages}`).setDisabled(true),
+      button(`st:page:${genre}:${p + 1}`, '▶️').setDisabled(p === pages - 1),
+    ));
+  }
+  c.addTextDisplayComponents(text(`-# ${t(lang, 'stationsFooter')}`));
+  return { components: [c], flags: V2 };
+}
+
+async function onStationsAction(i) {
+  const [, action, ...rest] = i.customId.split(':');
+  if (action === 'genre') return i.update(stationsPayload(i, i.values[0], 0));
+  if (action === 'page') return i.update(stationsPayload(i, rest[0], Number(rest[1])));
+  const key = rest.join(':');
+  const station = stationsOf(i.guildId)[key];
+  if (!station) return reply(i, t(langFor(i), 'unknownStation'), true);
+  return playFor(i, key, station);
+}
+
+// --- Favoris en boutons ---
+function favoritesPayload(i) {
+  const lang = langFor(i);
+  const favs = Object.entries(db.user(i.user.id).favs);
+  const c = container(COLOR).addTextDisplayComponents(text(`## ${t(lang, 'favTitle')}\n-# ${favs.length ? t(lang, 'favHint') : t(lang, 'favEmpty')}`));
+  for (const line of chunk(favs.slice(0, 20), 5)) {
+    c.addActionRowComponents(row(...line.map(([k, st]) => button(`fav:play:${k}`, null, ButtonStyle.Secondary, st.name))));
+  }
+  return { components: [c], flags: V2 | MessageFlags.Ephemeral };
+}
+
+async function onFavAction(i) {
+  const key = i.customId.split(':').slice(2).join(':');
+  const station = db.user(i.user.id).favs[key];
+  if (!station) return reply(i, t(langFor(i), 'favUnknown'), true);
+  return playFor(i, key, station);
+}
+
+// --- Panneau de config (/admin config) : mêmes permissions que les commandes /admin ---
+function configPayload(i) {
+  const lang = langFor(i);
+  const cfg = cfgOf(i.guildId);
+  const isPremium = premium.isPremium(i.guildId);
+  const can247 = isPremium || owners.has(i.user.id);
+  const premiumText = isPremium ? t(lang, 'until', premium.premiumUntil(i.guildId)) : '—';
+  const dj = new RoleSelectMenuBuilder().setCustomId('cfg:dj').setPlaceholder(t(lang, 'cfgDjPh')).setMinValues(0).setMaxValues(1);
+  if (cfg.djRole) dj.setDefaultRoles(cfg.djRole);
+  const status = new ChannelSelectMenuBuilder().setCustomId('cfg:status').setPlaceholder(t(lang, 'cfgStatusPh'))
+    .setChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement).setMinValues(0).setMaxValues(1);
+  if (cfg.status) status.setDefaultChannels(cfg.status.channelId);
+  const c = container(isPremium && cfg.color ? cfg.color : COLOR)
+    .addTextDisplayComponents(text(`## ⚙️ ${t(lang, 'cfgTitle')} · ${i.guild.name}\n-# 💎 Premium : ${premiumText}`))
+    .addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small))
+    .addTextDisplayComponents(text(`**${t(lang, 'cfgDj')}**\n-# ${t(lang, 'cfgDjHint')}`))
+    .addActionRowComponents(row(dj))
+    .addTextDisplayComponents(text(`**${t(lang, 'cfgStatus')}**\n-# ${t(lang, 'cfgStatusHint')}`))
+    .addActionRowComponents(row(status))
+    .addTextDisplayComponents(text(`**${t(lang, 'cfgLang')}**`))
+    .addActionRowComponents(row(new StringSelectMenuBuilder().setCustomId('cfg:lang').addOptions(
+      { label: t(lang, 'langAuto'), value: 'auto', emoji: '🌐', default: cfg.lang === 'auto' },
+      { label: 'Français', value: 'fr', emoji: '🇫🇷', default: cfg.lang === 'fr' },
+      { label: 'English', value: 'en', emoji: '🇬🇧', default: cfg.lang === 'en' },
+    )))
+    .addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small))
+    .addActionRowComponents(row(
+      button('cfg:247', can247 ? '🔁' : '🔒', cfg.stay247 ? ButtonStyle.Success : ButtonStyle.Secondary, t(lang, 'cfg247', cfg.stay247)),
+      button('cfg:color', isPremium ? '🎨' : '🔒', ButtonStyle.Secondary, t(lang, 'cfgColor')),
+    ));
+  return { components: [c], flags: V2 };
+}
+
+async function onConfigAction(i) {
+  const lang = langFor(i);
+  const cfg = cfgOf(i.guildId);
+  if (!i.memberPermissions.has(PermissionFlagsBits.ManageGuild)) return reply(i, t(lang, 'needManage'), true);
+  const action = i.customId.slice('cfg:'.length);
+  if (action === 'dj') cfg.djRole = i.values[0] ?? null;
+  if (action === 'lang') cfg.lang = i.values[0];
+  if (action === 'status') {
+    const channel = i.channels.first();
+    statusMessages.delete(i.guildId);
+    if (!channel) cfg.status = null;
+    else {
+      const perms = channel.permissionsFor(i.guild.members.me);
+      if (!perms?.has([PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks])) {
+        return reply(i, t(lang, 'statusNoPerm'), true);
+      }
+      cfg.status = { channelId: channel.id, messageId: null };
+    }
+  }
+  if (action === '247') {
+    const enabled = !cfg.stay247;
+    if (enabled && !premium.isPremium(i.guildId) && !owners.has(i.user.id)) return reply(i, t(lang, 'premiumNeeded'), true);
+    cfg.stay247 = enabled;
+    if (!enabled) cfg.forced247 = false;
+  }
+  if (action === 'color') {
+    if (!premium.isPremium(i.guildId)) return reply(i, t(lang, 'premiumOnly'), true);
+    const current = cfg.color === null ? '' : `#${cfg.color.toString(16).padStart(6, '0')}`;
+    return i.showModal(new ModalBuilder().setCustomId('cfg:colormodal').setTitle(t(lang, 'cfgColor')).addComponents(
+      row(new TextInputBuilder().setCustomId('hex').setLabel(t(lang, 'cfgColorLabel')).setStyle(TextInputStyle.Short)
+        .setValue(current).setPlaceholder('#ff3b3b').setMaxLength(7).setRequired(true)),
+    ));
+  }
+  if (action === 'colormodal') {
+    if (!premium.isPremium(i.guildId)) return reply(i, t(lang, 'premiumOnly'), true);
+    const value = i.fields.getTextInputValue('hex').trim().toLowerCase();
+    if (value === 'reset') cfg.color = null;
+    else if (/^#?[0-9a-f]{6}$/.test(value)) cfg.color = parseInt(value.replace('#', ''), 16);
+    else return reply(i, t(lang, 'badColor'), true);
+  }
+  save(i.guildId);
+  if (action === 'status') updateStatusMessage(i.guild).catch(console.error);
+  refresh(i.guild).catch(console.error);
+  return i.update(configPayload(i));
 }
 
 // --- Message de statut ---
@@ -408,14 +719,14 @@ function statusPayload(guild) {
   const e = new EmbedBuilder().setTitle(t(lang, 'statusTitle', guild.name)).setThumbnail(guild.iconURL());
   if (s) {
     const station = stationsOf(guild.id)[cfg.station];
-    e.setColor(s.paused ? PAUSE_COLOR : COLOR)
+    e.setColor(s.paused ? PAUSE_COLOR : stationColor(station))
       .setDescription(`${t(lang, s.paused ? 'paused' : 'live')} · **${station.name}**\n🎵 ${s.title ?? t(lang, 'noTitle')}`)
       .addFields(
         { name: t(lang, 'channel'), value: `<#${cfg.channelId}>`, inline: true },
         { name: t(lang, 'listeners'), value: `${listenersOf(guild)}`, inline: true },
         { name: t(lang, 'since'), value: `<t:${s.startedAt}:R>`, inline: true },
       );
-    if (s.cover ?? station.logo) e.setThumbnail(s.cover ?? station.logo);
+    if (s.track?.cover ?? station.logo) e.setThumbnail(s.track?.cover ?? station.logo);
   } else {
     e.setColor(OFF_COLOR).setDescription(t(lang, 'offline'));
   }
@@ -452,29 +763,61 @@ async function updateStatusMessage(guild) {
   }
 }
 
+// Salon où le bot écrit de lui-même (récap, premium) : celui du message de statut, sinon le salon système.
+const announceChannel = (guild) => guild.channels.cache.get(cfgOf(guild.id).status?.channelId ?? guild.systemChannelId);
+
+// --- Récap de fin de semaine (lundi 00:00 UTC) ---
+const newWeek = (start) => ({ start, minutes: {}, titles: {}, listeners: [] });
+
+function recapEmbed(guild, week) {
+  const lang = langOf(guild);
+  const cfg = cfgOf(guild.id);
+  const medals = ['🥇', '🥈', '🥉'];
+  const total = Object.values(week.minutes).reduce((a, b) => a + b, 0);
+  const stations = Object.entries(week.minutes).sort((a, b) => b[1] - a[1]).slice(0, 3)
+    .map(([k, m], n) => `${medals[n]} ${cfg.stats[k]?.name ?? k} — ${formatMinutes(m)}`);
+  const titles = Object.entries(week.titles).sort((a, b) => b[1] - a[1]).slice(0, 3)
+    .map(([title, count], n) => `${medals[n]} ${title} ×${count}`);
+  const e = new EmbedBuilder().setColor(COLOR).setTitle(t(lang, 'recapTitle', guild.name)).setThumbnail(guild.iconURL())
+    .setDescription(t(lang, 'recapIntro', formatMinutes(total), week.listeners.length));
+  if (stations.length) e.addFields({ name: t(lang, 'recapStations'), value: stations.join('\n') });
+  if (titles.length) e.addFields({ name: t(lang, 'recapTitles'), value: titles.join('\n') });
+  return e;
+}
+
+async function maybeRecap(guild) {
+  const cfg = cfgOf(guild.id);
+  const start = weekStart(Date.now());
+  if (cfg.week?.start === start) return;
+  const week = cfg.week;
+  cfg.week = newWeek(start);
+  save(guild.id);
+  if (!week || Object.values(week.minutes).reduce((a, b) => a + b, 0) < 1) return; // Rien écouté : pas de récap.
+  await announceChannel(guild)?.send({ embeds: [recapEmbed(guild, week)] }).catch(() => {});
+}
+
 // Journal premium des owners (PREMIUM_LOG_CHANNEL_ID), via l'API : marche depuis n'importe quel shard.
-function logPremium(text) {
+function logPremium(content) {
   const channelId = process.env.PREMIUM_LOG_CHANNEL_ID;
-  if (channelId) client.rest.post(`/channels/${channelId}/messages`, { body: { embeds: [embed(text).setTimestamp().toJSON()] } }).catch(() => {});
+  if (channelId) client.rest.post(`/channels/${channelId}/messages`, { body: { embeds: [embed(content).setTimestamp().toJSON()] } }).catch(() => {});
 }
 
 // Prévient le serveur 3 jours avant la fin du premium, puis à la fin (et retire les avantages).
-async function premiumNotice(guild, notice) {
+async function premiumNotice(guild, kind) {
   const lang = langOf(guild);
   const cfg = cfgOf(guild.id);
-  premium.markRecord(guild.id, notice === 'warn' ? { warned: true } : { expired: true });
-  if (notice === 'expired') {
+  premium.markRecord(guild.id, kind === 'warn' ? { warned: true } : { expired: true });
+  if (kind === 'expired') {
     if (cfg.effect !== 'normal') setEffect(guild, 'normal');
     setVolume(guild.id, cfg.volume); // Ramène à 100 % max.
     refresh(guild).catch(console.error);
     logPremium(`⌛ Premium terminé sur **${guild.name}** (\`${guild.id}\`)`);
   }
-  const text = notice === 'warn' ? t(lang, 'premiumWarn', `<t:${Math.floor(premium.premiumUntil(guild.id) / 1000)}:R>`) : t(lang, 'premiumExpired');
-  const channel = guild.channels.cache.get(cfg.status?.channelId ?? guild.systemChannelId);
-  await channel?.send({ embeds: [embed(text).setColor(notice === 'warn' ? COLOR : OFF_COLOR)] }).catch(() => {});
+  const content = kind === 'warn' ? t(lang, 'premiumWarn', `<t:${Math.floor(premium.premiumUntil(guild.id) / 1000)}:R>`) : t(lang, 'premiumExpired');
+  await announceChannel(guild)?.send({ embeds: [embed(content).setColor(kind === 'warn' ? COLOR : OFF_COLOR)] }).catch(() => {});
 }
 
-// Toutes les minutes : totaux multi-shards, présence du bot, messages de statut.
+// Toutes les minutes : totaux multi-shards, présence du bot, premium, récap, messages de statut.
 async function tick() {
   client.liveRadios = [...sessions.values()].filter((s) => !s.paused).length;
   if (client.shard) {
@@ -490,12 +833,13 @@ async function tick() {
   client.user.setActivity(`📻 ${totals.live} radios · ${totals.servers} serveurs`, { type: ActivityType.Custom });
   for (const guild of client.guilds.cache.values()) {
     const cfg = cfgOf(guild.id);
-    const notice = premium.pendingNotice(guild.id);
-    if (notice) await premiumNotice(guild, notice);
+    const kind = premium.pendingNotice(guild.id);
+    if (kind) await premiumNotice(guild, kind);
     if (cfg.stay247 && !cfg.forced247 && !premium.isPremium(guild.id)) { // Premium expiré : fin du 24/7.
       cfg.stay247 = false;
       save(guild.id);
     }
+    await maybeRecap(guild);
     if (cfg.status) await updateStatusMessage(guild);
   }
 }
@@ -513,7 +857,7 @@ const commands = [
   loc(new SlashCommandBuilder(), 'world', 'Search 40,000 stations worldwide', 'Cherche parmi 40 000 radios du monde entier', 'monde')
     .addStringOption((o) => loc(o, 'search', 'Station name', 'Nom de la radio', 'recherche').setRequired(true).setAutocomplete(true)),
   loc(new SlashCommandBuilder(), 'stop', 'Stop the radio and leave', 'Arrête la radio et quitte le salon'),
-  loc(new SlashCommandBuilder(), 'stations', 'List stations', 'Liste des radios'),
+  loc(new SlashCommandBuilder(), 'stations', 'Browse stations by genre', 'Parcourt les radios par genre'),
   loc(new SlashCommandBuilder(), 'nowplaying', 'Show the live panel', 'Affiche le panneau en cours'),
   loc(new SlashCommandBuilder(), 'volume', 'Set the volume', 'Règle le volume')
     .addIntegerOption((o) => loc(o, 'value', '0 to 100 (200 with Premium)', '0 à 100 (200 en Premium)', 'valeur').setRequired(true).setMinValue(0).setMaxValue(200)),
@@ -523,14 +867,16 @@ const commands = [
   loc(new SlashCommandBuilder(), 'sleep', 'Stop the radio after a while', 'Arrête la radio après un moment', 'minuteur')
     .addIntegerOption((o) => loc(o, 'minutes', 'Minutes (0 = cancel)', 'Minutes (0 = annuler)').setRequired(true).setMinValue(0).setMaxValue(720)),
   loc(new SlashCommandBuilder(), 'lyrics', 'Lyrics of the current song', 'Paroles du titre en cours', 'paroles'),
+  loc(new SlashCommandBuilder(), 'history', 'Last songs played, sent to you by DM on request', 'Derniers titres diffusés, envoyés en MP sur demande', 'historique'),
   loc(new SlashCommandBuilder(), 'top', 'Most listened stations on this server', 'Radios les plus écoutées du serveur'),
   loc(new SlashCommandBuilder(), 'favorites', 'Your favorite stations', 'Tes radios favorites', 'favoris')
-    .addSubcommand((c) => loc(c, 'list', 'Show your favorites', 'Affiche tes favoris', 'liste'))
+    .addSubcommand((c) => loc(c, 'list', 'Your favorites, one click to play', 'Tes favoris, un clic pour lancer', 'liste'))
     .addSubcommand((c) => loc(c, 'add', 'Add the current station', 'Ajoute la radio en cours', 'ajouter'))
     .addSubcommand((c) => loc(c, 'play', 'Play a favorite', 'Lance un favori', 'lancer').addStringOption(stationOption))
     .addSubcommand((c) => loc(c, 'remove', 'Remove a favorite', 'Retire un favori', 'retirer').addStringOption(stationOption)),
   loc(new SlashCommandBuilder(), 'admin', 'Radio settings', 'Configuration de la radio')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild).setContexts(InteractionContextType.Guild)
+    .addSubcommand((c) => loc(c, 'config', 'Settings panel (DJ role, status, language, 24/7, color)', 'Panneau de config (rôle DJ, statut, langue, 24/7, couleur)'))
     .addSubcommand((c) => loc(c, 'dj-role', 'Role required to control the radio (empty = everyone)', 'Rôle requis pour contrôler la radio (vide = tout le monde)')
       .addRoleOption((o) => loc(o, 'role', 'DJ role', 'Rôle DJ')))
     .addSubcommand((c) => loc(c, '247', '💎 24/7 mode: stays in the channel, even empty or after a restart', '💎 Mode 24/7 : reste dans le salon, même vide ou après un redémarrage')
@@ -539,8 +885,7 @@ const commands = [
       .addChannelOption((o) => loc(o, 'channel', 'Text channel', 'Salon textuel', 'salon').addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)))
     .addSubcommand((c) => loc(c, 'language', 'Bot language on this server', 'Langue du bot sur ce serveur', 'langue')
       .addStringOption((o) => loc(o, 'value', 'Language', 'Langue', 'valeur').setRequired(true)
-        .addChoices({ name: 'Auto', value: 'auto' }, { name: 'Français', value: 'fr' }, { name: 'English', value: 'en' })))
-    .addSubcommand((c) => loc(c, 'config', 'Show the settings', 'Affiche la configuration')),
+        .addChoices({ name: 'Auto', value: 'auto' }, { name: 'Français', value: 'fr' }, { name: 'English', value: 'en' }))),
   loc(new SlashCommandBuilder(), 'premium', 'Server premium', 'Premium du serveur').setContexts(InteractionContextType.Guild)
     .addSubcommand((c) => loc(c, 'status', 'Premium status of this server', 'Statut premium du serveur', 'statut'))
     .addSubcommand((c) => loc(c, 'redeem', 'Activate a premium key', 'Active une clé premium', 'activer')
@@ -570,7 +915,9 @@ const ownerCommand = loc(new SlashCommandBuilder(), 'owner', 'Bot owner tools', 
   .addSubcommand((c) => loc(c, 'station-add', 'Add a station for all servers', 'Ajoute une radio pour tous les serveurs')
     .addStringOption((o) => loc(o, 'name', 'Display name', 'Nom affiché', 'nom').setRequired(true).setMaxLength(50))
     .addStringOption((o) => loc(o, 'url', 'Stream URL (mp3/aac/m3u8)', 'URL du flux (mp3/aac/m3u8)').setRequired(true))
-    .addStringOption((o) => loc(o, 'logo', 'Logo image URL', 'URL du logo')))
+    .addStringOption((o) => loc(o, 'logo', 'Logo image URL', 'URL du logo'))
+    .addStringOption((o) => loc(o, 'genre', 'Genre in /stations', 'Genre dans /stations')
+      .addChoices(...['chill', 'hits', 'rap', 'oldies', 'talk', 'eclectic', 'humor', 'other'].map((g) => ({ name: g, value: g })))))
   .addSubcommand((c) => loc(c, 'station-remove', 'Remove a station added by an owner', 'Supprime une radio ajoutée par un owner').addStringOption(stationOption));
 
 // Owners : OWNER_IDS (séparés par des virgules) + propriétaire de l'application / membres de l'équipe.
@@ -578,8 +925,8 @@ const owners = new Set((process.env.OWNER_IDS ?? '').split(',').map((id) => id.t
 
 // --- /help : généré depuis les définitions des commandes, donc toujours à jour ---
 const HELP_CATEGORIES = {
-  helpRadio: ['play', 'world', 'stop', 'nowplaying', 'stations', 'volume', 'effect', 'sleep', 'lyrics'],
-  helpPerso: ['favorites', 'top'],
+  helpRadio: ['play', 'world', 'stations', 'stop', 'nowplaying', 'volume', 'effect', 'sleep', 'lyrics'],
+  helpPerso: ['favorites', 'history', 'top'],
   helpPremium: ['premium'],
   helpAdmin: ['admin'],
   helpOwner: ['owner'],
@@ -611,17 +958,15 @@ function helpPayload(i) {
   e.setFooter({ text: t(lang, 'helpFooter') });
 
   const invite = `https://discord.com/oauth2/authorize?client_id=${client.user.id}&scope=bot+applications.commands&permissions=${INVITE_PERMISSIONS}`;
-  const row = new ActionRowBuilder().addComponents(
-    new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(invite).setEmoji('➕').setLabel(t(lang, 'helpInvite')),
-  );
+  const links = row(new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(invite).setEmoji('➕').setLabel(t(lang, 'helpInvite')));
   if (isStreamUrl(process.env.SUPPORT_URL)) {
-    row.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(process.env.SUPPORT_URL).setEmoji('💬').setLabel(t(lang, 'helpSupport')));
+    links.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(process.env.SUPPORT_URL).setEmoji('💬').setLabel(t(lang, 'helpSupport')));
   }
-  return { embeds: [e], components: [row], flags: MessageFlags.Ephemeral };
+  return { embeds: [e], components: [links], flags: MessageFlags.Ephemeral };
 }
-// Voir les salons, envoyer des messages, intégrer des liens, se connecter, parler, définir le statut du salon vocal.
+// Voir les salons, envoyer des messages, intégrer des liens, joindre des fichiers, se connecter, parler, statut du salon vocal.
 const INVITE_PERMISSIONS = (PermissionFlagsBits.ViewChannel | PermissionFlagsBits.SendMessages | PermissionFlagsBits.EmbedLinks
-  | PermissionFlagsBits.Connect | PermissionFlagsBits.Speak | PermissionFlagsBits.SetVoiceChannelStatus).toString();
+  | PermissionFlagsBits.AttachFiles | PermissionFlagsBits.Connect | PermissionFlagsBits.Speak | PermissionFlagsBits.SetVoiceChannelStatus).toString();
 
 const embed = (description) => new EmbedBuilder().setColor(COLOR).setDescription(description);
 const reply = (i, description, ephemeral = false) =>
@@ -642,6 +987,7 @@ const handlers = {
       name: `${flag(found.countrycode)} ${found.name.trim()}`.slice(0, 80),
       url: found.url_resolved,
       logo: isStreamUrl(found.favicon) ? found.favicon : undefined,
+      genre: 'world',
     });
   },
   async stop(i) {
@@ -649,11 +995,7 @@ const handlers = {
     stop(i.guild);
     return reply(i, t(langFor(i), 'stoppedBy', i.user));
   },
-  async stations(i) {
-    const lang = langFor(i);
-    const list = Object.entries(stationsOf(i.guildId)).map(([k, s]) => `${s.name} — \`${k}\``).join('\n');
-    return i.reply({ embeds: [embed(list.slice(0, 4096)).setTitle(t(lang, 'stationsTitle')).setFooter({ text: t(lang, 'stationsFooter') })] });
-  },
+  stations: (i) => i.reply({ ...stationsPayload(i), flags: V2 | MessageFlags.Ephemeral }),
   async nowplaying(i) {
     if (!sessions.has(i.guildId)) return reply(i, t(langFor(i), 'nothing'), true);
     return sendPanel(i);
@@ -680,23 +1022,21 @@ const handlers = {
     return reply(i, minutes ? t(langFor(i), 'sleepSet', sessions.get(i.guildId).sleepAt) : t(langFor(i), 'sleepOff'));
   },
   lyrics: sendLyrics,
+  history: (i) => i.reply(historyPayload(i)),
   help: (i) => i.reply(helpPayload(i)),
   async top(i, cfg) {
     const lang = langFor(i);
     const top = topOf(cfg).slice(0, 10);
-    const text = top.length
+    const content = top.length
       ? top.map((st, n) => t(lang, 'topLine', n + 1, st.name, formatMinutes(st.minutes), st.plays)).join('\n')
       : t(lang, 'topEmpty');
-    return i.reply({ embeds: [embed(text).setTitle(t(lang, 'topTitle', i.guild.name)).setThumbnail(i.guild.iconURL())] });
+    return i.reply({ embeds: [embed(content).setTitle(t(lang, 'topTitle', i.guild.name)).setThumbnail(i.guild.iconURL())] });
   },
   async favorites(i, cfg) {
     const lang = langFor(i);
     const sub = i.options.getSubcommand();
     const favs = db.user(i.user.id).favs;
-    if (sub === 'list') {
-      const list = Object.values(favs).map((s) => `• ${s.name}`).join('\n');
-      return i.reply({ embeds: [embed(list || t(lang, 'favEmpty')).setTitle(t(lang, 'favTitle')).setFooter({ text: t(lang, 'favFooter') })], flags: MessageFlags.Ephemeral });
-    }
+    if (sub === 'list') return i.reply(favoritesPayload(i));
     if (sub === 'add') {
       if (!sessions.has(i.guildId)) return reply(i, t(lang, 'nothing'), true);
       if (favs[cfg.station]) return reply(i, t(lang, 'favAdded', favs[cfg.station].name), true);
@@ -710,6 +1050,7 @@ const handlers = {
   async admin(i, cfg) {
     const lang = langFor(i);
     const sub = i.options.getSubcommand();
+    if (sub === 'config') return i.reply({ ...configPayload(i), flags: V2 | MessageFlags.Ephemeral });
     if (sub === 'dj-role') {
       cfg.djRole = i.options.getRole('role')?.id ?? null;
       save(i.guildId);
@@ -740,12 +1081,10 @@ const handlers = {
       await updateStatusMessage(i.guild);
       return reply(i, t(lang, 'statusSet', channel.id), true);
     }
-    if (sub === 'language') {
-      cfg.lang = i.options.getString('value');
-      save(i.guildId);
-      return reply(i, t(langFor(i), 'langSet', cfg.lang), true);
-    }
-    return reply(i, t(lang, 'config', cfg, premium.isPremium(i.guildId) ? t(lang, 'until', premium.premiumUntil(i.guildId)) : '—'), true);
+    // language
+    cfg.lang = i.options.getString('value');
+    save(i.guildId);
+    return reply(i, t(langFor(i), 'langSet', cfg.lang), true);
   },
   async premium(i, cfg) {
     const lang = langFor(i);
@@ -795,14 +1134,14 @@ const handlers = {
     }
     if (sub === 'keys') {
       const keys = premium.listKeys().slice(-25);
-      const text = keys.map((k) => t(lang, 'keyLine', k.id, t(lang, 'duration', k.days), k.used.length, k.uses)).join('\n');
-      return i.reply({ embeds: [embed(text || t(lang, 'keysEmpty')).setTitle(t(lang, 'keysTitle'))], flags: MessageFlags.Ephemeral });
+      const content = keys.map((k) => t(lang, 'keyLine', k.id, t(lang, 'duration', k.days), k.used.length, k.uses)).join('\n');
+      return i.reply({ embeds: [embed(content || t(lang, 'keysEmpty')).setTitle(t(lang, 'keysTitle'))], flags: MessageFlags.Ephemeral });
     }
     if (sub === 'key-delete') return reply(i, t(lang, premium.deleteKey(i.options.getString('key')) ? 'keyDeleted' : 'keyNotFound'), true);
     if (sub === 'premium-list') {
       const list = premium.listPremium().slice(0, 25);
-      const text = list.map((r) => t(lang, 'premiumListLine', r.name, r.id, t(lang, 'until', r.until))).join('\n');
-      return i.reply({ embeds: [embed(text || t(lang, 'premiumListEmpty')).setTitle(t(lang, 'premiumListTitle'))], flags: MessageFlags.Ephemeral });
+      const content = list.map((r) => t(lang, 'premiumListLine', r.name, r.id, t(lang, 'until', r.until))).join('\n');
+      return i.reply({ embeds: [embed(content || t(lang, 'premiumListEmpty')).setTitle(t(lang, 'premiumListTitle'))], flags: MessageFlags.Ephemeral });
     }
     if (sub === 'premium-add') {
       const guildId = i.options.getString('guild') ?? i.guildId;
@@ -830,7 +1169,7 @@ const handlers = {
       const key = stationKey(name);
       if (!key) return reply(i, t(lang, 'badName'), true);
       if (!isStreamUrl(url) || (logo && !isStreamUrl(logo))) return reply(i, t(lang, 'badUrl'), true);
-      global[key] = { name, url, logo: logo ?? undefined };
+      global[key] = { name, url, logo: logo ?? undefined, genre: i.options.getString('genre') ?? undefined };
       db.set('global', 'stations', global);
       return reply(i, t(lang, 'added', name, key), true);
     }
@@ -895,18 +1234,22 @@ client.once('clientReady', async () => {
   setInterval(() => tick().catch(console.error), TICK_MS);
 });
 
+const COMPONENT_HANDLERS = { radio: onPanelAction, st: onStationsAction, fav: onFavAction, hist: onHistoryAction, cfg: onConfigAction };
+
 client.on('interactionCreate', async (i) => {
   if (!i.inGuild() || !i.guild) return;
   try {
     if (i.isAutocomplete()) return await autocomplete(i);
-    if ((i.isButton() || i.isStringSelectMenu() || i.isModalSubmit()) && i.customId.startsWith('radio:')) return await onPanelAction(i);
+    if (i.isMessageComponent() || i.isModalSubmit()) return await COMPONENT_HANDLERS[i.customId.split(':')[0]]?.(i);
     if (!i.isChatInputCommand()) return;
     const cfg = cfgOf(i.guildId);
     if (CONTROL.has(i.commandName) && !canControl(i.member, cfg)) return await reply(i, t(langFor(i), 'needDj', cfg.djRole), true);
     await handlers[i.commandName]?.(i, cfg);
   } catch (e) {
-    console.error(e);
-    if (i.isRepliable() && !i.replied && !i.deferred) reply(i, t(langFor(i), 'error'), true).catch(() => {});
+    // Code court pour retrouver l'erreur dans les logs quand un membre la signale.
+    const code = Date.now().toString(36).slice(-6).toUpperCase();
+    console.error(`[erreur ${code}]`, e);
+    if (i.isRepliable() && !i.replied && !i.deferred) reply(i, t(langFor(i), 'error', code), true).catch(() => {});
   }
 });
 

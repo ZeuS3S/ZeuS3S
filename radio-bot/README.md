@@ -5,7 +5,7 @@ Bot Discord de radio en slash commands : LoFi, NRJ, Skyrock, Fun Radio, FIP, Mou
 ## Installation
 
 1. Crée une application sur le [portail développeur Discord](https://discord.com/developers/applications), onglet **Bot** → copie le token.
-2. Invite le bot avec les scopes `bot` + `applications.commands` et les permissions **Se connecter**, **Parler**, **Envoyer des messages**, **Intégrer des liens** et **Définir le statut du salon vocal**.
+2. Invite le bot avec les scopes `bot` + `applications.commands` et les permissions **Se connecter**, **Parler**, **Envoyer des messages**, **Intégrer des liens**, **Joindre des fichiers** (carte « en cours ») et **Définir le statut du salon vocal**.
 3. Lance-le (Node.js 22.13+) :
 
 ```bash
@@ -32,14 +32,15 @@ Les commandes sont en anglais, et en français pour les membres qui ont Discord 
 | `/sleep` · `/minuteur` | DJ | Arrête la radio dans X minutes (0 = annuler) |
 | `/nowplaying` | Tous | Affiche le panneau en cours |
 | `/lyrics` · `/paroles` | Tous | Paroles du titre en cours ([LRCLIB](https://lrclib.net)) |
-| `/favorites` · `/favoris` | Tous | `list`, `add`, `play`, `remove` : tes radios favorites, sur tous les serveurs |
+| `/favorites` · `/favoris` | Tous | `list` (un bouton par favori), `add`, `play`, `remove` : tes radios favorites, sur tous les serveurs |
+| `/history` · `/historique` | Tous | Les 10 derniers titres, avec envoi d'un titre en MP (pochette + liens Deezer/Spotify) |
 | `/top` | Tous | Radios les plus écoutées du serveur (temps d'écoute × auditeurs) |
-| `/stations` | Tous | Liste des radios |
+| `/stations` | Tous | Grille des radios par genre (Chill, Hits, Rap, Info…) : un clic pour lancer |
 | `/admin dj-role` | Admin | Rôle requis pour piloter la radio (vide = tout le monde) |
 | `/admin 247` | Admin 💎 | Reste dans le salon même vide, et revient après un redémarrage (**Premium**) |
 | `/admin status` | Admin | Message de statut en direct dans un salon (vide = désactiver) |
 | `/admin language` | Admin | Langue du bot : auto, français ou anglais |
-| `/admin config` | Admin | Affiche la config du serveur |
+| `/admin config` | Admin | Panneau de config : rôle DJ, salon de statut, langue, 24/7 💎, couleur 💎 |
 | `/premium status` | Tous | Statut premium du serveur et avantages (✅ / 🔒) |
 | `/premium redeem key:` | Admin | Active une clé premium sur le serveur |
 | `/premium trial` | Admin | Essai Premium gratuit de 3 jours, une fois par serveur |
@@ -79,16 +80,23 @@ Mets `OWNER_GUILD_ID` pour que `/owner` n'apparaisse que sur ton serveur.
 
 ## Panneau « en cours »
 
-`/play` et `/nowplaying` affichent un panneau qui se met à jour tout seul toutes les 15 s :
+Le panneau utilise la nouvelle mise en page de Discord (Components V2) et se met à jour tout seul :
 
-- Badge rouge **EN DIRECT** (bleu **EN PAUSE**), nom de la radio, **titre en cours**, **pochette** (iTunes) ou logo
-- Salon, demandé par, diffusion (`24 h / 24` en 24/7), volume, effet et minuteur s'ils sont actifs
-- Égaliseur orange (image générée par le bot)
-- Boutons : **Pause**, **Station suivante**, **Volume** (fenêtre pour taper la valeur), **Stop** · ⏮️ 🎲 💤 ⭐ 📝 · menu des radios
+- **En-tête** : badge rouge **EN DIRECT** (bleu **EN PAUSE**), nom et logo de la radio, titre en cours.
+- **Carte en image** générée par le bot : pochette floutée en fond, pochette, titre, artiste et égaliseur aux **couleurs de la radio**. L'égaliseur change toutes les 15 s.
+- **Barre de progression** `1:42 ━━━━●──── 3:28` et **paroles synchronisées** (ligne précédente, ligne en cours, ligne suivante, mises à jour toutes les 3 s) quand le bot a vu le titre commencer.
+- Ligne d'infos : salon, demandé par, diffusion (`24 h / 24` en 24/7), volume, effet, minuteur, 💎.
+- Boutons : **Pause**, **Station suivante**, **Volume**, **Stop**, **Paroles** · ⏮️ 🎲 💤 ⭐ 📜 · **Deezer** / **Spotify** (lien vers le titre) · menu des radios.
+- **Écran d'attente** « ⏳ Connexion à NRJ… » jusqu'au premier son.
+- **Flux mort** : après 3 échecs de suite, le panneau passe en rouge, explique le problème et propose 🔄 Réessayer ou une autre radio du même genre en un clic.
 
-Les badges sont des émojis d'application que le bot crée tout seul au premier démarrage (images dans `assets/badges`, régénérables avec `python3 scripts/badges.py`).
+Les badges sont des émojis d'application que le bot crée tout seul au premier démarrage (images dans `assets/badges`, régénérables avec `python3 scripts/badges.py`). La carte utilise la police Inter (`assets/fonts`, licence OFL).
 
-💤 fait défiler 15 → 30 → 60 → 120 min → désactivé. ⭐ et 📝 marchent pour tout le monde ; les autres boutons demandent d'être dans le salon du bot (et d'avoir le rôle DJ s'il est défini).
+💤 fait défiler 15 → 30 → 60 → 120 min → désactivé. ⭐, 📝 et 📜 marchent pour tout le monde ; les autres boutons demandent d'être dans le salon du bot (et d'avoir le rôle DJ s'il est défini).
+
+## Récap de la semaine
+
+Chaque lundi à 00:00 (UTC), le bot poste dans le salon du message de statut (sinon le salon système) : temps d'écoute cumulé, nombre d'auditeurs, top 3 des radios et des titres de la semaine.
 
 ## Message de statut
 
