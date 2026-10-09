@@ -8,3 +8,6 @@ const manager = new ShardingManager(`${__dirname}/index.js`, {
 });
 manager.on('shardCreate', (shard) => console.log(`Shard ${shard.id} lancé`));
 manager.spawn();
+
+// Adresse de santé pour UptimeRobot & co (voir README) : active seulement si HEALTH_PORT est défini.
+if (process.env.HEALTH_PORT) require('./health').startHealthServer(manager, Number(process.env.HEALTH_PORT));

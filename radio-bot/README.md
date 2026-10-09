@@ -106,6 +106,16 @@ Chaque lundi à 00:00 (UTC), le bot poste dans le salon du message de statut (si
 
 Le bot affiche aussi la radio et le titre dans le **statut du salon vocal** et ses totaux dans son propre statut.
 
+## Surveillance (savoir si le bot tourne, même quand il est arrêté)
+
+`/statut` répond tant que le bot tourne. Pour être prévenu quand il s'arrête complètement, le bot peut exposer une adresse de santé à faire surveiller par un service extérieur :
+
+1. Dans `.env`, mets `HEALTH_PORT=8080` (n'importe quel port libre), puis redémarre le bot.
+2. Vérifie que `http://ton-serveur:8080/health` s'ouvre dans un navigateur (ouvre le port dans le pare-feu de ton hébergeur si besoin).
+3. Sur [UptimeRobot](https://uptimerobot.com) (gratuit) : **New monitor** → type **HTTP(s)** → l'adresse ci-dessus → intervalle 5 min. Ajoute ton e-mail ou un webhook Discord pour les alertes.
+
+L'adresse répond **200** si tous les shards sont connectés, **503** si un shard est en panne ou si le bot démarre encore, et ne répond plus du tout si le bot est arrêté : dans les deux derniers cas UptimeRobot t'alerte. Le détail (shards, serveurs, radios en direct, durée en ligne) est en JSON. UptimeRobot peut aussi publier une page de statut publique à partager sur ton serveur.
+
 ## Plusieurs serveurs
 
 - `npm start` lance le bot en **shards** automatiquement (`SHARDS=4 npm start` pour forcer un nombre).

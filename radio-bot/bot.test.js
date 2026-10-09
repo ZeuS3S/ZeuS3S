@@ -171,3 +171,24 @@ test('premium : essai, rappels et volume max', () => {
   assert.equal(premium.addPremium('gP', 0), premium.FOREVER);
   assert.equal(premium.pendingNotice('gP'), null); // À vie : jamais de rappel.
 });
+
+test('santé : 200 si tous les shards sont prêts, 503 sinon', async () => {
+  const { startHealthServer } = require('./health');
+  const shard = (id, status) => ({ id, eval: async (fn) => fn({ ws: { status, ping: 40 }, guilds: { cache: { size: 10 } }, liveRadios: 2 }) });
+  const manager = { totalShards: 2, shards: new Map([[0, shard(0, 0)], [1, shard(1, 0)]]) };
+  const server = startHealthServer(manager, 0);
+  await new Promise((r) => server.once('listening', r));
+  const url = `http://127.0.0.1:${server.address().port}`;
+  let res = await fetch(`${url}/health`);
+  assert.equal(res.status, 200);
+  assert.deepEqual((({ status, guilds, live }) => ({ status, guilds, live }))(await res.json()), { status: 'ok', guilds: 20, live: 4 });
+  manager.shards.set(1, { id: 1, eval: () => Promise.reject(new Error('mort')) }); // Shard planté.
+  res = await fetch(url);
+  assert.equal(res.status, 503);
+  assert.equal((await res.json()).status, 'degraded');
+  manager.totalShards = 'auto'; // Encore en démarrage.
+  manager.shards.set(1, shard(1, 0));
+  assert.equal((await fetch(url)).status, 503);
+  assert.equal((await fetch(`${url}/autre`)).status, 404);
+  server.close();
+});
