@@ -34,6 +34,19 @@ Les commandes s'enregistrent toutes seules au démarrage (comptent jusqu'à 1 h 
 
 « Admin » = permission **Gérer le serveur** (modifiable dans Paramètres du serveur → Intégrations).
 
+## Panneau « en cours »
+
+`/play` et `/nowplaying` affichent un panneau qui se met à jour tout seul toutes les 15 s :
+
+- 🔴 **EN DIRECT** / ⏸️ **EN PAUSE**, nom de la radio et **titre en cours** (lu dans le flux quand la radio le donne)
+- Salon, nombre d'auditeurs, depuis quand la radio tourne, barre de volume `▰▰▰▰▱▱▱▱▱▱`
+- 📜 Les 3 derniers titres passés
+- Boutons : ⏮️ ⏯️ ⏭️ 🎲 (radio au hasard) ⏹️ · 🔉 🔊 🔇 🔄 · menu pour changer de radio
+
+Les boutons demandent d'être dans le salon du bot (et d'avoir le rôle DJ s'il est défini).
+
+Le bot affiche aussi la radio et le titre dans le **statut du salon vocal** (donne-lui la permission *Définir le statut du salon vocal*) et le nombre de radios en direct dans son statut.
+
 ## Fonctionnement
 
 - Si le flux coupe, le bot se reconnecte tout seul à la radio au bout de 3 s.

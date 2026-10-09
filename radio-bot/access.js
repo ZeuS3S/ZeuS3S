@@ -11,4 +11,7 @@ const isStreamUrl = (url) => {
   try { return ['http:', 'https:'].includes(new URL(url).protocol); } catch { return false; }
 };
 
-module.exports = { canControl, stationKey, isStreamUrl };
+// ▰▰▰▱▱▱▱▱▱▱ pour un volume de 0 à 100.
+const volumeBar = (volume) => '▰'.repeat(Math.round(volume / 10)) + '▱'.repeat(10 - Math.round(volume / 10));
+
+module.exports = { canControl, stationKey, isStreamUrl, volumeBar };
