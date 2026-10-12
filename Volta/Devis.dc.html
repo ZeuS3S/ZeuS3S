@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Volta Électricité — devis en 3 questions</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap">
+<style>
+/* Proposition : assistant de devis sur la grille 12 colonnes (questions 7 col., récapitulatif 5 col.). */
+:root{--ground:#F4F6F8;--paper:#FFFFFF;--ink:#0F1722;--ink2:#1B2636;--muted:#4A5563;--line:#D3DAE2;--signal:#FFCC2E;--ok:#1E7F4F;--okbg:#E3F3EA;--hot:#B42318;
+--display:"Archivo","Helvetica Neue",Arial,sans-serif;--body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+*{box-sizing:border-box}
+a{color:var(--accent)}a:hover{color:var(--ink)}
+.wrap{max-width:1440px;margin:0 auto;padding-inline:clamp(16px,5.556vw,80px)}
+.g{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;row-gap:24px}
+.s5{grid-column:span 5}.s7{grid-column:span 7}.s5,.s7{min-width:0}
+.d{font-family:var(--display);font-stretch:118%;letter-spacing:-0.02em;text-wrap:balance;margin:0}
+.lbl{font-family:var(--mono);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font:600 15px var(--body);text-decoration:none;border:1.5px solid transparent;cursor:pointer}
+.btn-p{background:var(--accent);color:#fff}.btn-p:hover{color:#fff}.btn-p[disabled]{opacity:.4;cursor:not-allowed}
+.btn-o{border-color:var(--line);background:var(--paper);color:var(--ink)}
+.tile{background:var(--paper);border:1px solid var(--line);border-radius:28px;padding:clamp(20px,3vw,40px);display:flex;flex-direction:column;gap:22px;min-width:0}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:10px}
+.opt{min-height:64px;padding:12px 16px;border-radius:16px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);font:500 16px var(--body);cursor:pointer;text-align:left;display:flex;flex-direction:column;justify-content:center;gap:2px}
+.opt small{font-size:13px;color:var(--muted);font-weight:400}
+.opt:hover{border-color:var(--accent)}
+.opt.on{border-color:var(--accent);background:var(--accent);color:#fff}.opt.on small{color:#E3E9FC}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.bar{height:6px;border-radius:3px;background:var(--line)}.bar.on{background:var(--accent)}
+.f{display:flex;flex-direction:column;gap:6px}.f label{font-size:14px;font-weight:600}
+.f input{font:16px var(--body);color:var(--ink);border:1.5px solid var(--line);border-radius:12px;min-height:48px;padding:10px 14px;background:var(--paper)}
+.recap{background:var(--ink);color:#fff;border-radius:28px;padding:clamp(20px,3vw,36px);display:flex;flex-direction:column;gap:16px;min-width:0}
+.rl{display:flex;justify-content:space-between;gap:12px;padding-block:10px;border-bottom:1px solid #2C3A4E;font-size:15px}
+.rl span:first-child{color:#C9D3E0}
+.price{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:44px;line-height:1;letter-spacing:-0.03em;color:var(--signal)}
+.btn:focus-visible,.opt:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media (max-width:1024px){.s5,.s7{grid-column:span 12}}
+</style>
+</helmet>
+<div style="--accent: {{accent}}; background: var(--ground); min-height: 100%">
+<header style="border-bottom: 1px solid var(--line); background: var(--paper)">
+<nav class="wrap" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding-block: 16px" aria-label="Navigation principale">
+<a href="Main.dc.html" class="d" style="font-size: 20px; font-weight: 800; color: var(--ink); text-decoration: none">Volta</a>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; font-weight: 500"><a href="Services.dc.html" style="color: var(--ink); text-decoration: none">Services</a><a href="Methode.dc.html" style="color: var(--ink); text-decoration: none">Méthode</a><a href="Realisations.dc.html" style="color: var(--ink); text-decoration: none">Réalisations</a><a href="Contact.dc.html" style="color: var(--ink); text-decoration: none">Contact</a></div>
+</nav>
+</header>
+
+<main class="wrap" style="padding-block: 56px 80px">
+<div class="g" style="align-items: start">
+<section class="s7 tile" aria-label="Questions">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span class="lbl">{{stepLabel}}</span>
+<div class="steps" aria-hidden="true"><span class="{{bars.b1}}"></span><span class="{{bars.b2}}"></span><span class="{{bars.b3}}"></span></div>
+</div>
+
+<sc-if value="{{st.q1}}" hint-placeholder-val="{{ true }}">
+<h1 class="d" style="font-size: 36px; font-weight: 800">Quels travaux voulez-vous faire ?</h1>
+<div class="opts" role="group" aria-label="Type de travaux">
+<button type="button" class="{{w.cls.tableau}}" aria-pressed="{{w.on.tableau}}" onClick="{{w.go.tableau}}">Tableau électrique<small>Remplacement ou ajout de circuits</small></button>
+<button type="button" class="{{w.cls.normes}}" aria-pressed="{{w.on.normes}}" onClick="{{w.go.normes}}">Mise aux normes<small>Vente, location, rénovation</small></button>
+<button type="button" class="{{w.cls.borne}}" aria-pressed="{{w.on.borne}}" onClick="{{w.go.borne}}">Borne de recharge<small>Maison ou copropriété</small></button>
+<button type="button" class="{{w.cls.eclairage}}" aria-pressed="{{w.on.eclairage}}" onClick="{{w.go.eclairage}}">Éclairage<small>Spots, LED, extérieur</small></button>
+<button type="button" class="{{w.cls.domotique}}" aria-pressed="{{w.on.domotique}}" onClick="{{w.go.domotique}}">Domotique<small>Volets, chauffage, lumières</small></button>
+<button type="button" class="{{w.cls.autre}}" aria-pressed="{{w.on.autre}}" onClick="{{w.go.autre}}">Autre chose<small>Décrivez-le à l'étape suivante</small></button>
+</div>
+</sc-if>
+
+<sc-if value="{{st.q2}}" hint-placeholder-val="{{ false }}">
+<h1 class="d" style="font-size: 36px; font-weight: 800">Votre logement</h1>
+<div class="opts" role="group" aria-label="Type de logement">
+<button type="button" class="{{h.cls.appart}}" aria-pressed="{{h.on.appart}}" onClick="{{h.go.appart}}">Appartement</button>
+<button type="button" class="{{h.cls.maison}}" aria-pressed="{{h.on.maison}}" onClick="{{h.go.maison}}">Maison</button>
+<button type="button" class="{{h.cls.local}}" aria-pressed="{{h.on.local}}" onClick="{{h.go.local}}">Local professionnel</button>
+</div>
+<span style="font-weight: 600">Surface</span>
+<div class="opts" role="group" aria-label="Surface">
+<button type="button" class="{{sz.cls.s1}}" aria-pressed="{{sz.on.s1}}" onClick="{{sz.go.s1}}">Moins de 50 m²</button>
+<button type="button" class="{{sz.cls.s2}}" aria-pressed="{{sz.on.s2}}" onClick="{{sz.go.s2}}">50 à 100 m²</button>
+<button type="button" class="{{sz.cls.s3}}" aria-pressed="{{sz.on.s3}}" onClick="{{sz.go.s3}}">Plus de 100 m²</button>
+</div>
+</sc-if>
+
+<sc-if value="{{st.q3}}" hint-placeholder-val="{{ false }}">
+<h1 class="d" style="font-size: 36px; font-weight: 800">C'est pour quand ?</h1>
+<div class="opts" role="group" aria-label="Délai">
+<button type="button" class="{{u.cls.now}}" aria-pressed="{{u.on.now}}" onClick="{{u.go.now}}">Cette semaine<small>On vous rappelle en priorité</small></button>
+<button type="button" class="{{u.cls.month}}" aria-pressed="{{u.on.month}}" onClick="{{u.go.month}}">Dans le mois</button>
+<button type="button" class="{{u.cls.later}}" aria-pressed="{{u.on.later}}" onClick="{{u.go.later}}">Je me renseigne</button>
+</div>
+</sc-if>
+
+<sc-if value="{{st.contact}}" hint-placeholder-val="{{ false }}">
+<h1 class="d" style="font-size: 36px; font-weight: 800">Où vous envoyer le devis ?</h1>
+<div class="g" style="gap: 16px">
+<div class="f" style="grid-column: span 6"><label for="d-nom">Nom</label><input id="d-nom" type="text" autocomplete="name" placeholder="Camille Martin"></div>
+<div class="f" style="grid-column: span 6"><label for="d-tel">Téléphone</label><input id="d-tel" type="tel" autocomplete="tel" placeholder="06 12 34 56 78"></div>
+<div class="f" style="grid-column: span 12"><label for="d-cp">Code postal</label><input id="d-cp" type="text" inputmode="numeric" autocomplete="postal-code" placeholder="75011"></div>
+</div>
+<sc-if value="{{err}}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 0; color: var(--hot); font-weight: 600">{{err}}</p></sc-if>
+</sc-if>
+
+<sc-if value="{{st.done}}" hint-placeholder-val="{{ false }}">
+<h1 class="d" style="font-size: 36px; font-weight: 800">C'est envoyé.</h1>
+<p style="margin: 0; font-size: 18px; color: var(--muted)">Votre demande arrive dans notre espace de gestion avec toutes vos réponses. Nous vous rappelons sous [DÉLAI] pour confirmer le prix après une visite.</p>
+<a class="btn btn-o" href="Main.dc.html" style="align-self: flex-start">Retour à l'accueil</a>
+</sc-if>
+
+<sc-if value="{{showNav}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; justify-content: space-between; gap: 12px; padding-top: 8px; border-top: 1px solid var(--line)">
+<button type="button" class="btn btn-o" disabled="{{noBack}}" onClick="{{back}}">Retour</button>
+<button type="button" class="btn btn-p" disabled="{{noNext}}" onClick="{{next}}">{{nextLabel}}</button>
+</div>
+</sc-if>
+</section>
+
+<aside class="s5 recap" aria-live="polite">
+<span class="lbl" style="color: var(--signal)">Votre estimation</span>
+<span class="price">{{range}}</span>
+<span style="color: #C9D3E0; font-size: 14px">Fourchette indicative, confirmée après visite. Selon le type de travaux et la surface.</span>
+<div>
+<div class="rl"><span>Travaux</span><b>{{sum.work}}</b></div>
+<div class="rl"><span>Logement</span><b>{{sum.home}}</b></div>
+<div class="rl"><span>Surface</span><b>{{sum.size}}</b></div>
+<div class="rl" style="border-bottom: 0"><span>Délai</span><b>{{sum.when}}</b></div>
+</div>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2453E6","options":["#2453E6","#0F7B6C","#C2410C","#6D28D9"]},"$preview":{"width":1440,"height":1300}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { step: 1, work: null, home: null, size: null, when: null, err: '', prices: {} };
+  }
+  // Grille de prix saisie dans l'admin, et type de travaux pré-coché depuis la page Services (même navigateur).
+  componentDidMount() {
+    this.loadPrices = () => { try { this.setState({ prices: JSON.parse(localStorage.getItem('volta.prices') || '{}') || {} }); } catch (e) {} };
+    this.loadPrices();
+    try {
+      const p = JSON.parse(localStorage.getItem('volta.prefill') || 'null');
+      if (p && p.work) { this.setState({ work: p.work }); localStorage.removeItem('volta.prefill'); }
+    } catch (e) {}
+    try { this.chan = new BroadcastChannel('volta-blocks'); this.chan.onmessage = this.loadPrices; } catch (e) {}
+    window.addEventListener('storage', this.loadPrices);
+  }
+  componentWillUnmount() {
+    try { if (this.chan) this.chan.close(); } catch (e) {}
+    window.removeEventListener('storage', this.loadPrices);
+  }
+  // shortcut: la demande reste dans ce navigateur (localStorage) ; à envoyer à un serveur ou par e-mail en production.
+  submit(fields) {
+    const v = (id) => ((document.getElementById(id) || {}).value || '').trim();
+    const name = v('d-nom'), tel = v('d-tel').replace(/[\s.]/g, '');
+    if (!name) return this.setState({ err: 'Indiquez votre nom.' });
+    if (!/^(?:\+33|0)\d{9}$/.test(tel)) return this.setState({ err: 'Numéro de téléphone invalide : 10 chiffres, ex. 06 12 34 56 78.' });
+    try {
+      const all = JSON.parse(localStorage.getItem('volta.requests') || '[]');
+      const list = Array.isArray(all) ? all : [];
+      list.unshift({ id: Date.now(), kind: 'devis', name, tel, cp: v('d-cp'), ...fields, at: Date.now() });
+      localStorage.setItem('volta.requests', JSON.stringify(list));
+      const c = new BroadcastChannel('volta-blocks'); c.postMessage('changed'); c.close();
+    } catch (e) {}
+    this.setState({ err: '', step: 5 });
+  }
+  pick(key, ids, labels) {
+    const o = { cls: {}, on: {}, go: {} };
+    ids.forEach((id) => {
+      const a = this.state[key] === id;
+      o.cls[id] = a ? 'opt on' : 'opt';
+      o.on[id] = a ? 'true' : 'false';
+      o.go[id] = () => this.setState({ [key]: id });
+    });
+    return o;
+  }
+  renderVals() {
+    const s = this.state;
+    const W = { tableau: 'Tableau électrique', normes: 'Mise aux normes', borne: 'Borne de recharge', eclairage: 'Éclairage', domotique: 'Domotique', autre: 'Autre' };
+    const H = { appart: 'Appartement', maison: 'Maison', local: 'Local pro' };
+    const SZ = { s1: '< 50 m²', s2: '50–100 m²', s3: '> 100 m²' };
+    const U = { now: 'Cette semaine', month: 'Dans le mois', later: 'Je me renseigne' };
+    const ok = { 1: !!s.work, 2: !!s.home && !!s.size, 3: !!s.when, 4: true }[s.step];
+    const dash = '—';
+    // Fourchette saisie dans l'admin (onglet Grille de prix) pour ce type de travaux et cette surface.
+    const cell = ((s.prices || {})[s.work] || {})[s.size];
+    const range = s.work && s.size ? (cell ? cell + ' €' : '[PRIX] – [PRIX] €') : dash;
+    return {
+      accent: this.props.accent ?? '#2453E6',
+      st: { q1: s.step === 1, q2: s.step === 2, q3: s.step === 3, contact: s.step === 4, done: s.step === 5 },
+      stepLabel: s.step <= 3 ? 'Question ' + s.step + ' sur 3' : s.step === 4 ? 'Dernière étape' : 'Terminé',
+      bars: { b1: 'bar on', b2: s.step >= 2 ? 'bar on' : 'bar', b3: s.step >= 3 ? 'bar on' : 'bar' },
+      w: this.pick('work', Object.keys(W)), h: this.pick('home', Object.keys(H)), sz: this.pick('size', Object.keys(SZ)), u: this.pick('when', Object.keys(U)),
+      showNav: s.step < 5, noBack: s.step === 1, noNext: !ok,
+      nextLabel: s.step === 4 ? 'Recevoir mon devis' : 'Suivant',
+      back: () => this.setState({ step: Math.max(1, s.step - 1) }),
+      next: () => {
+        if (!ok) return;
+        if (s.step === 4) return this.submit({ need: W[s.work], detail: [H[s.home], SZ[s.size], U[s.when]].join(' · '), range });
+        this.setState({ step: s.step + 1 });
+      },
+      range, err: s.err,
+      sum: { work: W[s.work] || dash, home: H[s.home] || dash, size: SZ[s.size] || dash, when: U[s.when] || dash },
+    };
+  }
+}
+</script>
+</body>
+</html>

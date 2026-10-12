@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Volta Électricité — électricien à [VILLE VOISINE]</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap">
+<style>
+/* Proposition : modèle de page locale, dupliqué pour chaque commune ; seules les parties entre crochets changent. */
+:root{--ground:#F4F6F8;--paper:#FFFFFF;--ink:#0F1722;--muted:#4A5563;--line:#D3DAE2;--signal:#FFCC2E;--ok:#1E7F4F;--okbg:#E3F3EA;--earth-g:#2E9E4F;--earth-y:#F2C200;
+--display:"Archivo","Helvetica Neue",Arial,sans-serif;--body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+*{box-sizing:border-box}
+a{color:var(--accent)}a:hover{color:var(--ink)}
+.wrap{max-width:1440px;margin:0 auto;padding-inline:clamp(16px,5.556vw,80px)}
+.g{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;row-gap:24px}
+.s3{grid-column:span 3}.s4{grid-column:span 4}.s5{grid-column:span 5}.s6{grid-column:span 6}.s7{grid-column:span 7}.s8{grid-column:span 8}.s12{grid-column:span 12}
+.s3,.s4,.s5,.s6,.s7,.s8,.s12{min-width:0}
+.d{font-family:var(--display);font-stretch:118%;letter-spacing:-0.02em;text-wrap:balance;margin:0}
+.lbl{font-family:var(--mono);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font:600 15px var(--body);text-decoration:none;border:1.5px solid transparent}
+.btn-p{background:var(--accent);color:#fff}.btn-p:hover{color:#fff}
+.btn-o{border-color:var(--ink);color:var(--ink)}
+.btn-y{background:var(--signal);color:var(--ink)}.btn-y:hover{color:var(--ink)}
+.sec{padding-block:72px;border-top:1px solid var(--line)}
+.fact{display:flex;flex-direction:column;gap:4px}.fact b{font-family:var(--display);font-stretch:112%;font-size:22px}
+.svc{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:18px;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:500;font-size:17px}
+.svc:hover{color:var(--accent)}
+.chip{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none;font-size:15px}
+.chip.here{background:var(--ink);border-color:var(--ink);color:#fff}
+.ph{aspect-ratio:4/3;max-width:100%;border-radius:18px;border:1px dashed #9AA6B4;background:repeating-linear-gradient(135deg,#E2E7ED 0 12px,#E8ECF1 12px 24px);display:flex;align-items:flex-end;padding:16px;color:var(--muted);font:12px var(--mono)}
+details{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:0 22px}
+summary{cursor:pointer;min-height:60px;display:flex;align-items:center;font-weight:600}
+details p{margin:0 0 18px;color:var(--muted)}
+.seo{border:1.5px dashed #9AA6B4;border-radius:16px;padding:18px;background:var(--paper);font:13px var(--mono);color:var(--muted);display:flex;flex-direction:column;gap:6px}
+.seo b{color:var(--ink);font-family:var(--body);font-size:15px}
+.earth{display:inline-block;width:26px;height:8px;border-radius:2px;background:repeating-linear-gradient(90deg,var(--earth-g) 0 6px,var(--earth-y) 6px 12px)}
+.btn:focus-visible,.chip:focus-visible,.svc:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media (max-width:1024px){.s3{grid-column:span 6}.s4,.s5,.s7,.s8{grid-column:span 12}}
+@media (max-width:640px){.s3,.s6{grid-column:span 12}.hero-h{font-size:40px!important}}
+</style>
+</helmet>
+<div style="--accent: {{accent}}; background: var(--ground); min-height: 100%">
+<header style="border-bottom: 1px solid var(--line); background: rgba(244,246,248,.9)">
+<nav class="wrap" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding-block: 16px" aria-label="Navigation principale">
+<a href="Main.dc.html" class="d" style="font-size: 20px; font-weight: 800; color: var(--ink); text-decoration: none">Volta</a>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; font-weight: 500"><a href="Services.dc.html" style="color: var(--ink); text-decoration: none">Services</a><a href="Realisations.dc.html" style="color: var(--ink); text-decoration: none">Réalisations</a><a href="Contact.dc.html" style="color: var(--ink); text-decoration: none">Contact</a></div>
+<a class="btn btn-p" href="Devis.dc.html">Devis gratuit</a>
+</nav>
+</header>
+
+<main>
+<section class="wrap" style="padding-block: 24px 0">
+<span class="lbl"><a href="Main.dc.html" style="color: var(--muted)">Accueil</a> › Zones d'intervention › [VILLE VOISINE]</span>
+</section>
+
+<section class="wrap" style="padding-block: 48px 64px">
+<div class="g" style="align-items: end">
+<div class="s7" style="display: flex; flex-direction: column; gap: 24px">
+<span class="lbl" style="display: inline-flex; align-items: center; gap: 10px"><span class="earth"></span>[CODE POSTAL] · à [XX] min de notre atelier</span>
+<h1 class="d hero-h" style="font-size: 64px; line-height: 1; font-weight: 850">Électricien à [VILLE VOISINE]</h1>
+<p style="margin: 0; font-size: 19px; color: var(--muted); max-width: 32em">Dépannage, tableau, mise aux normes et bornes de recharge à [VILLE VOISINE] et dans les communes autour. Déplacement compris, devis gratuit.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px"><a class="btn btn-p" href="Devis.dc.html">Demander un devis</a><a class="btn btn-o" href="tel:[VOTRE-TÉLÉPHONE]">Appeler · [VOTRE TÉLÉPHONE]</a></div>
+</div>
+<div class="s5 g" style="row-gap: 20px; padding: 24px; border-radius: 24px; background: var(--paper); border: 1px solid var(--line)">
+<div class="fact s6"><span class="lbl">Intervention</span><b>Sous [DÉLAI]</b></div>
+<div class="fact s6"><span class="lbl">Déplacement</span><b>Inclus</b></div>
+<div class="fact s6"><span class="lbl">Chantiers ici</span><b>[NOMBRE]</b></div>
+<div class="fact s6"><span class="lbl">Avis Google</span><b>[NOTE] / 5</b></div>
+</div>
+</div>
+</section>
+
+<section class="wrap sec">
+<div class="g">
+<div class="s4" style="display: flex; flex-direction: column; gap: 12px"><span class="lbl">À [VILLE VOISINE]</span><h2 class="d" style="font-size: 36px; font-weight: 800">Nos services</h2></div>
+<nav class="s8 g" style="row-gap: 0" aria-label="Services">
+<a class="svc s6" href="Services.dc.html"><span>Dépannage électrique</span><span aria-hidden="true">→</span></a>
+<a class="svc s6" href="Services.dc.html"><span>Tableau électrique</span><span aria-hidden="true">→</span></a>
+<a class="svc s6" href="Services.dc.html"><span>Mise aux normes</span><span aria-hidden="true">→</span></a>
+<a class="svc s6" href="Services.dc.html"><span>Borne de recharge</span><span aria-hidden="true">→</span></a>
+<a class="svc s6" href="Services.dc.html"><span>Domotique</span><span aria-hidden="true">→</span></a>
+<a class="svc s6" href="Services.dc.html"><span>Éclairage LED</span><span aria-hidden="true">→</span></a>
+</nav>
+</div>
+</section>
+
+<section class="wrap sec">
+<div class="g" style="align-items: end; margin-bottom: 8px">
+<div class="s8" style="display: flex; flex-direction: column; gap: 12px"><span class="lbl">Chantiers récents</span><h2 class="d" style="font-size: 36px; font-weight: 800">Déjà réalisé à [VILLE VOISINE]</h2></div>
+<a class="s4" href="Realisations.dc.html" style="justify-self: end; font-weight: 600">Toutes les réalisations →</a>
+</div>
+<div class="g">
+<div class="s4" style="display: flex; flex-direction: column; gap: 10px"><div class="ph">[Photo : chantier à [VILLE VOISINE]]</div><b>[Titre du chantier]</b><span style="color: var(--muted)">[Quartier ou rue] · [Mois, année]</span></div>
+<div class="s4" style="display: flex; flex-direction: column; gap: 10px"><div class="ph">[Photo : chantier à [VILLE VOISINE]]</div><b>[Titre du chantier]</b><span style="color: var(--muted)">[Quartier ou rue] · [Mois, année]</span></div>
+<div class="s4" style="display: flex; flex-direction: column; gap: 10px"><div class="ph">[Photo : chantier à [VILLE VOISINE]]</div><b>[Titre du chantier]</b><span style="color: var(--muted)">[Quartier ou rue] · [Mois, année]</span></div>
+</div>
+</section>
+
+<section class="wrap sec">
+<div class="g">
+<div class="s4" style="display: flex; flex-direction: column; gap: 12px"><span class="lbl">Questions des habitants</span><h2 class="d" style="font-size: 36px; font-weight: 800">À [VILLE VOISINE]</h2></div>
+<div class="s8" style="display: flex; flex-direction: column; gap: 10px">
+<details open="open"><summary>Combien de temps pour venir à [VILLE VOISINE] ?</summary><p>Environ [XX] minutes depuis notre atelier de [VILLE]. Pour une urgence, nous intervenons en général sous [DÉLAI].</p></details>
+<details><summary>Le déplacement est-il facturé ?</summary><p>Non, il est compris dans le devis pour [VILLE VOISINE] et les communes voisines listées plus bas.</p></details>
+<details><summary>Intervenez-vous en copropriété ?</summary><p>Oui : parties communes, colonnes montantes et bornes de recharge, en lien avec votre syndic.</p></details>
+</div>
+</div>
+</section>
+
+<section class="wrap sec">
+<div class="g" style="align-items: start">
+<div class="s4" style="display: flex; flex-direction: column; gap: 12px"><span class="lbl">Zones d'intervention</span><h2 class="d" style="font-size: 36px; font-weight: 800">Communes voisines</h2></div>
+<div class="s8" style="display: flex; flex-wrap: wrap; gap: 10px">
+<a class="chip" href="Ville.dc.html">[VILLE]</a>
+<a class="chip here" href="Ville.dc.html" aria-current="page">[VILLE VOISINE]</a>
+<a class="chip" href="Ville.dc.html">[COMMUNE 3]</a>
+<a class="chip" href="Ville.dc.html">[COMMUNE 4]</a>
+<a class="chip" href="Ville.dc.html">[COMMUNE 5]</a>
+<a class="chip" href="Ville.dc.html">[COMMUNE 6]</a>
+<a class="chip" href="Ville.dc.html">[COMMUNE 7]</a>
+<a class="chip" href="Ville.dc.html">[COMMUNE 8]</a>
+</div>
+</div>
+</section>
+
+<section class="wrap" style="padding-block: 0 72px">
+<div class="seo" aria-label="Aperçu Google">
+<span>Aperçu dans Google (proposition)</span>
+<b>Électricien à [VILLE VOISINE] · Dépannage 7 j/7 · Volta Électricité</b>
+<span>www.[votre-domaine].fr › electricien-[ville-voisine]</span>
+<span style="font-family: var(--body); font-size: 14px">Électricien à [VILLE VOISINE] : dépannage, tableau, mise aux normes, borne. Déplacement compris, devis gratuit, intervention sous [DÉLAI].</span>
+</div>
+</section>
+</main>
+
+<section style="background: var(--ink); color: #fff">
+<div class="wrap g" style="padding-block: 64px; align-items: center">
+<h2 class="s8 d" style="font-size: 40px; font-weight: 800">Une panne à [VILLE VOISINE] ?</h2>
+<div class="s4" style="display: flex; justify-content: flex-end"><a class="btn btn-y" href="tel:[VOTRE-TÉLÉPHONE]">Appeler · [VOTRE TÉLÉPHONE]</a></div>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2453E6","options":["#2453E6","#0F7B6C","#C2410C","#6D28D9"]},"$preview":{"width":1440,"height":2400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#2453E6' };
+  }
+}
+</script>
+</body>
+</html>

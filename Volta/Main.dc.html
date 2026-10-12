@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Volta Électricité — accueil</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap">
+<style>
+/* Grille 12 colonnes en mosaïque : l'accueil ne résume pas les autres pages, il offre des outils qu'on ne trouve qu'ici. */
+:root{--ground:#F4F6F8;--paper:#FFFFFF;--ink:#0F1722;--ink2:#1B2636;--muted:#4A5563;--line:#D3DAE2;--signal:#FFCC2E;--ok:#1E7F4F;--okbg:#E3F3EA;--hot:#B42318;--hotbg:#FEE4E2;--earth-g:#2E9E4F;--earth-y:#F2C200;
+--display:"Archivo","Helvetica Neue",Arial,sans-serif;--body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+a{color:var(--accent)}a:hover{color:var(--ink)}
+*{box-sizing:border-box}
+.ublocks{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:20px;padding-block:24px}
+.ub{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:10px;min-width:0;animation:ubIn .35s ease}
+.ub h2{margin:0;font-family:var(--display);font-stretch:112%;font-size:22px;font-weight:750;letter-spacing:-0.01em;text-wrap:balance;overflow-wrap:anywhere}
+.ub p{margin:0;color:var(--muted);overflow-wrap:anywhere}
+.ub-tag{display:inline-flex;align-items:center;align-self:flex-start;min-height:24px;padding:0 10px;border-radius:999px;background:var(--accent);color:#fff;font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.ub-ph{aspect-ratio:16/9;max-width:100%;border-radius:14px;border:1px dashed #9AA6B4;background:repeating-linear-gradient(135deg,#E2E7ED 0 12px,#E8ECF1 12px 24px)}
+.ub-btn{align-self:flex-start;display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;background:var(--accent);color:#fff;font-weight:600;text-decoration:none}.ub-btn:hover{color:#fff}
+.ub summary{cursor:pointer;font-weight:600;font-size:18px;min-height:44px;display:flex;align-items:center}
+.ub-act{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:10px;margin-top:auto;border-top:1px dashed var(--line);font-size:13.5px;color:var(--muted)}
+.ub-x{min-height:36px;padding:0 12px;border-radius:9px;border:1px solid var(--line);background:var(--paper);color:var(--muted);font:500 13.5px var(--body);cursor:pointer}
+.ub-x:hover,.ub-x:focus-visible{border-color:#B42318;color:#B42318;outline:none}
+.ub-yes{background:#B42318;border-color:#B42318;color:#fff}.ub-yes:hover{color:#fff}
+@keyframes ubIn{from{opacity:.4;transform:translateY(6px)}}
+@media (prefers-reduced-motion:reduce){.ub{animation:none}}
+html{scroll-behavior:smooth}[id]{scroll-margin-top:96px}
+.skip{position:absolute;left:16px;top:-80px;z-index:20;background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-weight:600}.skip:focus{top:12px;color:#fff}
+.wrap{max-width:1440px;margin:0 auto;padding-inline:clamp(16px,5.556vw,80px)}
+.g{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;row-gap:24px}
+.s4{grid-column:span 4}.s5{grid-column:span 5}.s6{grid-column:span 6}.s7{grid-column:span 7}.s8{grid-column:span 8}.s12{grid-column:span 12}
+.s4,.s5,.s6,.s7,.s8,.s12{min-width:0}
+.d{font-family:var(--display);font-stretch:118%;letter-spacing:-0.02em;text-wrap:balance;margin:0}
+.lbl{font-family:var(--mono);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font-weight:600;font-size:15px;text-decoration:none;border:1.5px solid transparent;cursor:pointer;font-family:var(--body);transition:transform .15s ease}
+.btn:hover{transform:translateY(-1px)}.btn:active{transform:scale(.98)}
+.btn-p{background:var(--accent);color:#fff}.btn-p:hover{color:#fff}
+.btn-y{background:var(--signal);color:var(--ink)}.btn-y:hover{color:var(--ink)}
+.btn-o{border-color:var(--ink);color:var(--ink)}
+.nl{color:var(--ink);text-decoration:none;padding-block:6px;border-bottom:2px solid transparent;white-space:nowrap}.nl:hover{color:var(--accent)}
+.hphone{font-family:var(--mono);font-size:14px;color:var(--ink);text-decoration:none;white-space:nowrap}.hphone:hover{color:var(--accent)}
+.tile{border-radius:28px;padding:clamp(20px,2.6vw,36px);display:flex;flex-direction:column;gap:18px;min-width:0}
+.t-paper{background:var(--paper);border:1px solid var(--line)}
+.t-ink{background:var(--ink);color:#fff}
+.opt{min-height:48px;padding:10px 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);font:500 15px var(--body);cursor:pointer;text-align:left;transition:border-color .15s ease,background .15s ease}
+.opt:hover{border-color:var(--accent)}
+.opt.on{border-color:var(--accent);background:var(--accent);color:#fff}
+.t-ink .opt{background:var(--ink2);border-color:#2C3A4E;color:#fff}
+.t-ink .opt.on{background:var(--signal);border-color:var(--signal);color:var(--ink)}
+.res{border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:10px;background:var(--ink2)}
+.pill{display:inline-flex;align-items:center;gap:8px;min-height:30px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:600;align-self:flex-start}
+.p-hot{background:var(--hotbg);color:var(--hot)}.p-plan{background:var(--okbg);color:var(--ok)}
+.live{display:inline-flex;align-items:center;gap:10px;min-height:36px;padding:0 14px;border-radius:999px;background:var(--okbg);color:var(--ok);font-weight:600;font-size:14px;align-self:flex-start}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(30,127,79,.5);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(30,127,79,0)}100%{box-shadow:0 0 0 0 rgba(30,127,79,0)}}
+.day{display:flex;flex-direction:column;gap:8px;min-width:0}
+.slot{min-height:44px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);font:600 14px var(--mono);color:var(--ink);cursor:pointer}
+.slot:hover{border-color:var(--accent)}.slot.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.slot[disabled]{background:repeating-linear-gradient(135deg,#EEF1F4 0 6px,#F4F6F8 6px 12px);color:#8A94A3;cursor:not-allowed;text-decoration:line-through}
+.mod{background:var(--ink2);border:1.5px solid #2C3A4E;border-radius:10px;padding:10px 8px 8px;display:flex;flex-direction:column;gap:8px;min-width:0;cursor:pointer;text-align:left;font:inherit;color:inherit;transition:border-color .15s ease,transform .15s ease}
+.mod:hover{border-color:#5C6E86;transform:translateY(-2px)}
+.mod.on{border-color:var(--signal);box-shadow:0 0 0 3px rgba(255,204,46,.25)}
+.mod.m2{grid-column:span 2}
+.sw{height:26px;border-radius:5px;background:#0B121C;position:relative}
+.sw::after{content:"";position:absolute;left:6px;right:6px;top:4px;height:9px;border-radius:3px;background:var(--signal)}
+.mod.m2 .sw::after{background:var(--accent)}
+.ml{font-family:var(--mono);font-size:10.5px;line-height:1.3;color:#C9D3E0}
+.ma{font-family:var(--mono);font-size:12px;font-weight:600;color:#fff}
+.spec{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.spec div{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border-radius:12px;background:var(--ground)}
+.spec b{font-family:var(--mono);font-size:15px}
+.big{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:64px;line-height:1;letter-spacing:-0.03em}
+.earth{display:inline-block;width:26px;height:8px;border-radius:2px;background:repeating-linear-gradient(90deg,var(--earth-g) 0 6px,var(--earth-y) 6px 12px)}
+.btn:focus-visible,.nl:focus-visible,.opt:focus-visible,.slot:focus-visible,.mod:focus-visible,.hphone:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.mbar{display:none}.mbar .call{background:var(--signal);color:var(--ink)}
+@media (max-width:1024px){.s4,.s5,.s7,.s8{grid-column:span 12}.hero-h{font-size:56px!important}}
+@media (max-width:640px){.s6{grid-column:span 12}nav{flex-wrap:wrap}.nav-links{order:3;width:100%;overflow-x:auto;gap:20px!important}.hphone{display:none}.hero-h{font-size:40px!important}.sec-h{font-size:28px!important}.board{grid-template-columns:repeat(3,minmax(0,1fr))!important}.week{grid-template-columns:repeat(3,minmax(0,1fr))!important}.big{font-size:48px}
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:10;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-top:1px solid var(--line)}footer{padding-bottom:96px!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style>
+</helmet>
+<div style="--accent: {{accent}}; background: var(--ground); min-height: 100%">
+
+<a class="skip" href="#contenu">Aller au contenu</a>
+<header style="position: sticky; top: 0; z-index: 5; background: rgba(244,246,248,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line)">
+<nav class="wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 16px 24px; padding-block: 16px" aria-label="Navigation principale">
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink)">
+<span style="width: 40px; height: 40px; border-radius: 10px; background: var(--ink); display: grid; place-items: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"></path></svg></span>
+<span style="display: flex; flex-direction: column; line-height: 1.1"><span class="d" style="font-size: 20px; font-weight: 800">Volta</span><span class="lbl" style="font-size: 10px">Électricité générale</span></span>
+</a>
+<div class="nav-links" style="display: flex; gap: 32px; font-weight: 500">
+<a class="nl" href="Services.dc.html">Services</a>
+<a class="nl" href="Methode.dc.html">Méthode</a>
+<a class="nl" href="Realisations.dc.html">Réalisations</a>
+<a class="nl" href="Contact.dc.html">Contact</a>
+</div>
+<div style="display: flex; align-items: center; gap: 20px"><a class="hphone" href="tel:[VOTRE-TÉLÉPHONE]">[VOTRE TÉLÉPHONE]</a><a class="btn btn-p" href="Devis.dc.html">Devis gratuit</a></div>
+</nav>
+</header>
+
+<main id="contenu">
+
+<!-- Héros : promesse à gauche, prise de rendez-vous directe à droite -->
+<section class="wrap" style="padding-block: 72px 40px">
+<div class="g" style="align-items: stretch; row-gap: 32px">
+<div class="s7" style="display: flex; flex-direction: column; justify-content: center; gap: 28px">
+<span class="live"><i></i>Disponible aujourd'hui à [VILLE]</span>
+<h1 class="d hero-h" style="font-size: 80px; line-height: .98; font-weight: 850">Le courant passe. On s'en occupe.</h1>
+<p style="margin: 0; font-size: 19px; color: var(--muted); max-width: 30em">Un électricien qui répond, explique et laisse une installation propre. Choisissez un créneau ou testez votre problème ci-dessous.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<a class="btn btn-p" href="#diagnostic">Diagnostiquer ma panne</a>
+<a class="btn btn-o" href="tel:[VOTRE-TÉLÉPHONE]">Appeler · [VOTRE TÉLÉPHONE]</a>
+</div>
+</div>
+
+<div class="s5 tile t-paper">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px">
+<h2 class="d" style="font-size: 22px; font-weight: 750">Prendre rendez-vous</h2>
+<span class="lbl">Cette semaine</span>
+</div>
+<div class="week" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px">
+<div class="day"><span class="lbl" style="text-align: center">Lun</span>
+<button type="button" class="{{sl.cls.lun1}}" aria-pressed="{{sl.on.lun1}}" onClick="{{sl.go.lun1}}" disabled="{{sl.off.lun1}}">8:00</button>
+<button type="button" class="slot" disabled="disabled">Pris</button>
+<button type="button" class="{{sl.cls.lun3}}" aria-pressed="{{sl.on.lun3}}" onClick="{{sl.go.lun3}}" disabled="{{sl.off.lun3}}">14:00</button>
+</div>
+<div class="day"><span class="lbl" style="text-align: center">Mar</span>
+<button type="button" class="slot" disabled="disabled">Pris</button>
+<button type="button" class="{{sl.cls.mar2}}" aria-pressed="{{sl.on.mar2}}" onClick="{{sl.go.mar2}}" disabled="{{sl.off.mar2}}">10:30</button>
+<button type="button" class="{{sl.cls.mar3}}" aria-pressed="{{sl.on.mar3}}" onClick="{{sl.go.mar3}}" disabled="{{sl.off.mar3}}">16:00</button>
+</div>
+<div class="day"><span class="lbl" style="text-align: center">Mer</span>
+<button type="button" class="{{sl.cls.mer1}}" aria-pressed="{{sl.on.mer1}}" onClick="{{sl.go.mer1}}" disabled="{{sl.off.mer1}}">8:00</button>
+<button type="button" class="{{sl.cls.mer2}}" aria-pressed="{{sl.on.mer2}}" onClick="{{sl.go.mer2}}" disabled="{{sl.off.mer2}}">10:30</button>
+<button type="button" class="slot" disabled="disabled">Pris</button>
+</div>
+<div class="day"><span class="lbl" style="text-align: center">Jeu</span>
+<button type="button" class="slot" disabled="disabled">Pris</button>
+<button type="button" class="slot" disabled="disabled">Pris</button>
+<button type="button" class="{{sl.cls.jeu3}}" aria-pressed="{{sl.on.jeu3}}" onClick="{{sl.go.jeu3}}" disabled="{{sl.off.jeu3}}">14:00</button>
+</div>
+<div class="day"><span class="lbl" style="text-align: center">Ven</span>
+<button type="button" class="{{sl.cls.ven1}}" aria-pressed="{{sl.on.ven1}}" onClick="{{sl.go.ven1}}" disabled="{{sl.off.ven1}}">8:00</button>
+<button type="button" class="{{sl.cls.ven2}}" aria-pressed="{{sl.on.ven2}}" onClick="{{sl.go.ven2}}" disabled="{{sl.off.ven2}}">10:30</button>
+<button type="button" class="{{sl.cls.ven3}}" aria-pressed="{{sl.on.ven3}}" onClick="{{sl.go.ven3}}" disabled="{{sl.off.ven3}}">16:00</button>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto; padding-top: 6px; border-top: 1px solid var(--line)">
+<sc-if value="{{noSlot}}" hint-placeholder-val="{{ true }}">
+<span style="font-size: 15px">Choisissez un créneau pour une visite ou un devis sur place.</span>
+<a class="btn btn-o" href="RendezVous.dc.html">Voir toutes les disponibilités</a>
+</sc-if>
+<sc-if value="{{hasSlot}}" hint-placeholder-val="{{ false }}">
+<span style="font-size: 15px">Créneau choisi : <b>{{slotName}}</b>. Il reste à nous laisser vos coordonnées.</span>
+<a class="btn btn-p" href="RendezVous.dc.html">Réserver ce créneau</a>
+</sc-if>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Blocs créés depuis l'admin pour cette page (mis à jour en direct) -->
+<sc-if value="{{hasBlocks}}" hint-placeholder-val="{{ false }}">
+<section class="wrap ublocks" aria-label="Annonces">
+<sc-for list="{{pageBlocks}}" as="ub" hint-placeholder-count="1">
+<div class="ub">
+<span class="ub-tag">{{ub.tag}}</span>
+<sc-if value="{{ub.isImage}}" hint-placeholder-val="{{ false }}"><div class="ub-ph" role="img" aria-label="{{ub.title}}"></div></sc-if>
+<sc-if value="{{ub.isPhoto}}" hint-placeholder-val="{{ false }}"><div class="ub-ph" role="img" aria-label="{{ub.title}}"></div></sc-if>
+<sc-if value="{{ub.isFaq}}" hint-placeholder-val="{{ false }}"><details><summary>{{ub.title}}</summary><p>{{ub.text}}</p></details></sc-if>
+<sc-if value="{{ub.isPlain}}" hint-placeholder-val="{{ true }}"><h2>{{ub.title}}</h2><sc-if value="{{ub.text}}" hint-placeholder-val="{{ true }}"><p>{{ub.text}}</p></sc-if></sc-if>
+<sc-if value="{{ub.isButton}}" hint-placeholder-val="{{ false }}"><sc-if value="{{ub.text}}" hint-placeholder-val="{{ false }}"><p>{{ub.text}}</p></sc-if><a class="ub-btn" href="Contact.dc.html">{{ub.title}}</a></sc-if>
+<sc-if value="{{ub.isService}}" hint-placeholder-val="{{ false }}"><a class="ub-btn" href="Devis.dc.html">Demander un devis</a></sc-if>
+<div class="ub-act">
+<sc-if value="{{ub.idle}}" hint-placeholder-val="{{ true }}"><button type="button" class="ub-x" aria-label="Supprimer le bloc {{ub.title}}" onClick="{{ub.ask}}">Supprimer</button></sc-if>
+<sc-if value="{{ub.asking}}" hint-placeholder-val="{{ false }}"><span role="alert">Supprimer ce bloc ?</span><button type="button" class="ub-x ub-yes" onClick="{{ub.remove}}">Oui, supprimer</button><button type="button" class="ub-x" onClick="{{ub.cancel}}">Annuler</button></sc-if>
+</div>
+</div>
+</sc-for>
+</section>
+</sc-if>
+
+
+<!-- Outils : diagnostic express + temps de recharge -->
+<section class="wrap" style="padding-block: 24px">
+<div class="g">
+<div id="diagnostic" class="s7 tile t-ink">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="lbl" style="color: var(--signal)">Diagnostic express · 10 secondes</span>
+<h2 class="d sec-h" style="font-size: 34px; font-weight: 800">Que se passe-t-il chez vous ?</h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px" role="group" aria-label="Votre situation">
+<button type="button" class="{{is.cls.off}}" aria-pressed="{{is.on.off}}" onClick="{{is.go.off}}">Plus de courant du tout</button>
+<button type="button" class="{{is.cls.trip}}" aria-pressed="{{is.on.trip}}" onClick="{{is.go.trip}}">Un disjoncteur saute</button>
+<button type="button" class="{{is.cls.hot}}" aria-pressed="{{is.on.hot}}" onClick="{{is.go.hot}}">Une prise chauffe ou sent le brûlé</button>
+<button type="button" class="{{is.cls.work}}" aria-pressed="{{is.on.work}}" onClick="{{is.go.work}}">Je prépare des travaux</button>
+</div>
+<div class="res" aria-live="polite">
+<sc-if value="{{is.show.off}}" hint-placeholder-val="{{ false }}">
+<span class="pill p-hot">Urgent</span>
+<h3 class="d" style="font-size: 22px; font-weight: 750">Vérifiez d'abord chez vos voisins</h3>
+<p style="margin: 0; color: #C9D3E0">S'ils sont coupés aussi, c'est le réseau : appelez Enedis au 09 726 750 suivi de votre n° de département. Sinon, le problème est chez vous : appelez-nous.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; padding-top: 4px"><a class="btn btn-y" href="tel:[VOTRE-TÉLÉPHONE]">Appeler maintenant</a></div>
+</sc-if>
+<sc-if value="{{is.show.trip}}" hint-placeholder-val="{{ true }}">
+<span class="pill p-plan">À traiter vite</span>
+<h3 class="d" style="font-size: 22px; font-weight: 750">Trouvez l'appareil en cause</h3>
+<p style="margin: 0; color: #C9D3E0">Débranchez tout sur ce circuit, réarmez, puis rebranchez un appareil à la fois. S'il saute même à vide, le défaut est dans le circuit : il faut une recherche de panne.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; padding-top: 4px"><a class="btn btn-y" href="Contact.dc.html">Demander une intervention</a></div>
+</sc-if>
+<sc-if value="{{is.show.hot}}" hint-placeholder-val="{{ false }}">
+<span class="pill p-hot">Urgent</span>
+<h3 class="d" style="font-size: 22px; font-weight: 750">Coupez ce circuit tout de suite</h3>
+<p style="margin: 0; color: #C9D3E0">Abaissez son disjoncteur au tableau et n'utilisez plus la prise : un échauffement peut provoquer un incendie. Ne la démontez pas vous-même.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; padding-top: 4px"><a class="btn btn-y" href="tel:[VOTRE-TÉLÉPHONE]">Appeler maintenant</a></div>
+</sc-if>
+<sc-if value="{{is.show.work}}" hint-placeholder-val="{{ false }}">
+<span class="pill p-plan">À planifier</span>
+<h3 class="d" style="font-size: 22px; font-weight: 750">Commençons par une visite</h3>
+<p style="margin: 0; color: #C9D3E0">On fait le point sur l'installation et on chiffre poste par poste. Dans un logement de plus de 2 ans, la TVA est à 10 %.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; padding-top: 4px"><a class="btn btn-y" href="RendezVous.dc.html">Planifier une visite</a></div>
+</sc-if>
+</div>
+</div>
+
+<div class="s5 tile t-paper">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="lbl">Voiture électrique</span>
+<h2 class="d sec-h" style="font-size: 30px; font-weight: 800">Combien de temps pour recharger ?</h2>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 14px; font-weight: 600">Batterie</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px" role="group" aria-label="Taille de la batterie">
+<button type="button" class="{{bat.cls.b40}}" aria-pressed="{{bat.on.b40}}" onClick="{{bat.go.b40}}">40 kWh</button>
+<button type="button" class="{{bat.cls.b60}}" aria-pressed="{{bat.on.b60}}" onClick="{{bat.go.b60}}">60 kWh</button>
+<button type="button" class="{{bat.cls.b80}}" aria-pressed="{{bat.on.b80}}" onClick="{{bat.go.b80}}">80 kWh</button>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 14px; font-weight: 600">Point de charge</span>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px" role="group" aria-label="Point de charge">
+<button type="button" class="{{kw.cls.k23}}" aria-pressed="{{kw.on.k23}}" onClick="{{kw.go.k23}}">Prise classique 2,3 kW</button>
+<button type="button" class="{{kw.cls.k37}}" aria-pressed="{{kw.on.k37}}" onClick="{{kw.go.k37}}">Prise renforcée 3,7 kW</button>
+<button type="button" class="{{kw.cls.k74}}" aria-pressed="{{kw.on.k74}}" onClick="{{kw.go.k74}}">Borne 7,4 kW</button>
+<button type="button" class="{{kw.cls.k11}}" aria-pressed="{{kw.on.k11}}" onClick="{{kw.go.k11}}">Borne 11 kW</button>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px; padding: 18px; border-radius: 18px; background: var(--ground)" aria-live="polite">
+<span class="lbl">De 10 à 80 %</span>
+<span class="big num">{{time}}</span>
+<sc-if value="{{kw.show.k23}}" hint-placeholder-val="{{ false }}"><span style="font-size: 14px; color: var(--muted)">Possible en dépannage, mais lent et déconseillé tous les jours.</span></sc-if>
+<sc-if value="{{kw.show.k37}}" hint-placeholder-val="{{ false }}"><span style="font-size: 14px; color: var(--muted)">Estimation, pertes de charge comprises.</span></sc-if>
+<sc-if value="{{kw.show.k74}}" hint-placeholder-val="{{ true }}"><span style="font-size: 14px; color: var(--muted)">Estimation, pertes de charge comprises.</span></sc-if>
+<sc-if value="{{kw.show.k11}}" hint-placeholder-val="{{ false }}"><span style="font-size: 14px; color: var(--muted)">Le 11 kW demande une alimentation triphasée et une voiture compatible.</span></sc-if>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Tableau à explorer -->
+<section class="wrap" style="padding-block: 24px 88px">
+<div class="g tile t-paper" style="display: grid; row-gap: 28px">
+<div class="s12" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="lbl" style="display: inline-flex; align-items: center; gap: 10px"><span class="earth"></span>Comprendre son tableau</span>
+<h2 class="d sec-h" style="font-size: 34px; font-weight: 800">Touchez un disjoncteur pour voir ce qu'il protège</h2>
+</div>
+<span class="lbl">Repères NF C 15-100 simplifiés</span>
+</div>
+<div class="s7" style="background: var(--ink); border-radius: 22px; padding: 18px">
+<div class="board" style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; padding: 12px; border-radius: 14px; background: #131D2A">
+<button type="button" class="{{md.cls.m0}}" aria-pressed="{{md.on.m0}}" onClick="{{md.go.m0}}"><span class="sw" aria-hidden="true"></span><span class="ma">40 A</span><span class="ml">Diff. 30 mA type AC</span></button>
+<button type="button" class="{{md.cls.m1}}" aria-pressed="{{md.on.m1}}" onClick="{{md.go.m1}}"><span class="sw" aria-hidden="true"></span><span class="ma">10 A</span><span class="ml">Éclairage</span></button>
+<button type="button" class="{{md.cls.m2}}" aria-pressed="{{md.on.m2}}" onClick="{{md.go.m2}}"><span class="sw" aria-hidden="true"></span><span class="ma">10 A</span><span class="ml">Éclairage</span></button>
+<button type="button" class="{{md.cls.m3}}" aria-pressed="{{md.on.m3}}" onClick="{{md.go.m3}}"><span class="sw" aria-hidden="true"></span><span class="ma">16 A</span><span class="ml">Prises séjour</span></button>
+<button type="button" class="{{md.cls.m4}}" aria-pressed="{{md.on.m4}}" onClick="{{md.go.m4}}"><span class="sw" aria-hidden="true"></span><span class="ma">16 A</span><span class="ml">Prises ch.</span></button>
+<button type="button" class="{{md.cls.m5}}" aria-pressed="{{md.on.m5}}" onClick="{{md.go.m5}}"><span class="sw" aria-hidden="true"></span><span class="ma">40 A</span><span class="ml">Diff. 30 mA type A</span></button>
+<button type="button" class="{{md.cls.m6}}" aria-pressed="{{md.on.m6}}" onClick="{{md.go.m6}}"><span class="sw" aria-hidden="true"></span><span class="ma">20 A</span><span class="ml">Lave-linge</span></button>
+<button type="button" class="{{md.cls.m7}}" aria-pressed="{{md.on.m7}}" onClick="{{md.go.m7}}"><span class="sw" aria-hidden="true"></span><span class="ma">20 A</span><span class="ml">Four</span></button>
+<button type="button" class="{{md.cls.m8}}" aria-pressed="{{md.on.m8}}" onClick="{{md.go.m8}}"><span class="sw" aria-hidden="true"></span><span class="ma">32 A</span><span class="ml">Plaques</span></button>
+<button type="button" class="{{md.cls.m9}}" aria-pressed="{{md.on.m9}}" onClick="{{md.go.m9}}"><span class="sw" aria-hidden="true"></span><span class="ma">40 A</span><span class="ml">Borne IRVE</span></button>
+</div>
+</div>
+<div class="s5" style="display: flex; flex-direction: column; gap: 16px" aria-live="polite">
+<sc-if value="{{md.show.m0}}" hint-placeholder-val="{{ true }}"><span class="lbl">40 A · Diff. 30 mA type AC</span><h3 class="d" style="font-size: 26px; font-weight: 750">L'interrupteur différentiel</h3><p style="margin: 0; color: var(--muted)">Il coupe si un courant s'échappe vers la terre, par exemple à travers une personne. Il protège la rangée de disjoncteurs qu'il alimente.</p><div class="spec"><div><span class="lbl">Protection</span><b>40 A · 30 mA</b></div><div><span class="lbl">Fil</span><b>—</b></div><div style="grid-column: span 2"><span class="lbl">Règle</span><span>Au moins 2 différentiels 30 mA par logement, avec un bouton test à presser chaque mois.</span></div></div></sc-if>
+<sc-if value="{{md.show.m1}}" hint-placeholder-val="{{ false }}"><span class="lbl">10 A · Éclairage</span><h3 class="d" style="font-size: 26px; font-weight: 750">Circuit d'éclairage</h3><p style="margin: 0; color: var(--muted)">Plafonniers, appliques et spots d'une partie du logement.</p><div class="spec"><div><span class="lbl">Protection</span><b>10 A</b></div><div><span class="lbl">Fil</span><b>1,5 mm²</b></div><div style="grid-column: span 2"><span class="lbl">Règle</span><span>8 points lumineux maximum par circuit.</span></div></div></sc-if>
+<sc-if value="{{md.show.m2}}" hint-placeholder-val="{{ false }}"><span class="lbl">10 A · Éclairage</span><h3 class="d" style="font-size: 26px; font-weight: 750">Second circuit d'éclairage</h3><p style="margin: 0; color: var(--muted)">Séparer l'éclairage en deux circuits évite le noir complet si l'un disjoncte.</p><div class="spec"><div><span class="lbl">Protection</span><b>10 A</b></div><div><span class="lbl">Fil</span><b>1,5 mm²</b></div><div style="grid-column: span 2"><span class="lbl">Règle</span><span>8 points lumineux maximum par circuit.</span></div></div></sc-if>
+<sc-if value="{{md.show.m3}}" hint-placeholder-val="{{ false }}"><span class="lbl">16 A · Prises séjour</span><h3 class="d" style="font-size: 26px; font-weight: 750">Prises de courant</h3><p style="margin: 0; color: var(--muted)">Les prises du séjour : télévision, lampes, chargeurs.</p><div class="spec"><div><span class="lbl">Protection</span><b>16 A</b></div><div><span class="lbl">Fil</span><b>1,5 mm²</b></div><div style="grid-column: span 2"><span class="lbl">Règle</span><span>8 prises maximum en 1,5 mm² sous 16 A (12 en 2,5 mm² sous 20 A).</span></div></div></sc-if>
+<sc-if value="{{md.show.m4}}" hint-placeholder-val="{{ false }}"><span class="lbl">16 A · Prises chambres</span><h3 class="d" style="font-size: 26px; font-weight: 750">Prises des chambres</h3><p style="margin: 0; color: var(--muted)">Un circuit à part pour les chambres limite la coupure à une zone.</p><div class="spec"><div><span class="lbl">Protection</span><b>16 A</b></div><div><span class="lbl">Fil</span><b>1,5 mm²</b></div><div style="grid-column: span 2"><span class="lbl">Règle</span><span>8 prises maximum en 1,5 mm² sous 16 A.</span></div></div></sc-if>
+<sc-if value="{{md.show.m5}}" hint-placeholder-val="{{ false }}"><span class="lbl">40 A · Diff. 30 mA type A</span><h3 class="d" style="font-size: 26px; font-weight: 750">Le différentiel de type A</h3><p style="margin: 0; color: var(--muted)">Il détecte aussi les fuites des appareils électroniques. Il protège les plaques de cuisson et le lave-linge.</p><div class="spec"><div><span class="lbl">Protection</span><b>40 A · 30 mA</b></div><div><span class="lbl">Fil</span><b>—</b></div><div style="grid-column: span 2"><span class="lbl">Règle</span><span>Obligatoire pour le circuit des plaques et celui du lave-linge.</span></div></div></sc-if>
+<sc-if value="{{md.show.m6}}" hint-placeholder-val="{{ false }}"><span class="lbl">20 A · Lave-linge</span><h3 class="d" style="font-size: 26px; font-weight: 750">Circuit spécialisé</h3><p style="margin: 0; color: var(--muted)">Un appareil, un circuit : le lave-linge ne partage sa ligne avec rien d'autre.</p><div class="spec"><div><span class="lbl">Protection</span><b>20 A</b></div><div><span class="lbl">Fil</span><b>2,5 mm²</b></div><div style="grid-column: span 2"><span class="lbl">Règle</span><span>Circuit dédié pour lave-linge, lave-vaisselle, four et sèche-linge.</span></div></div></sc-if>
+<sc-if value="{{md.show.m7}}" hint-placeholder-val="{{ false }}"><span class="lbl">20 A · Four</span><h3 class="d" style="font-size: 26px; font-weight: 750">Circuit du four</h3><p style="margin: 0; color: var(--muted)">Le four tire beaucoup de puissance pendant longtemps, d'où sa ligne dédiée.</p><div class="spec"><div><span class="lbl">Protection</span><b>20 A</b></div><div><span class="lbl">Fil</span><b>2,5 mm²</b></div><div style="grid-column: span 2"><span class="lbl">Règle</span><span>Circuit dédié en 2,5 mm².</span></div></div></sc-if>
+<sc-if value="{{md.show.m8}}" hint-placeholder-val="{{ false }}"><span class="lbl">32 A · Plaques</span><h3 class="d" style="font-size: 26px; font-weight: 750">Plaques de cuisson</h3><p style="margin: 0; color: var(--muted)">Le circuit le plus puissant du logement, en fil épais.</p><div class="spec"><div><span class="lbl">Protection</span><b>32 A</b></div><div><span class="lbl">Fil</span><b>6 mm²</b></div><div style="grid-column: span 2"><span class="lbl">Règle</span><span>Circuit dédié 32 A en 6 mm², sous différentiel type A.</span></div></div></sc-if>
+<sc-if value="{{md.show.m9}}" hint-placeholder-val="{{ false }}"><span class="lbl">40 A · Borne IRVE</span><h3 class="d" style="font-size: 26px; font-weight: 750">Borne de recharge</h3><p style="margin: 0; color: var(--muted)">Ligne dédiée calculée selon la puissance de la borne et la longueur du câble.</p><div class="spec"><div><span class="lbl">Protection</span><b>Selon borne</b></div><div><span class="lbl">Fil</span><b>Selon étude</b></div><div style="grid-column: span 2"><span class="lbl">Règle</span><span>Pose par un électricien qualifié IRVE au-delà de 3,7 kW.</span></div></div></sc-if>
+</div>
+</div>
+</section>
+
+<!-- Appel final -->
+<section style="background: var(--ink); color: #fff">
+<div class="wrap g" style="padding-block: 80px; align-items: center">
+<div class="s7" style="display: flex; flex-direction: column; gap: 10px">
+<span class="lbl" style="color: var(--signal)">7 j/7 pour les urgences</span>
+<a href="tel:[VOTRE-TÉLÉPHONE]" class="big num" style="color: #fff; text-decoration: none">[VOTRE TÉLÉPHONE]</a>
+</div>
+<div class="s5" style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end">
+<a class="btn btn-y" href="Devis.dc.html">Demander un devis</a>
+</div>
+</div>
+</section>
+</main>
+
+<footer style="background: var(--ink); color: #C9D3E0; border-top: 1px solid #2C3A4E">
+<div class="wrap" style="padding-block: 28px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 14px">
+<span>© Volta Électricité · [VILLE] · SIRET [NUMÉRO] · Décennale [ASSUREUR]</span>
+<span style="display: flex; flex-wrap: wrap; gap: 20px"><a href="Services.dc.html" style="color: #fff">Services</a><a href="Methode.dc.html" style="color: #fff">Méthode</a><a href="Realisations.dc.html" style="color: #fff">Réalisations</a><a href="Contact.dc.html" style="color: #fff">Contact</a><a href="Main.dc.html" style="color: #fff">Mentions légales</a><a href="Admin.dc.html" style="color: #fff">Espace admin</a></span>
+<span style="flex-basis: 100%">Zones d'intervention : <a href="Ville.dc.html" style="color: #fff">[VILLE VOISINE]</a> · <a href="Ville.dc.html" style="color: #fff">[VILLE VOISINE 2]</a> · <a href="Ville.dc.html" style="color: #fff">[VILLE VOISINE 3]</a></span>
+</div>
+</footer>
+<nav class="mbar" aria-label="Actions rapides"><a class="btn call" href="tel:[VOTRE-TÉLÉPHONE]">Appeler</a><a class="btn btn-p" href="Devis.dc.html">Devis gratuit</a></nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2453E6","options":["#2453E6","#0F7B6C","#C2410C","#6D28D9"]},"$preview":{"width":1440,"height":2700}}'>
+class Component extends DCLogic {
+  // Blocs créés dans l'admin : lus dans le navigateur et rechargés dès que l'admin les change.
+  // shortcut: stockés dans ce navigateur seulement ; sur le vrai site, à lire depuis le serveur.
+  componentDidMount() {
+    this.onBlocks = () => this.loadBlocks();
+    this.loadBlocks();
+    try { this.chan = new BroadcastChannel('volta-blocks'); this.chan.onmessage = this.onBlocks; } catch (e) {}
+    window.addEventListener('storage', this.onBlocks);
+  }
+  componentWillUnmount() {
+    try { if (this.chan) this.chan.close(); } catch (e) {}
+    window.removeEventListener('storage', this.onBlocks);
+  }
+  // Créneaux fermés dans l'admin ou déjà réservés en ligne (même navigateur).
+  takenSlots() {
+    try {
+      const c = JSON.parse(localStorage.getItem('volta.closed') || '[]'), r = JSON.parse(localStorage.getItem('volta.requests') || '[]');
+      return (Array.isArray(c) ? c : []).concat((Array.isArray(r) ? r : []).filter((x) => x && x.kind === 'rdv').map((x) => x.slot));
+    } catch (e) { return []; }
+  }
+  // Les créneaux de l'accueil sont ceux de la 1re semaine de la page Rendez-vous : le choix y est repris.
+  bookable(o) {
+    const RDV = { lun1: 'a1', lun3: 'a3', mar2: 'b2', mar3: 'b3', mer1: 'c1', mer2: 'c2', jeu3: 'd3', ven1: 'e1', ven2: 'e2', ven3: 'e3' };
+    const taken = (this.state || {}).taken || [];
+    o.off = {};
+    for (const id of Object.keys(RDV)) {
+      const go = o.go[id];
+      o.off[id] = taken.includes(RDV[id]);
+      o.go[id] = () => { try { localStorage.setItem('volta.prefill', JSON.stringify({ slot: RDV[id] })); } catch (e) {} go(); };
+    }
+    return o;
+  }
+  loadBlocks() {
+    let all = [];
+    try { all = JSON.parse(localStorage.getItem('volta.blocks') || '[]'); } catch (e) {}
+    let site = {};
+    try { site = JSON.parse(localStorage.getItem('volta.site') || '{}') || {}; } catch (e) {}
+    this.setState({ taken: this.takenSlots() });
+    this.setState({ siteBlocks: Array.isArray(all) ? all : [], removed: { svc: Array.isArray(site.svc) ? site.svc : [], ch: Array.isArray(site.ch) ? site.ch : [] } });
+  }
+  // Supprime un bloc pour tout le site : enregistre, prévient l'admin et les autres pages.
+  removeBlock(id) {
+    let all = [];
+    try { all = JSON.parse(localStorage.getItem('volta.blocks') || '[]'); } catch (e) {}
+    const next = (Array.isArray(all) ? all : []).filter((b) => b && b.id !== id);
+    try { localStorage.setItem('volta.blocks', JSON.stringify(next)); } catch (e) {}
+    try { const c = new BroadcastChannel('volta-blocks'); c.postMessage('changed'); c.close(); } catch (e) {}
+    this.setState({ askDel: null, siteBlocks: next });
+  }
+  blockVals(page) {
+    const TAG = { texte: 'Info', image: 'Image', bouton: 'Action', faq: 'Question', service: 'Service', chantier: 'Réalisation' };
+    const list = ((this.state && this.state.siteBlocks) || [])
+      .filter((b) => b && b.page === page && !b.hidden && typeof b.title === 'string')
+      .map((b) => ({
+        title: b.title, text: typeof b.text === 'string' ? b.text : '', tag: TAG[b.type] || 'Info',
+        isImage: b.type === 'image', isPhoto: b.type === 'chantier', isFaq: b.type === 'faq', isButton: b.type === 'bouton',
+        isService: b.type === 'service', isPlain: b.type !== 'faq' && b.type !== 'bouton',
+        asking: (this.state || {}).askDel === b.id, idle: (this.state || {}).askDel !== b.id,
+        ask: () => this.setState({ askDel: b.id }),
+        cancel: () => this.setState({ askDel: null }),
+        remove: () => this.removeBlock(b.id),
+      }));
+    return { pageBlocks: list, hasBlocks: list.length > 0 };
+  }
+  constructor(props) {
+    super(props);
+    this.state = { slot: null, issue: 'trip', bat: 'b60', kw: 'k74', mod: 'm0' };
+  }
+  // Un groupe de choix : classe, état pressé, action et visibilité pour chaque id. Les textes restent dans la page.
+  choice(key, ids, base, extra) {
+    const o = { cls: {}, on: {}, go: {}, show: {} };
+    for (const id of ids) {
+      const a = this.state[key] === id;
+      o.cls[id] = base + ((extra && extra[id]) || '') + (a ? ' on' : '');
+      o.on[id] = a ? 'true' : 'false';
+      o.go[id] = () => this.setState({ [key]: id });
+      o.show[id] = a;
+    }
+    return o;
+  }
+  renderVals() {
+    const s = this.state;
+    const SLOTS = { lun1: 'Lun 8:00', lun3: 'Lun 14:00', mar2: 'Mar 10:30', mar3: 'Mar 16:00', mer1: 'Mer 8:00', mer2: 'Mer 10:30', jeu3: 'Jeu 14:00', ven1: 'Ven 8:00', ven2: 'Ven 10:30', ven3: 'Ven 16:00' };
+    const BAT = { b40: 40, b60: 60, b80: 80 };
+    const KW = { k23: 2.3, k37: 3.7, k74: 7.4, k11: 11 };
+    // Temps 10 → 80 % = 70 % de la batterie / puissance, + ~10 % de pertes.
+    const hours = BAT[s.bat] * 0.7 / KW[s.kw] * 1.1;
+    const h = Math.floor(hours), m = Math.round((hours - h) * 60);
+    return {
+      accent: this.props.accent ?? '#2453E6', ...this.blockVals('Accueil'),
+      sl: this.bookable(this.choice('slot', Object.keys(SLOTS), 'slot')),
+      noSlot: !s.slot, hasSlot: !!s.slot, slotName: SLOTS[s.slot] || '',
+      is: this.choice('issue', ['off', 'trip', 'hot', 'work'], 'opt'),
+      bat: this.choice('bat', Object.keys(BAT), 'opt'),
+      kw: this.choice('kw', Object.keys(KW), 'opt'),
+      time: '≈ ' + h + ' h ' + String(m).padStart(2, '0'),
+      md: this.choice('mod', ['m0', 'm1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9'], 'mod', { m0: ' m2', m5: ' m2' }),
+    };
+  }
+}
+</script>
+</body>
+</html>
