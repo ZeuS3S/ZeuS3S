@@ -17,7 +17,9 @@ Sans configuration, la page fonctionne déjà : le jeu tourne en local (progress
 
 ## Mise en place (environ 20 minutes)
 
-Supabase sert de serveur : il gère la connexion Discord/Google et stocke les scores. L'offre gratuite suffit.
+Supabase sert de serveur : il gère la connexion Discord/Google et stocke les scores, le fil d'actu et les clans. L'offre gratuite suffit.
+
+Si tu as déjà exécuté une ancienne version de `schema.sql`, supprime d'abord les règles (`drop policy`…) ou repars d'une table vide : la nouvelle version ajoute les clans.
 
 1. **Créer le projet** sur https://supabase.com (New project).
 2. **Créer la table** : *SQL Editor > New query*, colle le contenu de `schema.sql`, puis *Run*.
