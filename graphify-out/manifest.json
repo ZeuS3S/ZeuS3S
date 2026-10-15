@@ -204,9 +204,9 @@
     "semantic_hash": ""
   },
   "coupe-fruits/build.py": {
-    "mtime": 1792018119.0971687,
-    "seen": 1792018256.1920621,
-    "ast_hash": "2263171eb00286c2571efff26ea0270f",
+    "mtime": 1792023093.0886137,
+    "seen": 1792023902.536631,
+    "ast_hash": "302212c1c34c66b08765197ab866469d",
     "semantic_hash": ""
   },
   "coupe-fruits/config.js": {
@@ -282,21 +282,45 @@
     "semantic_hash": ""
   },
   "coupe-fruits/README.md": {
-    "mtime": 1792018240.6414418,
-    "seen": 1792018256.1928723,
-    "ast_hash": "f673e63a6024b58ba7a7a02d26d81e45",
+    "mtime": 1792023137.0822093,
+    "seen": 1792023902.5373302,
+    "ast_hash": "1de7357853dcef948975575308ad0ab0",
     "semantic_hash": ""
   },
   "coupe-fruits/index.html": {
-    "mtime": 1792018119.1254447,
-    "seen": 1792018256.1928737,
-    "ast_hash": "156bd42abc121ab435ff0729f17964a8",
+    "mtime": 1792023893.930491,
+    "seen": 1792023902.5373318,
+    "ast_hash": "332dbe05b11a7820c0c59f65d2e50c58",
     "semantic_hash": ""
   },
   "coupe-fruits/jeu.html": {
-    "mtime": 1792018119.0899906,
-    "seen": 1792018256.1928756,
-    "ast_hash": "86c55bd1e5bb807c528ce400aafdb22e",
+    "mtime": 1792023893.9024553,
+    "seen": 1792023902.537333,
+    "ast_hash": "7fa2c2148847fd3904234d5d70d5deae",
+    "semantic_hash": ""
+  },
+  "coupe-fruits/sw.js": {
+    "mtime": 1792023093.0516336,
+    "seen": 1792023902.5366602,
+    "ast_hash": "8fcf6e7c68c22a1a1699cdda2f0ea5b1",
+    "semantic_hash": ""
+  },
+  "coupe-fruits/icon-192.png": {
+    "mtime": 1792023074.5157728,
+    "seen": 1792023902.5373838,
+    "ast_hash": "2ab52f136451978f5d7ae26934717c15",
+    "semantic_hash": ""
+  },
+  "coupe-fruits/icon-512.png": {
+    "mtime": 1792023074.6197727,
+    "seen": 1792023902.537385,
+    "ast_hash": "791e5fe15c1c15949daca28b85ada56a",
+    "semantic_hash": ""
+  },
+  "coupe-fruits/og.png": {
+    "mtime": 1792023076.6357727,
+    "seen": 1792023902.5373862,
+    "ast_hash": "3759db5062b9ddacc7cb6850c3a07cff",
     "semantic_hash": ""
   }
 }

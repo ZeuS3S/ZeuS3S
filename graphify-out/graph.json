@@ -63,364 +63,124 @@
   },
   "nodes": [
     {
-      "id": "radio_bot_access_cancontrol",
-      "label": "canControl()",
+      "id": "volta_support_ef",
+      "label": "ef()",
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "onPanelAction",
+      "community_name": "le",
       "file_type": "code",
-      "norm_label": "cancontrol()",
-      "source_file": "radio-bot/access.js",
-      "source_location": "L4"
+      "norm_label": "ef()",
+      "source_file": "Volta/support.js",
+      "source_location": "L129"
     },
     {
-      "id": "radio_bot_db_user",
-      "label": "user()",
+      "id": "volta_support_eh",
+      "label": "Eh()",
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "onPanelAction",
+      "community_name": "le",
       "file_type": "code",
-      "norm_label": "user()",
-      "source_file": "radio-bot/db.js",
-      "source_location": "L48"
+      "norm_label": "eh()",
+      "source_file": "Volta/support.js",
+      "source_location": "L129"
     },
     {
-      "id": "radio_bot_i18n_t",
-      "label": "t()",
+      "id": "volta_support_le",
+      "label": "le()",
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "onPanelAction",
+      "community_name": "le",
       "file_type": "code",
-      "norm_label": "t()",
-      "source_file": "radio-bot/i18n.js",
-      "source_location": "L387"
+      "norm_label": "le()",
+      "source_file": "Volta/support.js",
+      "source_location": "L58"
     },
     {
-      "id": "radio_bot_index_badgeof",
-      "label": "badgeOf()",
+      "id": "volta_support_lg",
+      "label": "lg()",
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "onPanelAction",
+      "community_name": "le",
       "file_type": "code",
-      "norm_label": "badgeof()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L272"
+      "norm_label": "lg()",
+      "source_file": "Volta/support.js",
+      "source_location": "L58"
     },
     {
-      "id": "radio_bot_index_configpayload",
-      "label": "configPayload()",
+      "id": "volta_support_o",
+      "label": "O()",
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "onPanelAction",
+      "community_name": "le",
       "file_type": "code",
-      "norm_label": "configpayload()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L635"
+      "norm_label": "o()",
+      "source_file": "Volta/support.js",
+      "source_location": "L15"
     },
     {
-      "id": "radio_bot_index_container",
-      "label": "container()",
+      "id": "volta_support_qt",
+      "label": "Qt()",
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "onPanelAction",
+      "community_name": "le",
       "file_type": "code",
-      "norm_label": "container()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L258"
+      "norm_label": "qt()",
+      "source_file": "Volta/support.js",
+      "source_location": "L349"
     },
     {
-      "id": "radio_bot_index_editpanel",
-      "label": "editPanel()",
+      "id": "volta_support_se",
+      "label": "Se()",
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "onPanelAction",
+      "community_name": "le",
       "file_type": "code",
-      "norm_label": "editpanel()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L371"
+      "norm_label": "se()",
+      "source_file": "Volta/support.js",
+      "source_location": "L349"
     },
     {
-      "id": "radio_bot_index_embed",
-      "label": "embed()",
+      "id": "volta_support_st",
+      "label": "st()",
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "onPanelAction",
+      "community_name": "le",
       "file_type": "code",
-      "norm_label": "embed()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L1045"
+      "norm_label": "st()",
+      "source_file": "Volta/support.js",
+      "source_location": "L349"
     },
     {
-      "id": "radio_bot_index_favoritespayload",
-      "label": "favoritesPayload()",
+      "id": "volta_support_u",
+      "label": "U()",
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "onPanelAction",
+      "community_name": "le",
       "file_type": "code",
-      "norm_label": "favoritespayload()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L614"
+      "norm_label": "u()",
+      "source_file": "Volta/support.js",
+      "source_location": "L349"
     },
     {
-      "id": "radio_bot_index_historypayload",
-      "label": "historyPayload()",
+      "id": "volta_support_v",
+      "label": "v()",
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "onPanelAction",
+      "community_name": "le",
       "file_type": "code",
-      "norm_label": "historypayload()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L487"
-    },
-    {
-      "id": "radio_bot_index_langfor",
-      "label": "langFor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "langfor()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L50"
-    },
-    {
-      "id": "radio_bot_index_logpremium",
-      "label": "logPremium()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "logpremium()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L802"
-    },
-    {
-      "id": "radio_bot_index_notice",
-      "label": "notice()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "notice()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L259"
-    },
-    {
-      "id": "radio_bot_index_onconfigaction",
-      "label": "onConfigAction()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "onconfigaction()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L667"
-    },
-    {
-      "id": "radio_bot_index_onfavaction",
-      "label": "onFavAction()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "onfavaction()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L627"
-    },
-    {
-      "id": "radio_bot_index_onhistoryaction",
-      "label": "onHistoryAction()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "onhistoryaction()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L501"
-    },
-    {
-      "id": "radio_bot_index_onpanelaction",
-      "label": "onPanelAction()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "onpanelaction()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L516"
-    },
-    {
-      "id": "radio_bot_index_onstationsaction",
-      "label": "onStationsAction()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "onstationsaction()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L605"
-    },
-    {
-      "id": "radio_bot_index_panelpayload",
-      "label": "panelPayload()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "panelpayload()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L276"
-    },
-    {
-      "id": "radio_bot_index_playfor",
-      "label": "playFor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "playfor()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L447"
-    },
-    {
-      "id": "radio_bot_index_renderof",
-      "label": "renderOf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "renderof()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L273"
-    },
-    {
-      "id": "radio_bot_index_reply",
-      "label": "reply()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "reply()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L1046"
-    },
-    {
-      "id": "radio_bot_index_row",
-      "label": "row()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "row()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L262"
-    },
-    {
-      "id": "radio_bot_index_sendhealth",
-      "label": "sendHealth()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "sendhealth()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L989"
-    },
-    {
-      "id": "radio_bot_index_sendlyrics",
-      "label": "sendLyrics()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "sendlyrics()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L474"
-    },
-    {
-      "id": "radio_bot_index_sendpanel",
-      "label": "sendPanel()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "sendpanel()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L436"
-    },
-    {
-      "id": "radio_bot_index_stationspayload",
-      "label": "stationsPayload()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "stationspayload()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L589"
-    },
-    {
-      "id": "radio_bot_index_text",
-      "label": "text()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "text()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L257"
-    },
-    {
-      "id": "radio_bot_index_togglefavorite",
-      "label": "toggleFavorite()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "togglefavorite()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L460"
-    },
-    {
-      "id": "radio_bot_premium_ispremium",
-      "label": "isPremium()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "onPanelAction",
-      "file_type": "code",
-      "norm_label": "ispremium()",
-      "source_file": "radio-bot/premium.js",
-      "source_location": "L14"
+      "norm_label": "v()",
+      "source_file": "Volta/support.js",
+      "source_location": "L109"
     },
     {
       "id": "radio_bot_bot_test_member",
@@ -435,6 +195,18 @@
       "source_location": "L8"
     },
     {
+      "id": "radio_bot_icy_fetchtitle",
+      "label": "fetchTitle()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "bot.test.js",
+      "file_type": "code",
+      "norm_label": "fetchtitle()",
+      "source_file": "radio-bot/icy.js",
+      "source_location": "L2"
+    },
+    {
       "id": "volta_support_ac",
       "label": "ac()",
       "_callable": true,
@@ -447,14 +219,14 @@
       "source_location": "L49"
     },
     {
-      "id": "volta_support_ae",
-      "label": "ae()",
+      "id": "volta_support_at",
+      "label": "at()",
       "_callable": true,
       "_origin": "ast",
       "community": 11,
       "community_name": "b",
       "file_type": "code",
-      "norm_label": "ae()",
+      "norm_label": "at()",
       "source_file": "Volta/support.js",
       "source_location": "L349"
     },
@@ -495,6 +267,18 @@
       "source_location": "L50"
     },
     {
+      "id": "volta_support_c",
+      "label": "C()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "b",
+      "file_type": "code",
+      "norm_label": "c()",
+      "source_file": "Volta/support.js",
+      "source_location": "L14"
+    },
+    {
       "id": "volta_support_ce",
       "label": "Ce()",
       "_callable": true,
@@ -505,18 +289,6 @@
       "norm_label": "ce()",
       "source_file": "Volta/support.js",
       "source_location": "L97"
-    },
-    {
-      "id": "volta_support_ci",
-      "label": "ci()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "b",
-      "file_type": "code",
-      "norm_label": "ci()",
-      "source_file": "Volta/support.js",
-      "source_location": "L149"
     },
     {
       "id": "volta_support_cn",
@@ -553,6 +325,18 @@
       "norm_label": "n()",
       "source_file": "Volta/support.js",
       "source_location": "L350"
+    },
+    {
+      "id": "volta_support_de",
+      "label": "de()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "b",
+      "file_type": "code",
+      "norm_label": "de()",
+      "source_file": "Volta/support.js",
+      "source_location": "L52"
     },
     {
       "id": "volta_support_dh",
@@ -771,18 +555,6 @@
       "source_location": "L15"
     },
     {
-      "id": "volta_support_ea",
-      "label": "ea()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "b",
-      "file_type": "code",
-      "norm_label": "ea()",
-      "source_file": "Volta/support.js",
-      "source_location": "L110"
-    },
-    {
       "id": "volta_support_eb",
       "label": "eb()",
       "_callable": true,
@@ -891,42 +663,6 @@
       "source_location": "L130"
     },
     {
-      "id": "volta_support_fg",
-      "label": "Fg()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "b",
-      "file_type": "code",
-      "norm_label": "fg()",
-      "source_file": "Volta/support.js",
-      "source_location": "L75"
-    },
-    {
-      "id": "volta_support_fj",
-      "label": "fj()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "b",
-      "file_type": "code",
-      "norm_label": "fj()",
-      "source_file": "Volta/support.js",
-      "source_location": "L52"
-    },
-    {
-      "id": "volta_support_gd",
-      "label": "gd()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "b",
-      "file_type": "code",
-      "norm_label": "gd()",
-      "source_file": "Volta/support.js",
-      "source_location": "L94"
-    },
-    {
       "id": "volta_support_ge",
       "label": "ge()",
       "_callable": true,
@@ -939,16 +675,28 @@
       "source_location": "L349"
     },
     {
-      "id": "volta_support_ij",
-      "label": "Ij()",
+      "id": "volta_support_gj",
+      "label": "gj()",
       "_callable": true,
       "_origin": "ast",
       "community": 11,
       "community_name": "b",
       "file_type": "code",
-      "norm_label": "ij()",
+      "norm_label": "gj()",
       "source_file": "Volta/support.js",
-      "source_location": "L86"
+      "source_location": "L53"
+    },
+    {
+      "id": "volta_support_hh",
+      "label": "hh()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "b",
+      "file_type": "code",
+      "norm_label": "hh()",
+      "source_file": "Volta/support.js",
+      "source_location": "L96"
     },
     {
       "id": "volta_support_j",
@@ -1047,18 +795,6 @@
       "source_location": "L304"
     },
     {
-      "id": "volta_support_lb",
-      "label": "Lb()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "b",
-      "file_type": "code",
-      "norm_label": "lb()",
-      "source_file": "Volta/support.js",
-      "source_location": "L106"
-    },
-    {
       "id": "volta_support_lk",
       "label": "Lk()",
       "_callable": true,
@@ -1143,6 +879,42 @@
       "source_location": "L350"
     },
     {
+      "id": "volta_support_mf",
+      "label": "mf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "b",
+      "file_type": "code",
+      "norm_label": "mf()",
+      "source_file": "Volta/support.js",
+      "source_location": "L138"
+    },
+    {
+      "id": "volta_support_mi",
+      "label": "mi()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "b",
+      "file_type": "code",
+      "norm_label": "mi()",
+      "source_file": "Volta/support.js",
+      "source_location": "L156"
+    },
+    {
+      "id": "volta_support_mt",
+      "label": "mt()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "b",
+      "file_type": "code",
+      "norm_label": "mt()",
+      "source_file": "Volta/support.js",
+      "source_location": "L349"
+    },
+    {
       "id": "volta_support_n",
       "label": "N()",
       "_callable": true,
@@ -1153,6 +925,30 @@
       "norm_label": "n()",
       "source_file": "Volta/support.js",
       "source_location": "L12"
+    },
+    {
+      "id": "volta_support_ne",
+      "label": "ne()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "b",
+      "file_type": "code",
+      "norm_label": "ne()",
+      "source_file": "Volta/support.js",
+      "source_location": "L61"
+    },
+    {
+      "id": "volta_support_nf",
+      "label": "nf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "b",
+      "file_type": "code",
+      "norm_label": "nf()",
+      "source_file": "Volta/support.js",
+      "source_location": "L139"
     },
     {
       "id": "volta_support_ni",
@@ -1179,6 +975,18 @@
       "source_location": "L350"
     },
     {
+      "id": "volta_support_nn_a",
+      "label": "a()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "b",
+      "file_type": "code",
+      "norm_label": "a()",
+      "source_file": "Volta/support.js",
+      "source_location": "L350"
+    },
+    {
       "id": "volta_support_nn_c",
       "label": "c()",
       "_callable": true,
@@ -1201,30 +1009,6 @@
       "norm_label": "f()",
       "source_file": "Volta/support.js",
       "source_location": "L350"
-    },
-    {
-      "id": "volta_support_nt",
-      "label": "Nt()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "b",
-      "file_type": "code",
-      "norm_label": "nt()",
-      "source_file": "Volta/support.js",
-      "source_location": "L350"
-    },
-    {
-      "id": "volta_support_oe",
-      "label": "oe()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "b",
-      "file_type": "code",
-      "norm_label": "oe()",
-      "source_file": "Volta/support.js",
-      "source_location": "L63"
     },
     {
       "id": "volta_support_oh",
@@ -1347,16 +1131,16 @@
       "source_location": "L117"
     },
     {
-      "id": "volta_support_qt",
-      "label": "Qt()",
+      "id": "volta_support_qh",
+      "label": "Qh()",
       "_callable": true,
       "_origin": "ast",
       "community": 11,
       "community_name": "b",
       "file_type": "code",
-      "norm_label": "qt()",
+      "norm_label": "qh()",
       "source_file": "Volta/support.js",
-      "source_location": "L349"
+      "source_location": "L144"
     },
     {
       "id": "volta_support_r",
@@ -1369,30 +1153,6 @@
       "norm_label": "r()",
       "source_file": "Volta/support.js",
       "source_location": "L17"
-    },
-    {
-      "id": "volta_support_ra",
-      "label": "ra()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "b",
-      "file_type": "code",
-      "norm_label": "ra()",
-      "source_file": "Volta/support.js",
-      "source_location": "L14"
-    },
-    {
-      "id": "volta_support_rc",
-      "label": "Rc()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "b",
-      "file_type": "code",
-      "norm_label": "rc()",
-      "source_file": "Volta/support.js",
-      "source_location": "L109"
     },
     {
       "id": "volta_support_rd",
@@ -1431,16 +1191,16 @@
       "source_location": "L160"
     },
     {
-      "id": "volta_support_s",
-      "label": "S()",
+      "id": "volta_support_sb",
+      "label": "Sb()",
       "_callable": true,
       "_origin": "ast",
       "community": 11,
       "community_name": "b",
       "file_type": "code",
-      "norm_label": "s()",
+      "norm_label": "sb()",
       "source_file": "Volta/support.js",
-      "source_location": "L16"
+      "source_location": "L129"
     },
     {
       "id": "volta_support_tc",
@@ -1491,6 +1251,18 @@
       "source_location": "L166"
     },
     {
+      "id": "volta_support_ue",
+      "label": "Ue()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "b",
+      "file_type": "code",
+      "norm_label": "ue()",
+      "source_file": "Volta/support.js",
+      "source_location": "L113"
+    },
+    {
       "id": "volta_support_uf",
       "label": "uf()",
       "_callable": true,
@@ -1527,30 +1299,6 @@
       "source_location": "L170"
     },
     {
-      "id": "volta_support_v",
-      "label": "v()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "b",
-      "file_type": "code",
-      "norm_label": "v()",
-      "source_file": "Volta/support.js",
-      "source_location": "L109"
-    },
-    {
-      "id": "volta_support_vc",
-      "label": "Vc()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "b",
-      "file_type": "code",
-      "norm_label": "vc()",
-      "source_file": "Volta/support.js",
-      "source_location": "L71"
-    },
-    {
       "id": "volta_support_ve",
       "label": "ve()",
       "_callable": true,
@@ -1573,6 +1321,18 @@
       "norm_label": "vf()",
       "source_file": "Volta/support.js",
       "source_location": "L154"
+    },
+    {
+      "id": "volta_support_vh",
+      "label": "vh()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "b",
+      "file_type": "code",
+      "norm_label": "vh()",
+      "source_file": "Volta/support.js",
+      "source_location": "L111"
     },
     {
       "id": "volta_support_wd",
@@ -1609,18 +1369,6 @@
       "norm_label": "y()",
       "source_file": "Volta/support.js",
       "source_location": "L10"
-    },
-    {
-      "id": "volta_support_ya",
-      "label": "ya()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "b",
-      "file_type": "code",
-      "norm_label": "ya()",
-      "source_file": "Volta/support.js",
-      "source_location": "L149"
     },
     {
       "id": "volta_support_ye",
@@ -1683,40 +1431,28 @@
       "source_location": "L240"
     },
     {
-      "id": "volta_support_zg",
-      "label": "zg()",
+      "id": "volta_support_zf",
+      "label": "zf()",
       "_callable": true,
       "_origin": "ast",
       "community": 11,
       "community_name": "b",
       "file_type": "code",
-      "norm_label": "zg()",
+      "norm_label": "zf()",
       "source_file": "Volta/support.js",
-      "source_location": "L67"
+      "source_location": "L159"
     },
     {
-      "id": "volta_support_a",
-      "label": "$a()",
+      "id": "volta_support_ae",
+      "label": "ae()",
       "_callable": true,
       "_origin": "ast",
       "community": 12,
       "community_name": "support.js",
       "file_type": "code",
-      "norm_label": "$a()",
+      "norm_label": "ae()",
       "source_file": "Volta/support.js",
-      "source_location": "L94"
-    },
-    {
-      "id": "volta_support_ab",
-      "label": "Ab()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "support.js",
-      "file_type": "code",
-      "norm_label": "ab()",
-      "source_file": "Volta/support.js",
-      "source_location": "L47"
+      "source_location": "L349"
     },
     {
       "id": "volta_support_aj",
@@ -1743,30 +1479,6 @@
       "source_location": "L109"
     },
     {
-      "id": "volta_support_ct",
-      "label": "Ct()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "support.js",
-      "file_type": "code",
-      "norm_label": "ct()",
-      "source_file": "Volta/support.js",
-      "source_location": "L350"
-    },
-    {
-      "id": "volta_support_dd",
-      "label": "dd()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "support.js",
-      "file_type": "code",
-      "norm_label": "dd()",
-      "source_file": "Volta/support.js",
-      "source_location": "L83"
-    },
-    {
       "id": "volta_support_et",
       "label": "Et()",
       "_callable": true,
@@ -1777,6 +1489,18 @@
       "norm_label": "et()",
       "source_file": "Volta/support.js",
       "source_location": "L349"
+    },
+    {
+      "id": "volta_support_fg",
+      "label": "Fg()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "support.js",
+      "file_type": "code",
+      "norm_label": "fg()",
+      "source_file": "Volta/support.js",
+      "source_location": "L75"
     },
     {
       "id": "volta_support_fh",
@@ -1815,28 +1539,16 @@
       "source_location": "L349"
     },
     {
-      "id": "volta_support_gh",
-      "label": "gh()",
+      "id": "volta_support_gd",
+      "label": "gd()",
       "_callable": true,
       "_origin": "ast",
       "community": 12,
       "community_name": "support.js",
       "file_type": "code",
-      "norm_label": "gh()",
+      "norm_label": "gd()",
       "source_file": "Volta/support.js",
-      "source_location": "L95"
-    },
-    {
-      "id": "volta_support_hc",
-      "label": "hc()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "support.js",
-      "file_type": "code",
-      "norm_label": "hc()",
-      "source_file": "Volta/support.js",
-      "source_location": "L70"
+      "source_location": "L94"
     },
     {
       "id": "volta_support_hd",
@@ -1849,6 +1561,18 @@
       "norm_label": "hd()",
       "source_file": "Volta/support.js",
       "source_location": "L94"
+    },
+    {
+      "id": "volta_support_ij",
+      "label": "Ij()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "support.js",
+      "file_type": "code",
+      "norm_label": "ij()",
+      "source_file": "Volta/support.js",
+      "source_location": "L86"
     },
     {
       "id": "volta_support_ik",
@@ -1899,30 +1623,6 @@
       "source_location": "L10"
     },
     {
-      "id": "volta_support_ka",
-      "label": "ka()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "support.js",
-      "file_type": "code",
-      "norm_label": "ka()",
-      "source_file": "Volta/support.js",
-      "source_location": "L17"
-    },
-    {
-      "id": "volta_support_ka_b",
-      "label": "b()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "support.js",
-      "file_type": "code",
-      "norm_label": "b()",
-      "source_file": "Volta/support.js",
-      "source_location": "L83"
-    },
-    {
       "id": "volta_support_kd",
       "label": "kd()",
       "_callable": true,
@@ -1947,16 +1647,16 @@
       "source_location": "L228"
     },
     {
-      "id": "volta_support_lh",
-      "label": "Lh()",
+      "id": "volta_support_lb",
+      "label": "Lb()",
       "_callable": true,
       "_origin": "ast",
       "community": 12,
       "community_name": "support.js",
       "file_type": "code",
-      "norm_label": "lh()",
+      "norm_label": "lb()",
       "source_file": "Volta/support.js",
-      "source_location": "L144"
+      "source_location": "L106"
     },
     {
       "id": "volta_support_lj",
@@ -1983,42 +1683,6 @@
       "source_location": "L12"
     },
     {
-      "id": "volta_support_mb",
-      "label": "mb()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "support.js",
-      "file_type": "code",
-      "norm_label": "mb()",
-      "source_file": "Volta/support.js",
-      "source_location": "L47"
-    },
-    {
-      "id": "volta_support_mh",
-      "label": "Mh()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "support.js",
-      "file_type": "code",
-      "norm_label": "mh()",
-      "source_file": "Volta/support.js",
-      "source_location": "L143"
-    },
-    {
-      "id": "volta_support_mj",
-      "label": "mj()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "support.js",
-      "file_type": "code",
-      "norm_label": "mj()",
-      "source_file": "Volta/support.js",
-      "source_location": "L67"
-    },
-    {
       "id": "volta_support_oa",
       "label": "oa()",
       "_callable": true,
@@ -2031,28 +1695,16 @@
       "source_location": "L11"
     },
     {
-      "id": "volta_support_on",
-      "label": "on()",
+      "id": "volta_support_ra",
+      "label": "ra()",
       "_callable": true,
       "_origin": "ast",
       "community": 12,
       "community_name": "support.js",
       "file_type": "code",
-      "norm_label": "on()",
+      "norm_label": "ra()",
       "source_file": "Volta/support.js",
-      "source_location": "L350"
-    },
-    {
-      "id": "volta_support_ph",
-      "label": "Ph()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "support.js",
-      "file_type": "code",
-      "norm_label": "ph()",
-      "source_file": "Volta/support.js",
-      "source_location": "L144"
+      "source_location": "L14"
     },
     {
       "id": "volta_support_rendervals",
@@ -2079,18 +1731,6 @@
       "source_location": "L146"
     },
     {
-      "id": "volta_support_rn",
-      "label": "rn()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "support.js",
-      "file_type": "code",
-      "norm_label": "rn()",
-      "source_file": "Volta/support.js",
-      "source_location": "L350"
-    },
-    {
       "id": "volta_support_setstate",
       "label": "setState()",
       "_callable": true,
@@ -2101,18 +1741,6 @@
       "norm_label": "setstate()",
       "source_file": "Volta/support.js",
       "source_location": "L349"
-    },
-    {
-      "id": "volta_support_sn",
-      "label": "sn()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "support.js",
-      "file_type": "code",
-      "norm_label": "sn()",
-      "source_file": "Volta/support.js",
-      "source_location": "L350"
     },
     {
       "id": "volta_support_tk",
@@ -2175,18 +1803,6 @@
       "source_location": "L244"
     },
     {
-      "id": "volta_support_xg",
-      "label": "Xg()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "support.js",
-      "file_type": "code",
-      "norm_label": "xg()",
-      "source_file": "Volta/support.js",
-      "source_location": "L95"
-    },
-    {
       "id": "volta_support_xt",
       "label": "Xt()",
       "_callable": true,
@@ -2221,6 +1837,18 @@
       "norm_label": "zj()",
       "source_file": "Volta/support.js",
       "source_location": "L79"
+    },
+    {
+      "id": "volta_support_bf",
+      "label": "Bf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 13,
+      "community_name": "xk",
+      "file_type": "code",
+      "norm_label": "bf()",
+      "source_file": "Volta/support.js",
+      "source_location": "L166"
     },
     {
       "id": "volta_support_bk",
@@ -2271,28 +1899,16 @@
       "source_location": "L177"
     },
     {
-      "id": "volta_support_dn",
-      "label": "dn()",
+      "id": "volta_support_ea",
+      "label": "ea()",
       "_callable": true,
       "_origin": "ast",
       "community": 13,
       "community_name": "xk",
       "file_type": "code",
-      "norm_label": "dn()",
+      "norm_label": "ea()",
       "source_file": "Volta/support.js",
-      "source_location": "L350"
-    },
-    {
-      "id": "volta_support_dt",
-      "label": "dt()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "xk",
-      "file_type": "code",
-      "norm_label": "dt()",
-      "source_file": "Volta/support.js",
-      "source_location": "L349"
+      "source_location": "L110"
     },
     {
       "id": "volta_support_f",
@@ -2319,28 +1935,28 @@
       "source_location": "L17"
     },
     {
-      "id": "volta_support_fi",
-      "label": "fi()",
+      "id": "volta_support_fj",
+      "label": "fj()",
       "_callable": true,
       "_origin": "ast",
       "community": 13,
       "community_name": "xk",
       "file_type": "code",
-      "norm_label": "fi()",
+      "norm_label": "fj()",
       "source_file": "Volta/support.js",
-      "source_location": "L151"
+      "source_location": "L52"
     },
     {
-      "id": "volta_support_ha",
-      "label": "Ha()",
+      "id": "volta_support_gf",
+      "label": "gf()",
       "_callable": true,
       "_origin": "ast",
       "community": 13,
       "community_name": "xk",
       "file_type": "code",
-      "norm_label": "ha()",
+      "norm_label": "gf()",
       "source_file": "Volta/support.js",
-      "source_location": "L210"
+      "source_location": "L136"
     },
     {
       "id": "volta_support_hf",
@@ -2353,6 +1969,18 @@
       "norm_label": "hf()",
       "source_file": "Volta/support.js",
       "source_location": "L137"
+    },
+    {
+      "id": "volta_support_ih",
+      "label": "Ih()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 13,
+      "community_name": "xk",
+      "file_type": "code",
+      "norm_label": "ih()",
+      "source_file": "Volta/support.js",
+      "source_location": "L136"
     },
     {
       "id": "volta_support_jf",
@@ -2391,30 +2019,6 @@
       "source_location": "L111"
     },
     {
-      "id": "volta_support_le",
-      "label": "le()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "xk",
-      "file_type": "code",
-      "norm_label": "le()",
-      "source_file": "Volta/support.js",
-      "source_location": "L58"
-    },
-    {
-      "id": "volta_support_lg",
-      "label": "lg()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "xk",
-      "file_type": "code",
-      "norm_label": "lg()",
-      "source_file": "Volta/support.js",
-      "source_location": "L58"
-    },
-    {
       "id": "volta_support_ln_s",
       "label": "S()",
       "_callable": true,
@@ -2439,30 +2043,6 @@
       "source_location": "L350"
     },
     {
-      "id": "volta_support_ln_w",
-      "label": "w()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "xk",
-      "file_type": "code",
-      "norm_label": "w()",
-      "source_file": "Volta/support.js",
-      "source_location": "L350"
-    },
-    {
-      "id": "volta_support_me",
-      "label": "me()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "xk",
-      "file_type": "code",
-      "norm_label": "me()",
-      "source_file": "Volta/support.js",
-      "source_location": "L60"
-    },
-    {
       "id": "volta_support_mg",
       "label": "mg()",
       "_callable": true,
@@ -2475,18 +2055,6 @@
       "source_location": "L59"
     },
     {
-      "id": "volta_support_mt",
-      "label": "mt()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "xk",
-      "file_type": "code",
-      "norm_label": "mt()",
-      "source_file": "Volta/support.js",
-      "source_location": "L349"
-    },
-    {
       "id": "volta_support_ng",
       "label": "ng()",
       "_callable": true,
@@ -2497,6 +2065,18 @@
       "norm_label": "ng()",
       "source_file": "Volta/support.js",
       "source_location": "L61"
+    },
+    {
+      "id": "volta_support_oe",
+      "label": "oe()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 13,
+      "community_name": "xk",
+      "file_type": "code",
+      "norm_label": "oe()",
+      "source_file": "Volta/support.js",
+      "source_location": "L63"
     },
     {
       "id": "volta_support_og",
@@ -2523,18 +2103,6 @@
       "source_location": "L62"
     },
     {
-      "id": "volta_support_qe",
-      "label": "qe()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "xk",
-      "file_type": "code",
-      "norm_label": "qe()",
-      "source_file": "Volta/support.js",
-      "source_location": "L64"
-    },
-    {
       "id": "volta_support_qg",
       "label": "qg()",
       "_callable": true,
@@ -2547,52 +2115,40 @@
       "source_location": "L62"
     },
     {
-      "id": "volta_support_rg",
-      "label": "rg()",
+      "id": "volta_support_qi",
+      "label": "qi()",
       "_callable": true,
       "_origin": "ast",
       "community": 13,
       "community_name": "xk",
       "file_type": "code",
-      "norm_label": "rg()",
+      "norm_label": "qi()",
       "source_file": "Volta/support.js",
-      "source_location": "L63"
+      "source_location": "L159"
     },
     {
-      "id": "volta_support_se",
-      "label": "Se()",
+      "id": "volta_support_s",
+      "label": "S()",
       "_callable": true,
       "_origin": "ast",
       "community": 13,
       "community_name": "xk",
       "file_type": "code",
-      "norm_label": "se()",
+      "norm_label": "s()",
       "source_file": "Volta/support.js",
-      "source_location": "L349"
+      "source_location": "L16"
     },
     {
-      "id": "volta_support_sg",
-      "label": "sg()",
+      "id": "volta_support_t",
+      "label": "T()",
       "_callable": true,
       "_origin": "ast",
       "community": 13,
       "community_name": "xk",
       "file_type": "code",
-      "norm_label": "sg()",
+      "norm_label": "t()",
       "source_file": "Volta/support.js",
-      "source_location": "L63"
-    },
-    {
-      "id": "volta_support_st",
-      "label": "st()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "xk",
-      "file_type": "code",
-      "norm_label": "st()",
-      "source_file": "Volta/support.js",
-      "source_location": "L349"
+      "source_location": "L17"
     },
     {
       "id": "volta_support_tb",
@@ -2607,30 +2163,6 @@
       "source_location": "L136"
     },
     {
-      "id": "volta_support_th",
-      "label": "th()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "xk",
-      "file_type": "code",
-      "norm_label": "th()",
-      "source_file": "Volta/support.js",
-      "source_location": "L110"
-    },
-    {
-      "id": "volta_support_u",
-      "label": "U()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "xk",
-      "file_type": "code",
-      "norm_label": "u()",
-      "source_file": "Volta/support.js",
-      "source_location": "L349"
-    },
-    {
       "id": "volta_support_ua",
       "label": "Ua()",
       "_callable": true,
@@ -2641,6 +2173,30 @@
       "norm_label": "ua()",
       "source_file": "Volta/support.js",
       "source_location": "L55"
+    },
+    {
+      "id": "volta_support_ub",
+      "label": "ub()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 13,
+      "community_name": "xk",
+      "file_type": "code",
+      "norm_label": "ub()",
+      "source_file": "Volta/support.js",
+      "source_location": "L136"
+    },
+    {
+      "id": "volta_support_ui",
+      "label": "ui()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 13,
+      "community_name": "xk",
+      "file_type": "code",
+      "norm_label": "ui()",
+      "source_file": "Volta/support.js",
+      "source_location": "L167"
     },
     {
       "id": "volta_support_wb",
@@ -2655,6 +2211,42 @@
       "source_location": "L194"
     },
     {
+      "id": "volta_support_wi",
+      "label": "wi()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 13,
+      "community_name": "xk",
+      "file_type": "code",
+      "norm_label": "wi()",
+      "source_file": "Volta/support.js",
+      "source_location": "L173"
+    },
+    {
+      "id": "volta_support_wk",
+      "label": "wk()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 13,
+      "community_name": "xk",
+      "file_type": "code",
+      "norm_label": "wk()",
+      "source_file": "Volta/support.js",
+      "source_location": "L176"
+    },
+    {
+      "id": "volta_support_xd",
+      "label": "xd()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 13,
+      "community_name": "xk",
+      "file_type": "code",
+      "norm_label": "xd()",
+      "source_file": "Volta/support.js",
+      "source_location": "L137"
+    },
+    {
       "id": "volta_support_xk",
       "label": "xk()",
       "_callable": true,
@@ -2665,54 +2257,6 @@
       "norm_label": "xk()",
       "source_file": "Volta/support.js",
       "source_location": "L179"
-    },
-    {
-      "id": "volta_support_aa",
-      "label": "aa()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "m",
-      "file_type": "code",
-      "norm_label": "aa()",
-      "source_file": "Volta/support.js",
-      "source_location": "L156"
-    },
-    {
-      "id": "volta_support_af",
-      "label": "af()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "m",
-      "file_type": "code",
-      "norm_label": "af()",
-      "source_file": "Volta/support.js",
-      "source_location": "L128"
-    },
-    {
-      "id": "volta_support_at",
-      "label": "at()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "m",
-      "file_type": "code",
-      "norm_label": "at()",
-      "source_file": "Volta/support.js",
-      "source_location": "L349"
-    },
-    {
-      "id": "volta_support_c",
-      "label": "C()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "m",
-      "file_type": "code",
-      "norm_label": "c()",
-      "source_file": "Volta/support.js",
-      "source_location": "L14"
     },
     {
       "id": "volta_support_cc",
@@ -2739,28 +2283,16 @@
       "source_location": "L83"
     },
     {
-      "id": "volta_support_de",
-      "label": "de()",
+      "id": "volta_support_gh",
+      "label": "gh()",
       "_callable": true,
       "_origin": "ast",
       "community": 14,
       "community_name": "m",
       "file_type": "code",
-      "norm_label": "de()",
+      "norm_label": "gh()",
       "source_file": "Volta/support.js",
-      "source_location": "L52"
-    },
-    {
-      "id": "volta_support_gj",
-      "label": "gj()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "m",
-      "file_type": "code",
-      "norm_label": "gj()",
-      "source_file": "Volta/support.js",
-      "source_location": "L53"
+      "source_location": "L95"
     },
     {
       "id": "volta_support_gk",
@@ -2785,18 +2317,6 @@
       "norm_label": "$h()",
       "source_file": "Volta/support.js",
       "source_location": "L148"
-    },
-    {
-      "id": "volta_support_hh",
-      "label": "hh()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "m",
-      "file_type": "code",
-      "norm_label": "hh()",
-      "source_file": "Volta/support.js",
-      "source_location": "L96"
     },
     {
       "id": "volta_support_jd",
@@ -2847,28 +2367,28 @@
       "source_location": "L350"
     },
     {
-      "id": "volta_support_mf",
-      "label": "mf()",
+      "id": "volta_support_ln_w",
+      "label": "w()",
       "_callable": true,
       "_origin": "ast",
       "community": 14,
       "community_name": "m",
       "file_type": "code",
-      "norm_label": "mf()",
+      "norm_label": "w()",
       "source_file": "Volta/support.js",
-      "source_location": "L138"
+      "source_location": "L350"
     },
     {
-      "id": "volta_support_mi",
-      "label": "mi()",
+      "id": "volta_support_mj",
+      "label": "mj()",
       "_callable": true,
       "_origin": "ast",
       "community": 14,
       "community_name": "m",
       "file_type": "code",
-      "norm_label": "mi()",
+      "norm_label": "mj()",
       "source_file": "Volta/support.js",
-      "source_location": "L156"
+      "source_location": "L67"
     },
     {
       "id": "volta_support_nd",
@@ -2883,30 +2403,6 @@
       "source_location": "L227"
     },
     {
-      "id": "volta_support_ne",
-      "label": "ne()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "m",
-      "file_type": "code",
-      "norm_label": "ne()",
-      "source_file": "Volta/support.js",
-      "source_location": "L61"
-    },
-    {
-      "id": "volta_support_nf",
-      "label": "nf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "m",
-      "file_type": "code",
-      "norm_label": "nf()",
-      "source_file": "Volta/support.js",
-      "source_location": "L139"
-    },
-    {
       "id": "volta_support_nh",
       "label": "Nh()",
       "_callable": true,
@@ -2919,18 +2415,6 @@
       "source_location": "L143"
     },
     {
-      "id": "volta_support_nn_a",
-      "label": "a()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "m",
-      "file_type": "code",
-      "norm_label": "a()",
-      "source_file": "Volta/support.js",
-      "source_location": "L350"
-    },
-    {
       "id": "volta_support_of",
       "label": "of()",
       "_callable": true,
@@ -2941,18 +2425,6 @@
       "norm_label": "of()",
       "source_file": "Volta/support.js",
       "source_location": "L140"
-    },
-    {
-      "id": "volta_support_pe",
-      "label": "pe()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "m",
-      "file_type": "code",
-      "norm_label": "pe()",
-      "source_file": "Volta/support.js",
-      "source_location": "L63"
     },
     {
       "id": "volta_support_pf",
@@ -2979,30 +2451,6 @@
       "source_location": "L146"
     },
     {
-      "id": "volta_support_qh",
-      "label": "Qh()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "m",
-      "file_type": "code",
-      "norm_label": "qh()",
-      "source_file": "Volta/support.js",
-      "source_location": "L144"
-    },
-    {
-      "id": "volta_support_qi",
-      "label": "qi()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "m",
-      "file_type": "code",
-      "norm_label": "qi()",
-      "source_file": "Volta/support.js",
-      "source_location": "L159"
-    },
-    {
       "id": "volta_support_rh",
       "label": "rh()",
       "_callable": true,
@@ -3027,40 +2475,16 @@
       "source_location": "L139"
     },
     {
-      "id": "volta_support_sb",
-      "label": "Sb()",
+      "id": "volta_support_xg",
+      "label": "Xg()",
       "_callable": true,
       "_origin": "ast",
       "community": 14,
       "community_name": "m",
       "file_type": "code",
-      "norm_label": "sb()",
+      "norm_label": "xg()",
       "source_file": "Volta/support.js",
-      "source_location": "L129"
-    },
-    {
-      "id": "volta_support_ue",
-      "label": "Ue()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "m",
-      "file_type": "code",
-      "norm_label": "ue()",
-      "source_file": "Volta/support.js",
-      "source_location": "L113"
-    },
-    {
-      "id": "volta_support_vh",
-      "label": "vh()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "m",
-      "file_type": "code",
-      "norm_label": "vh()",
-      "source_file": "Volta/support.js",
-      "source_location": "L111"
+      "source_location": "L95"
     },
     {
       "id": "volta_support_xh",
@@ -3087,292 +2511,28 @@
       "source_location": "L112"
     },
     {
-      "id": "volta_support_zf",
-      "label": "zf()",
+      "id": "volta_support_aa",
+      "label": "aa()",
       "_callable": true,
       "_origin": "ast",
-      "community": 14,
-      "community_name": "m",
+      "community": 16,
+      "community_name": "pi",
       "file_type": "code",
-      "norm_label": "zf()",
+      "norm_label": "aa()",
       "source_file": "Volta/support.js",
-      "source_location": "L159"
+      "source_location": "L156"
     },
     {
-      "id": "radio_bot_access_formatminutes",
-      "label": "formatMinutes()",
+      "id": "volta_support_af",
+      "label": "af()",
       "_callable": true,
       "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
+      "community": 16,
+      "community_name": "pi",
       "file_type": "code",
-      "norm_label": "formatminutes()",
-      "source_file": "radio-bot/access.js",
-      "source_location": "L24"
-    },
-    {
-      "id": "radio_bot_access_weekstart",
-      "label": "weekStart()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "weekstart()",
-      "source_file": "radio-bot/access.js",
-      "source_location": "L52"
-    },
-    {
-      "id": "radio_bot_index_addrecent",
-      "label": "addRecent()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "addrecent()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L53"
-    },
-    {
-      "id": "radio_bot_index_announcechannel",
-      "label": "announceChannel()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "announcechannel()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L769"
-    },
-    {
-      "id": "radio_bot_index_cfgof",
-      "label": "cfgOf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "cfgof()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L38"
-    },
-    {
-      "id": "radio_bot_index_countlistening",
-      "label": "countListening()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "countlistening()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L166"
-    },
-    {
-      "id": "radio_bot_index_langof",
-      "label": "langOf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "langof()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L45"
-    },
-    {
-      "id": "radio_bot_index_listenersof",
-      "label": "listenersOf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "listenersof()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L63"
-    },
-    {
-      "id": "radio_bot_index_mayberecap",
-      "label": "maybeRecap()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "mayberecap()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L790"
-    },
-    {
-      "id": "radio_bot_index_newweek",
-      "label": "newWeek()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "newweek()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L772"
-    },
-    {
-      "id": "radio_bot_index_premiumnotice",
-      "label": "premiumNotice()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "premiumnotice()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L808"
-    },
-    {
-      "id": "radio_bot_index_recapembed",
-      "label": "recapEmbed()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "recapembed()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L774"
-    },
-    {
-      "id": "radio_bot_index_save",
-      "label": "save()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "save()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L39"
-    },
-    {
-      "id": "radio_bot_index_seteffect",
-      "label": "setEffect()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "seteffect()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L202"
-    },
-    {
-      "id": "radio_bot_index_setsleep",
-      "label": "setSleep()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "setsleep()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L209"
-    },
-    {
-      "id": "radio_bot_index_setvolume",
-      "label": "setVolume()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "setvolume()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L195"
-    },
-    {
-      "id": "radio_bot_index_stationcolor",
-      "label": "stationColor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "stationcolor()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L70"
-    },
-    {
-      "id": "radio_bot_index_statuspayload",
-      "label": "statusPayload()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "statuspayload()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L717"
-    },
-    {
-      "id": "radio_bot_index_stop",
-      "label": "stop()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "stop()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L217"
-    },
-    {
-      "id": "radio_bot_index_tick",
-      "label": "tick()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "tick()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L823"
-    },
-    {
-      "id": "radio_bot_index_topof",
-      "label": "topOf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "topof()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L65"
-    },
-    {
-      "id": "radio_bot_index_updatestatusmessage",
-      "label": "updateStatusMessage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "updatestatusmessage()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L742"
-    },
-    {
-      "id": "radio_bot_index_voicemembers",
-      "label": "voiceMembers()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "cfgOf",
-      "file_type": "code",
-      "norm_label": "voicemembers()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L61"
+      "norm_label": "af()",
+      "source_file": "Volta/support.js",
+      "source_location": "L128"
     },
     {
       "id": "volta_support_ah",
@@ -3380,23 +2540,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "wi",
+      "community_name": "pi",
       "file_type": "code",
       "norm_label": "ah()",
       "source_file": "Volta/support.js",
       "source_location": "L89"
-    },
-    {
-      "id": "volta_support_bf",
-      "label": "Bf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "wi",
-      "file_type": "code",
-      "norm_label": "bf()",
-      "source_file": "Volta/support.js",
-      "source_location": "L166"
     },
     {
       "id": "volta_support_fb",
@@ -3404,7 +2552,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "wi",
+      "community_name": "pi",
       "file_type": "code",
       "norm_label": "fb()",
       "source_file": "Volta/support.js",
@@ -3416,23 +2564,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "wi",
+      "community_name": "pi",
       "file_type": "code",
       "norm_label": "$g()",
       "source_file": "Volta/support.js",
       "source_location": "L89"
-    },
-    {
-      "id": "volta_support_gf",
-      "label": "gf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "wi",
-      "file_type": "code",
-      "norm_label": "gf()",
-      "source_file": "Volta/support.js",
-      "source_location": "L136"
     },
     {
       "id": "volta_support_gi",
@@ -3440,7 +2576,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "wi",
+      "community_name": "pi",
       "file_type": "code",
       "norm_label": "gi()",
       "source_file": "Volta/support.js",
@@ -3452,7 +2588,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "wi",
+      "community_name": "pi",
       "file_type": "code",
       "norm_label": "hi()",
       "source_file": "Volta/support.js",
@@ -3464,23 +2600,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "wi",
+      "community_name": "pi",
       "file_type": "code",
       "norm_label": "ic()",
       "source_file": "Volta/support.js",
       "source_location": "L74"
-    },
-    {
-      "id": "volta_support_ih",
-      "label": "Ih()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "wi",
-      "file_type": "code",
-      "norm_label": "ih()",
-      "source_file": "Volta/support.js",
-      "source_location": "L136"
     },
     {
       "id": "volta_support_ki",
@@ -3488,7 +2612,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "wi",
+      "community_name": "pi",
       "file_type": "code",
       "norm_label": "ki()",
       "source_file": "Volta/support.js",
@@ -3500,7 +2624,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "wi",
+      "community_name": "pi",
       "file_type": "code",
       "norm_label": "pi()",
       "source_file": "Volta/support.js",
@@ -3512,35 +2636,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "wi",
+      "community_name": "pi",
       "file_type": "code",
       "norm_label": "si()",
       "source_file": "Volta/support.js",
       "source_location": "L166"
     },
     {
-      "id": "volta_support_ub",
-      "label": "ub()",
+      "id": "volta_support_th",
+      "label": "th()",
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "wi",
+      "community_name": "pi",
       "file_type": "code",
-      "norm_label": "ub()",
+      "norm_label": "th()",
       "source_file": "Volta/support.js",
-      "source_location": "L136"
-    },
-    {
-      "id": "volta_support_ui",
-      "label": "ui()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "wi",
-      "file_type": "code",
-      "norm_label": "ui()",
-      "source_file": "Volta/support.js",
-      "source_location": "L167"
+      "source_location": "L110"
     },
     {
       "id": "volta_support_wf",
@@ -3548,59 +2660,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "wi",
+      "community_name": "pi",
       "file_type": "code",
       "norm_label": "wf()",
       "source_file": "Volta/support.js",
       "source_location": "L154"
-    },
-    {
-      "id": "volta_support_wi",
-      "label": "wi()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "wi",
-      "file_type": "code",
-      "norm_label": "wi()",
-      "source_file": "Volta/support.js",
-      "source_location": "L173"
-    },
-    {
-      "id": "volta_support_wk",
-      "label": "wk()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "wi",
-      "file_type": "code",
-      "norm_label": "wk()",
-      "source_file": "Volta/support.js",
-      "source_location": "L176"
-    },
-    {
-      "id": "volta_support_xa",
-      "label": "xa()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "wi",
-      "file_type": "code",
-      "norm_label": "xa()",
-      "source_file": "Volta/support.js",
-      "source_location": "L216"
-    },
-    {
-      "id": "volta_support_xd",
-      "label": "xd()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "wi",
-      "file_type": "code",
-      "norm_label": "xd()",
-      "source_file": "Volta/support.js",
-      "source_location": "L137"
     },
     {
       "id": "volta_support_xi",
@@ -3608,7 +2672,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "wi",
+      "community_name": "pi",
       "file_type": "code",
       "norm_label": "xi()",
       "source_file": "Volta/support.js",
@@ -3620,7 +2684,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 17,
-      "community_name": "di",
+      "community_name": "fi",
       "file_type": "code",
       "norm_label": "componentdidmount()",
       "source_file": "Volta/support.js",
@@ -3632,7 +2696,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 17,
-      "community_name": "di",
+      "community_name": "fi",
       "file_type": "code",
       "norm_label": "componentdidupdate()",
       "source_file": "Volta/support.js",
@@ -3644,21 +2708,9 @@
       "_callable": true,
       "_origin": "ast",
       "community": 17,
-      "community_name": "di",
+      "community_name": "fi",
       "file_type": "code",
       "norm_label": "componentwillunmount()",
-      "source_file": "Volta/support.js",
-      "source_location": "L349"
-    },
-    {
-      "id": "volta_support_constructor",
-      "label": "constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "di",
-      "file_type": "code",
-      "norm_label": "constructor()",
       "source_file": "Volta/support.js",
       "source_location": "L349"
     },
@@ -3668,11 +2720,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 17,
-      "community_name": "di",
+      "community_name": "fi",
       "file_type": "code",
       "norm_label": "di()",
       "source_file": "Volta/support.js",
       "source_location": "L150"
+    },
+    {
+      "id": "volta_support_fi",
+      "label": "fi()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "fi",
+      "file_type": "code",
+      "norm_label": "fi()",
+      "source_file": "Volta/support.js",
+      "source_location": "L151"
     },
     {
       "id": "volta_support_gc",
@@ -3680,11 +2744,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 17,
-      "community_name": "di",
+      "community_name": "fi",
       "file_type": "code",
       "norm_label": "gc()",
       "source_file": "Volta/support.js",
       "source_location": "L197"
+    },
+    {
+      "id": "volta_support_ha",
+      "label": "Ha()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "fi",
+      "file_type": "code",
+      "norm_label": "ha()",
+      "source_file": "Volta/support.js",
+      "source_location": "L210"
     },
     {
       "id": "volta_support_id",
@@ -3692,7 +2768,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 17,
-      "community_name": "di",
+      "community_name": "fi",
       "file_type": "code",
       "norm_label": "id()",
       "source_file": "Volta/support.js",
@@ -3704,7 +2780,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 17,
-      "community_name": "di",
+      "community_name": "fi",
       "file_type": "code",
       "norm_label": "if()",
       "source_file": "Volta/support.js",
@@ -3716,7 +2792,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 17,
-      "community_name": "di",
+      "community_name": "fi",
       "file_type": "code",
       "norm_label": "ii()",
       "source_file": "Volta/support.js",
@@ -3728,7 +2804,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 17,
-      "community_name": "di",
+      "community_name": "fi",
       "file_type": "code",
       "norm_label": "jb()",
       "source_file": "Volta/support.js",
@@ -3740,7 +2816,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 17,
-      "community_name": "di",
+      "community_name": "fi",
       "file_type": "code",
       "norm_label": "ji()",
       "source_file": "Volta/support.js",
@@ -3752,7 +2828,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 17,
-      "community_name": "di",
+      "community_name": "fi",
       "file_type": "code",
       "norm_label": "mc()",
       "source_file": "Volta/support.js",
@@ -3764,47 +2840,35 @@
       "_callable": true,
       "_origin": "ast",
       "community": 17,
-      "community_name": "di",
+      "community_name": "fi",
       "file_type": "code",
       "norm_label": "nc()",
       "source_file": "Volta/support.js",
       "source_location": "L78"
     },
     {
-      "id": "volta_support_t",
-      "label": "T()",
+      "id": "volta_support_rg",
+      "label": "rg()",
       "_callable": true,
       "_origin": "ast",
       "community": 17,
-      "community_name": "di",
+      "community_name": "fi",
       "file_type": "code",
-      "norm_label": "t()",
+      "norm_label": "rg()",
       "source_file": "Volta/support.js",
-      "source_location": "L17"
+      "source_location": "L63"
     },
     {
-      "id": "volta_support_xc",
-      "label": "Xc()",
+      "id": "volta_support_sg",
+      "label": "sg()",
       "_callable": true,
       "_origin": "ast",
       "community": 17,
-      "community_name": "di",
+      "community_name": "fi",
       "file_type": "code",
-      "norm_label": "xc()",
+      "norm_label": "sg()",
       "source_file": "Volta/support.js",
-      "source_location": "L77"
-    },
-    {
-      "id": "volta_support_yj",
-      "label": "yj()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "di",
-      "file_type": "code",
-      "norm_label": "yj()",
-      "source_file": "Volta/support.js",
-      "source_location": "L78"
+      "source_location": "L63"
     },
     {
       "id": "volta_support_ag",
@@ -3963,30 +3027,6 @@
       "source_location": "L172"
     },
     {
-      "id": "volta_support_ai",
-      "label": "ai()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "D",
-      "file_type": "code",
-      "norm_label": "ai()",
-      "source_file": "Volta/support.js",
-      "source_location": "L149"
-    },
-    {
-      "id": "volta_support_bi",
-      "label": "bi()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "D",
-      "file_type": "code",
-      "norm_label": "bi()",
-      "source_file": "Volta/support.js",
-      "source_location": "L149"
-    },
-    {
       "id": "volta_support_bj",
       "label": "bj()",
       "_callable": true,
@@ -4035,30 +3075,6 @@
       "source_location": "L47"
     },
     {
-      "id": "volta_support_ef",
-      "label": "ef()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "D",
-      "file_type": "code",
-      "norm_label": "ef()",
-      "source_file": "Volta/support.js",
-      "source_location": "L129"
-    },
-    {
-      "id": "volta_support_eh",
-      "label": "Eh()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "D",
-      "file_type": "code",
-      "norm_label": "eh()",
-      "source_file": "Volta/support.js",
-      "source_location": "L129"
-    },
-    {
       "id": "volta_support_ej",
       "label": "ej()",
       "_callable": true,
@@ -4095,52 +3111,208 @@
       "source_location": "L349"
     },
     {
-      "id": "volta_support_o",
-      "label": "O()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "D",
-      "file_type": "code",
-      "norm_label": "o()",
-      "source_file": "Volta/support.js",
-      "source_location": "L15"
-    },
-    {
-      "id": "volta_support_qk",
-      "label": "qk()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "D",
-      "file_type": "code",
-      "norm_label": "qk()",
-      "source_file": "Volta/support.js",
-      "source_location": "L148"
-    },
-    {
-      "id": "radio_bot_access_isstreamurl",
-      "label": "isStreamUrl()",
+      "id": "radio_bot_access_cancontrol",
+      "label": "canControl()",
       "_callable": true,
       "_origin": "ast",
       "community": 2,
       "community_name": "index.js",
       "file_type": "code",
-      "norm_label": "isstreamurl()",
+      "norm_label": "cancontrol()",
       "source_file": "radio-bot/access.js",
-      "source_location": "L10"
+      "source_location": "L4"
     },
     {
-      "id": "radio_bot_icy_fetchtitle",
-      "label": "fetchTitle()",
+      "id": "radio_bot_access_formatminutes",
+      "label": "formatMinutes()",
       "_callable": true,
       "_origin": "ast",
       "community": 2,
       "community_name": "index.js",
       "file_type": "code",
-      "norm_label": "fetchtitle()",
-      "source_file": "radio-bot/icy.js",
-      "source_location": "L2"
+      "norm_label": "formatminutes()",
+      "source_file": "radio-bot/access.js",
+      "source_location": "L24"
+    },
+    {
+      "id": "radio_bot_access_lineat",
+      "label": "lineAt()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "lineat()",
+      "source_file": "radio-bot/access.js",
+      "source_location": "L36"
+    },
+    {
+      "id": "radio_bot_i18n_t",
+      "label": "t()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "t()",
+      "source_file": "radio-bot/i18n.js",
+      "source_location": "L387"
+    },
+    {
+      "id": "radio_bot_index_addrecent",
+      "label": "addRecent()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "addrecent()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L53"
+    },
+    {
+      "id": "radio_bot_index_announcechannel",
+      "label": "announceChannel()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "announcechannel()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L769"
+    },
+    {
+      "id": "radio_bot_index_badgeof",
+      "label": "badgeOf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "badgeof()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L272"
+    },
+    {
+      "id": "radio_bot_index_button",
+      "label": "button()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "button()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L263"
+    },
+    {
+      "id": "radio_bot_index_cfgof",
+      "label": "cfgOf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "cfgof()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L38"
+    },
+    {
+      "id": "radio_bot_index_configpayload",
+      "label": "configPayload()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "configpayload()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L635"
+    },
+    {
+      "id": "radio_bot_index_container",
+      "label": "container()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "container()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L258"
+    },
+    {
+      "id": "radio_bot_index_countlistening",
+      "label": "countListening()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "countlistening()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L166"
+    },
+    {
+      "id": "radio_bot_index_editpanel",
+      "label": "editPanel()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "editpanel()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L371"
+    },
+    {
+      "id": "radio_bot_index_embed",
+      "label": "embed()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "embed()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L1045"
+    },
+    {
+      "id": "radio_bot_index_favoritespayload",
+      "label": "favoritesPayload()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "favoritespayload()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L614"
+    },
+    {
+      "id": "radio_bot_index_genreof",
+      "label": "genreOf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "genreof()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L66"
+    },
+    {
+      "id": "radio_bot_index_healthpayload",
+      "label": "healthPayload()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "healthpayload()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L953"
     },
     {
       "id": "radio_bot_index_helplines",
@@ -4167,6 +3339,66 @@
       "source_location": "L1019"
     },
     {
+      "id": "radio_bot_index_historypayload",
+      "label": "historyPayload()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "historypayload()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L487"
+    },
+    {
+      "id": "radio_bot_index_langfor",
+      "label": "langFor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "langfor()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L50"
+    },
+    {
+      "id": "radio_bot_index_langof",
+      "label": "langOf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "langof()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L45"
+    },
+    {
+      "id": "radio_bot_index_learnlogocolor",
+      "label": "learnLogoColor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "learnlogocolor()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L71"
+    },
+    {
+      "id": "radio_bot_index_listenersof",
+      "label": "listenersOf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "listenersof()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L63"
+    },
+    {
       "id": "radio_bot_index_loc",
       "label": "loc()",
       "_callable": true,
@@ -4177,6 +3409,402 @@
       "norm_label": "loc()",
       "source_file": "radio-bot/index.js",
       "source_location": "L850"
+    },
+    {
+      "id": "radio_bot_index_logpremium",
+      "label": "logPremium()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "logpremium()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L802"
+    },
+    {
+      "id": "radio_bot_index_lyrictick",
+      "label": "lyricTick()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "lyrictick()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L421"
+    },
+    {
+      "id": "radio_bot_index_mayberecap",
+      "label": "maybeRecap()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "mayberecap()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L790"
+    },
+    {
+      "id": "radio_bot_index_newweek",
+      "label": "newWeek()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "newweek()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L772"
+    },
+    {
+      "id": "radio_bot_index_notice",
+      "label": "notice()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "notice()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L259"
+    },
+    {
+      "id": "radio_bot_index_now",
+      "label": "now()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "now()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L35"
+    },
+    {
+      "id": "radio_bot_index_onconfigaction",
+      "label": "onConfigAction()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "onconfigaction()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L667"
+    },
+    {
+      "id": "radio_bot_index_onfavaction",
+      "label": "onFavAction()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "onfavaction()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L627"
+    },
+    {
+      "id": "radio_bot_index_onhistoryaction",
+      "label": "onHistoryAction()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "onhistoryaction()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L501"
+    },
+    {
+      "id": "radio_bot_index_onnewtitle",
+      "label": "onNewTitle()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "onnewtitle()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L240"
+    },
+    {
+      "id": "radio_bot_index_onpanelaction",
+      "label": "onPanelAction()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "onpanelaction()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L516"
+    },
+    {
+      "id": "radio_bot_index_onstationsaction",
+      "label": "onStationsAction()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "onstationsaction()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L605"
+    },
+    {
+      "id": "radio_bot_index_panelpayload",
+      "label": "panelPayload()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "panelpayload()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L276"
+    },
+    {
+      "id": "radio_bot_index_playfor",
+      "label": "playFor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "playfor()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L447"
+    },
+    {
+      "id": "radio_bot_index_playstation",
+      "label": "playStation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "playstation()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L88"
+    },
+    {
+      "id": "radio_bot_index_premiumnotice",
+      "label": "premiumNotice()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "premiumnotice()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L808"
+    },
+    {
+      "id": "radio_bot_index_recapembed",
+      "label": "recapEmbed()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "recapembed()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L774"
+    },
+    {
+      "id": "radio_bot_index_refresh",
+      "label": "refresh()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "refresh()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L394"
+    },
+    {
+      "id": "radio_bot_index_renderof",
+      "label": "renderOf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "renderof()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L273"
+    },
+    {
+      "id": "radio_bot_index_reply",
+      "label": "reply()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "reply()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L1046"
+    },
+    {
+      "id": "radio_bot_index_retry",
+      "label": "retry()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "retry()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L189"
+    },
+    {
+      "id": "radio_bot_index_row",
+      "label": "row()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "row()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L262"
+    },
+    {
+      "id": "radio_bot_index_save",
+      "label": "save()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "save()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L39"
+    },
+    {
+      "id": "radio_bot_index_sendhealth",
+      "label": "sendHealth()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "sendhealth()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L989"
+    },
+    {
+      "id": "radio_bot_index_sendlyrics",
+      "label": "sendLyrics()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "sendlyrics()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L474"
+    },
+    {
+      "id": "radio_bot_index_sendpanel",
+      "label": "sendPanel()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "sendpanel()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L436"
+    },
+    {
+      "id": "radio_bot_index_seteffect",
+      "label": "setEffect()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "seteffect()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L202"
+    },
+    {
+      "id": "radio_bot_index_setsleep",
+      "label": "setSleep()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "setsleep()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L209"
+    },
+    {
+      "id": "radio_bot_index_setvoicestatus",
+      "label": "setVoiceStatus()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "setvoicestatus()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L431"
+    },
+    {
+      "id": "radio_bot_index_setvolume",
+      "label": "setVolume()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "setvolume()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L195"
+    },
+    {
+      "id": "radio_bot_index_shardhealth",
+      "label": "shardHealth()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "shardhealth()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L945"
+    },
+    {
+      "id": "radio_bot_index_startresource",
+      "label": "startResource()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "startresource()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L153"
+    },
+    {
+      "id": "radio_bot_index_stationcolor",
+      "label": "stationColor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "stationcolor()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L70"
     },
     {
       "id": "radio_bot_index_stationoption",
@@ -4191,6 +3819,198 @@
       "source_location": "L854"
     },
     {
+      "id": "radio_bot_index_stationsof",
+      "label": "stationsOf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "stationsof()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L40"
+    },
+    {
+      "id": "radio_bot_index_stationspayload",
+      "label": "stationsPayload()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "stationspayload()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L589"
+    },
+    {
+      "id": "radio_bot_index_statuspayload",
+      "label": "statusPayload()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "statuspayload()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L717"
+    },
+    {
+      "id": "radio_bot_index_stop",
+      "label": "stop()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "stop()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L217"
+    },
+    {
+      "id": "radio_bot_index_suggestionfor",
+      "label": "suggestionFor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "suggestionfor()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L77"
+    },
+    {
+      "id": "radio_bot_index_switchstation",
+      "label": "switchStation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "switchstation()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L137"
+    },
+    {
+      "id": "radio_bot_index_text",
+      "label": "text()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "text()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L257"
+    },
+    {
+      "id": "radio_bot_index_tick",
+      "label": "tick()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "tick()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L823"
+    },
+    {
+      "id": "radio_bot_index_timed",
+      "label": "timed()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "timed()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L934"
+    },
+    {
+      "id": "radio_bot_index_togglefavorite",
+      "label": "toggleFavorite()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "togglefavorite()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L460"
+    },
+    {
+      "id": "radio_bot_index_togglepause",
+      "label": "togglePause()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "togglepause()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L181"
+    },
+    {
+      "id": "radio_bot_index_topof",
+      "label": "topOf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "topof()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L65"
+    },
+    {
+      "id": "radio_bot_index_updatestatusmessage",
+      "label": "updateStatusMessage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "updatestatusmessage()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L742"
+    },
+    {
+      "id": "radio_bot_index_voicemembers",
+      "label": "voiceMembers()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "voicemembers()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L61"
+    },
+    {
+      "id": "radio_bot_premium_ispremium",
+      "label": "isPremium()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "ispremium()",
+      "source_file": "radio-bot/premium.js",
+      "source_location": "L14"
+    },
+    {
+      "id": "radio_bot_premium_premiumuntil",
+      "label": "premiumUntil()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "premiumuntil()",
+      "source_file": "radio-bot/premium.js",
+      "source_location": "L13"
+    },
+    {
       "id": "radio_bot_stations_logo",
       "label": "logo()",
       "_callable": true,
@@ -4203,6 +4023,90 @@
       "source_location": "L4"
     },
     {
+      "id": "radio_bot_web_cachedimage",
+      "label": "cachedImage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "cachedimage()",
+      "source_file": "radio-bot/web.js",
+      "source_location": "L61"
+    },
+    {
+      "id": "radio_bot_web_fetchimage",
+      "label": "fetchImage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "fetchimage()",
+      "source_file": "radio-bot/web.js",
+      "source_location": "L34"
+    },
+    {
+      "id": "radio_bot_web_fetchlyrics",
+      "label": "fetchLyrics()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "fetchlyrics()",
+      "source_file": "radio-bot/web.js",
+      "source_location": "L44"
+    },
+    {
+      "id": "radio_bot_web_fetchtrack",
+      "label": "fetchTrack()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "fetchtrack()",
+      "source_file": "radio-bot/web.js",
+      "source_location": "L13"
+    },
+    {
+      "id": "radio_bot_web_getjson",
+      "label": "getJson()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "getjson()",
+      "source_file": "radio-bot/web.js",
+      "source_location": "L5"
+    },
+    {
+      "id": "radio_bot_web_searchworld",
+      "label": "searchWorld()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "searchworld()",
+      "source_file": "radio-bot/web.js",
+      "source_location": "L50"
+    },
+    {
+      "id": "radio_bot_web_worldstation",
+      "label": "worldStation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "worldstation()",
+      "source_file": "radio-bot/web.js",
+      "source_location": "L55"
+    },
+    {
       "id": "volta_support_eg",
       "label": "Eg()",
       "_callable": true,
@@ -4213,6 +4117,18 @@
       "norm_label": "eg()",
       "source_file": "Volta/support.js",
       "source_location": "L75"
+    },
+    {
+      "id": "volta_support_hc",
+      "label": "hc()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 20,
+      "community_name": "ia",
+      "file_type": "code",
+      "norm_label": "hc()",
+      "source_file": "Volta/support.js",
+      "source_location": "L70"
     },
     {
       "id": "volta_support_hk",
@@ -4323,6 +4239,18 @@
       "source_location": "L74"
     },
     {
+      "id": "volta_support_vc",
+      "label": "Vc()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 20,
+      "community_name": "ia",
+      "file_type": "code",
+      "norm_label": "vc()",
+      "source_file": "Volta/support.js",
+      "source_location": "L71"
+    },
+    {
       "id": "volta_support_wh",
       "label": "wh()",
       "_callable": true,
@@ -4359,12 +4287,48 @@
       "source_location": "L88"
     },
     {
+      "id": "volta_support_ai",
+      "label": "ai()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "xa",
+      "file_type": "code",
+      "norm_label": "ai()",
+      "source_file": "Volta/support.js",
+      "source_location": "L149"
+    },
+    {
+      "id": "volta_support_bi",
+      "label": "bi()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "xa",
+      "file_type": "code",
+      "norm_label": "bi()",
+      "source_file": "Volta/support.js",
+      "source_location": "L149"
+    },
+    {
+      "id": "volta_support_ci",
+      "label": "ci()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "xa",
+      "file_type": "code",
+      "norm_label": "ci()",
+      "source_file": "Volta/support.js",
+      "source_location": "L149"
+    },
+    {
       "id": "volta_support_dg",
       "label": "Dg()",
       "_callable": true,
       "_origin": "ast",
       "community": 21,
-      "community_name": "Sd",
+      "community_name": "xa",
       "file_type": "code",
       "norm_label": "dg()",
       "source_file": "Volta/support.js",
@@ -4376,11 +4340,35 @@
       "_callable": true,
       "_origin": "ast",
       "community": 21,
-      "community_name": "Sd",
+      "community_name": "xa",
       "file_type": "code",
       "norm_label": "hb()",
       "source_file": "Volta/support.js",
       "source_location": "L216"
+    },
+    {
+      "id": "volta_support_lh",
+      "label": "Lh()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "xa",
+      "file_type": "code",
+      "norm_label": "lh()",
+      "source_file": "Volta/support.js",
+      "source_location": "L144"
+    },
+    {
+      "id": "volta_support_mh",
+      "label": "Mh()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "xa",
+      "file_type": "code",
+      "norm_label": "mh()",
+      "source_file": "Volta/support.js",
+      "source_location": "L143"
     },
     {
       "id": "volta_support_pd",
@@ -4388,23 +4376,35 @@
       "_callable": true,
       "_origin": "ast",
       "community": 21,
-      "community_name": "Sd",
+      "community_name": "xa",
       "file_type": "code",
       "norm_label": "pd()",
       "source_file": "Volta/support.js",
       "source_location": "L115"
     },
     {
-      "id": "volta_support_sc",
-      "label": "sc()",
+      "id": "volta_support_ph",
+      "label": "Ph()",
       "_callable": true,
       "_origin": "ast",
       "community": 21,
-      "community_name": "Sd",
+      "community_name": "xa",
       "file_type": "code",
-      "norm_label": "sc()",
+      "norm_label": "ph()",
       "source_file": "Volta/support.js",
-      "source_location": "L96"
+      "source_location": "L144"
+    },
+    {
+      "id": "volta_support_qk",
+      "label": "qk()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "xa",
+      "file_type": "code",
+      "norm_label": "qk()",
+      "source_file": "Volta/support.js",
+      "source_location": "L148"
     },
     {
       "id": "volta_support_sd",
@@ -4412,23 +4412,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 21,
-      "community_name": "Sd",
+      "community_name": "xa",
       "file_type": "code",
       "norm_label": "sd()",
       "source_file": "Volta/support.js",
       "source_location": "L243"
-    },
-    {
-      "id": "volta_support_td",
-      "label": "Td()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "Sd",
-      "file_type": "code",
-      "norm_label": "td()",
-      "source_file": "Volta/support.js",
-      "source_location": "L244"
     },
     {
       "id": "volta_support_vd",
@@ -4436,11 +4424,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 21,
-      "community_name": "Sd",
+      "community_name": "xa",
       "file_type": "code",
       "norm_label": "vd()",
       "source_file": "Volta/support.js",
       "source_location": "L131"
+    },
+    {
+      "id": "volta_support_xa",
+      "label": "xa()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "xa",
+      "file_type": "code",
+      "norm_label": "xa()",
+      "source_file": "Volta/support.js",
+      "source_location": "L216"
     },
     {
       "id": "volta_support_xe",
@@ -4448,35 +4448,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 21,
-      "community_name": "Sd",
+      "community_name": "xa",
       "file_type": "code",
       "norm_label": "xe()",
       "source_file": "Volta/support.js",
       "source_location": "L74"
-    },
-    {
-      "id": "volta_support_yb",
-      "label": "yb()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "Sd",
-      "file_type": "code",
-      "norm_label": "yb()",
-      "source_file": "Volta/support.js",
-      "source_location": "L222"
-    },
-    {
-      "id": "volta_support_yi",
-      "label": "Yi()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "Sd",
-      "file_type": "code",
-      "norm_label": "yi()",
-      "source_file": "Volta/support.js",
-      "source_location": "L245"
     },
     {
       "id": "volta_support_zh",
@@ -4484,155 +4460,59 @@
       "_callable": true,
       "_origin": "ast",
       "community": 21,
-      "community_name": "Sd",
+      "community_name": "xa",
       "file_type": "code",
       "norm_label": "zh()",
       "source_file": "Volta/support.js",
       "source_location": "L113"
     },
     {
-      "id": "volta_support_zk",
-      "label": "Zk()",
+      "id": "volta_support_ct",
+      "label": "Ct()",
       "_callable": true,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "Sd",
+      "community": 22,
+      "community_name": "on",
       "file_type": "code",
-      "norm_label": "zk()",
+      "norm_label": "ct()",
       "source_file": "Volta/support.js",
-      "source_location": "L245"
+      "source_location": "L350"
     },
     {
-      "id": "radio_bot_access_lineat",
-      "label": "lineAt()",
+      "id": "volta_support_on",
+      "label": "on()",
       "_callable": true,
       "_origin": "ast",
       "community": 22,
-      "community_name": "stationsOf",
+      "community_name": "on",
       "file_type": "code",
-      "norm_label": "lineat()",
-      "source_file": "radio-bot/access.js",
-      "source_location": "L36"
+      "norm_label": "on()",
+      "source_file": "Volta/support.js",
+      "source_location": "L350"
     },
     {
-      "id": "radio_bot_audio_createstream",
-      "label": "createStream()",
+      "id": "volta_support_rn",
+      "label": "rn()",
       "_callable": true,
       "_origin": "ast",
       "community": 22,
-      "community_name": "stationsOf",
+      "community_name": "on",
       "file_type": "code",
-      "norm_label": "createstream()",
-      "source_file": "radio-bot/audio.js",
-      "source_location": "L14"
+      "norm_label": "rn()",
+      "source_file": "Volta/support.js",
+      "source_location": "L350"
     },
     {
-      "id": "radio_bot_index_genreof",
-      "label": "genreOf()",
+      "id": "volta_support_sn",
+      "label": "sn()",
       "_callable": true,
       "_origin": "ast",
       "community": 22,
-      "community_name": "stationsOf",
+      "community_name": "on",
       "file_type": "code",
-      "norm_label": "genreof()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L66"
-    },
-    {
-      "id": "radio_bot_index_lyrictick",
-      "label": "lyricTick()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "stationsOf",
-      "file_type": "code",
-      "norm_label": "lyrictick()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L421"
-    },
-    {
-      "id": "radio_bot_index_playstation",
-      "label": "playStation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "stationsOf",
-      "file_type": "code",
-      "norm_label": "playstation()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L88"
-    },
-    {
-      "id": "radio_bot_index_retry",
-      "label": "retry()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "stationsOf",
-      "file_type": "code",
-      "norm_label": "retry()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L189"
-    },
-    {
-      "id": "radio_bot_index_startresource",
-      "label": "startResource()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "stationsOf",
-      "file_type": "code",
-      "norm_label": "startresource()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L153"
-    },
-    {
-      "id": "radio_bot_index_stationsof",
-      "label": "stationsOf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "stationsOf",
-      "file_type": "code",
-      "norm_label": "stationsof()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L40"
-    },
-    {
-      "id": "radio_bot_index_suggestionfor",
-      "label": "suggestionFor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "stationsOf",
-      "file_type": "code",
-      "norm_label": "suggestionfor()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L77"
-    },
-    {
-      "id": "radio_bot_index_switchstation",
-      "label": "switchStation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "stationsOf",
-      "file_type": "code",
-      "norm_label": "switchstation()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L137"
-    },
-    {
-      "id": "radio_bot_index_togglepause",
-      "label": "togglePause()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 22,
-      "community_name": "stationsOf",
-      "file_type": "code",
-      "norm_label": "togglepause()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L181"
+      "norm_label": "sn()",
+      "source_file": "Volta/support.js",
+      "source_location": "L350"
     },
     {
       "id": "radio_bot_access_stripemoji",
@@ -4731,6 +4611,42 @@
       "source_location": "L43"
     },
     {
+      "id": "radio_bot_access_flag",
+      "label": "flag()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 24,
+      "community_name": "access.js",
+      "file_type": "code",
+      "norm_label": "flag()",
+      "source_file": "radio-bot/access.js",
+      "source_location": "L21"
+    },
+    {
+      "id": "radio_bot_access_isstreamurl",
+      "label": "isStreamUrl()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 24,
+      "community_name": "access.js",
+      "file_type": "code",
+      "norm_label": "isstreamurl()",
+      "source_file": "radio-bot/access.js",
+      "source_location": "L10"
+    },
+    {
+      "id": "radio_bot_access_parselrc",
+      "label": "parseLrc()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 24,
+      "community_name": "access.js",
+      "file_type": "code",
+      "norm_label": "parselrc()",
+      "source_file": "radio-bot/access.js",
+      "source_location": "L30"
+    },
+    {
       "id": "radio_bot_access_progressbar",
       "label": "progressBar()",
       "_callable": true,
@@ -4767,12 +4683,24 @@
       "source_location": "L15"
     },
     {
+      "id": "radio_bot_access_weekstart",
+      "label": "weekStart()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 24,
+      "community_name": "access.js",
+      "file_type": "code",
+      "norm_label": "weekstart()",
+      "source_file": "radio-bot/access.js",
+      "source_location": "L52"
+    },
+    {
       "id": "volta_support_bh",
       "label": "bh()",
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "tj",
+      "community_name": "me",
       "file_type": "code",
       "norm_label": "bh()",
       "source_file": "Volta/support.js",
@@ -4784,7 +4712,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "tj",
+      "community_name": "me",
       "file_type": "code",
       "norm_label": "ch()",
       "source_file": "Volta/support.js",
@@ -4796,11 +4724,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "tj",
+      "community_name": "me",
       "file_type": "code",
       "norm_label": "ck()",
       "source_file": "Volta/support.js",
       "source_location": "L194"
+    },
+    {
+      "id": "volta_support_dt",
+      "label": "dt()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 25,
+      "community_name": "me",
+      "file_type": "code",
+      "norm_label": "dt()",
+      "source_file": "Volta/support.js",
+      "source_location": "L349"
     },
     {
       "id": "volta_support_ie",
@@ -4808,35 +4748,35 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "tj",
+      "community_name": "me",
       "file_type": "code",
       "norm_label": "ie()",
       "source_file": "Volta/support.js",
       "source_location": "L91"
     },
     {
-      "id": "volta_support_je",
-      "label": "je()",
+      "id": "volta_support_me",
+      "label": "me()",
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "tj",
+      "community_name": "me",
       "file_type": "code",
-      "norm_label": "je()",
+      "norm_label": "me()",
       "source_file": "Volta/support.js",
-      "source_location": "L349"
+      "source_location": "L60"
     },
     {
-      "id": "volta_support_pn",
-      "label": "pn()",
+      "id": "volta_support_pe",
+      "label": "pe()",
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "tj",
+      "community_name": "me",
       "file_type": "code",
-      "norm_label": "pn()",
+      "norm_label": "pe()",
       "source_file": "Volta/support.js",
-      "source_location": "L350"
+      "source_location": "L63"
     },
     {
       "id": "volta_support_qc",
@@ -4844,7 +4784,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "tj",
+      "community_name": "me",
       "file_type": "code",
       "norm_label": "qc()",
       "source_file": "Volta/support.js",
@@ -4856,7 +4796,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "tj",
+      "community_name": "me",
       "file_type": "code",
       "norm_label": "sj()",
       "source_file": "Volta/support.js",
@@ -4868,23 +4808,47 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "tj",
+      "community_name": "me",
       "file_type": "code",
       "norm_label": "tj()",
       "source_file": "Volta/support.js",
       "source_location": "L73"
     },
     {
-      "id": "volta_support_un",
-      "label": "un()",
+      "id": "volta_support_ya",
+      "label": "ya()",
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "tj",
+      "community_name": "me",
       "file_type": "code",
-      "norm_label": "un()",
+      "norm_label": "ya()",
       "source_file": "Volta/support.js",
-      "source_location": "L350"
+      "source_location": "L149"
+    },
+    {
+      "id": "volta_support_constructor",
+      "label": "constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "fd",
+      "file_type": "code",
+      "norm_label": "constructor()",
+      "source_file": "Volta/support.js",
+      "source_location": "L349"
+    },
+    {
+      "id": "volta_support_ec",
+      "label": "ec()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "fd",
+      "file_type": "code",
+      "norm_label": "ec()",
+      "source_file": "Volta/support.js",
+      "source_location": "L109"
     },
     {
       "id": "volta_support_fd",
@@ -4947,6 +4911,18 @@
       "source_location": "L57"
     },
     {
+      "id": "volta_support_lc",
+      "label": "lc()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "fd",
+      "file_type": "code",
+      "norm_label": "lc()",
+      "source_file": "Volta/support.js",
+      "source_location": "L75"
+    },
+    {
       "id": "volta_support_pc",
       "label": "Pc()",
       "_callable": true,
@@ -4983,6 +4959,18 @@
       "source_location": "L88"
     },
     {
+      "id": "volta_support_rc",
+      "label": "Rc()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "fd",
+      "file_type": "code",
+      "norm_label": "rc()",
+      "source_file": "Volta/support.js",
+      "source_location": "L109"
+    },
+    {
       "id": "volta_support_rj",
       "label": "Rj()",
       "_callable": true,
@@ -4993,6 +4981,102 @@
       "norm_label": "rj()",
       "source_file": "Volta/support.js",
       "source_location": "L88"
+    },
+    {
+      "id": "volta_support_tg",
+      "label": "tg()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "fd",
+      "file_type": "code",
+      "norm_label": "tg()",
+      "source_file": "Volta/support.js",
+      "source_location": "L65"
+    },
+    {
+      "id": "volta_support_ug",
+      "label": "ug()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "fd",
+      "file_type": "code",
+      "norm_label": "ug()",
+      "source_file": "Volta/support.js",
+      "source_location": "L65"
+    },
+    {
+      "id": "volta_support_vg",
+      "label": "vg()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "fd",
+      "file_type": "code",
+      "norm_label": "vg()",
+      "source_file": "Volta/support.js",
+      "source_location": "L65"
+    },
+    {
+      "id": "volta_support_vj",
+      "label": "vj()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "fd",
+      "file_type": "code",
+      "norm_label": "vj()",
+      "source_file": "Volta/support.js",
+      "source_location": "L76"
+    },
+    {
+      "id": "volta_support_wg",
+      "label": "wg()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "fd",
+      "file_type": "code",
+      "norm_label": "wg()",
+      "source_file": "Volta/support.js",
+      "source_location": "L65"
+    },
+    {
+      "id": "volta_support_xc",
+      "label": "Xc()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "fd",
+      "file_type": "code",
+      "norm_label": "xc()",
+      "source_file": "Volta/support.js",
+      "source_location": "L77"
+    },
+    {
+      "id": "volta_support_yj",
+      "label": "yj()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "fd",
+      "file_type": "code",
+      "norm_label": "yj()",
+      "source_file": "Volta/support.js",
+      "source_location": "L78"
+    },
+    {
+      "id": "volta_support_zg",
+      "label": "zg()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "fd",
+      "file_type": "code",
+      "norm_label": "zg()",
+      "source_file": "Volta/support.js",
+      "source_location": "L67"
     },
     {
       "id": "radio_bot_health_health",
@@ -5031,88 +5115,40 @@
       "source_location": "L8"
     },
     {
-      "id": "volta_support_ec",
-      "label": "ec()",
+      "id": "volta_support_a",
+      "label": "$a()",
       "_callable": true,
       "_origin": "ast",
       "community": 29,
-      "community_name": "wg",
+      "community_name": "mb",
       "file_type": "code",
-      "norm_label": "ec()",
+      "norm_label": "$a()",
       "source_file": "Volta/support.js",
-      "source_location": "L109"
+      "source_location": "L94"
     },
     {
-      "id": "volta_support_lc",
-      "label": "lc()",
+      "id": "volta_support_ab",
+      "label": "Ab()",
       "_callable": true,
       "_origin": "ast",
       "community": 29,
-      "community_name": "wg",
+      "community_name": "mb",
       "file_type": "code",
-      "norm_label": "lc()",
+      "norm_label": "ab()",
       "source_file": "Volta/support.js",
-      "source_location": "L75"
+      "source_location": "L47"
     },
     {
-      "id": "volta_support_tg",
-      "label": "tg()",
+      "id": "volta_support_mb",
+      "label": "mb()",
       "_callable": true,
       "_origin": "ast",
       "community": 29,
-      "community_name": "wg",
+      "community_name": "mb",
       "file_type": "code",
-      "norm_label": "tg()",
+      "norm_label": "mb()",
       "source_file": "Volta/support.js",
-      "source_location": "L65"
-    },
-    {
-      "id": "volta_support_ug",
-      "label": "ug()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 29,
-      "community_name": "wg",
-      "file_type": "code",
-      "norm_label": "ug()",
-      "source_file": "Volta/support.js",
-      "source_location": "L65"
-    },
-    {
-      "id": "volta_support_vg",
-      "label": "vg()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 29,
-      "community_name": "wg",
-      "file_type": "code",
-      "norm_label": "vg()",
-      "source_file": "Volta/support.js",
-      "source_location": "L65"
-    },
-    {
-      "id": "volta_support_vj",
-      "label": "vj()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 29,
-      "community_name": "wg",
-      "file_type": "code",
-      "norm_label": "vj()",
-      "source_file": "Volta/support.js",
-      "source_location": "L76"
-    },
-    {
-      "id": "volta_support_wg",
-      "label": "wg()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 29,
-      "community_name": "wg",
-      "file_type": "code",
-      "norm_label": "wg()",
-      "source_file": "Volta/support.js",
-      "source_location": "L65"
+      "source_location": "L47"
     },
     {
       "id": "radio_bot_db_del",
@@ -5235,6 +5271,30 @@
       "source_location": "L22"
     },
     {
+      "id": "radio_bot_db_user",
+      "label": "user()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "db.js",
+      "file_type": "code",
+      "norm_label": "user()",
+      "source_file": "radio-bot/db.js",
+      "source_location": "L48"
+    },
+    {
+      "id": "radio_bot_index_autocomplete",
+      "label": "autocomplete()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "db.js",
+      "file_type": "code",
+      "norm_label": "autocomplete()",
+      "source_file": "radio-bot/index.js",
+      "source_location": "L1263"
+    },
+    {
       "id": "radio_bot_premium_addpremium",
       "label": "addPremium()",
       "_callable": true,
@@ -5331,18 +5391,6 @@
       "source_location": "L29"
     },
     {
-      "id": "radio_bot_premium_premiumuntil",
-      "label": "premiumUntil()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "db.js",
-      "file_type": "code",
-      "norm_label": "premiumuntil()",
-      "source_file": "radio-bot/premium.js",
-      "source_location": "L13"
-    },
-    {
       "id": "radio_bot_premium_record",
       "label": "record()",
       "_callable": true,
@@ -5415,6 +5463,18 @@
       "source_location": "L349"
     },
     {
+      "id": "volta_support_je",
+      "label": "je()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "zt",
+      "file_type": "code",
+      "norm_label": "je()",
+      "source_file": "Volta/support.js",
+      "source_location": "L349"
+    },
+    {
       "id": "volta_support_jt",
       "label": "jt()",
       "_callable": true,
@@ -5437,6 +5497,18 @@
       "norm_label": "lt()",
       "source_file": "Volta/support.js",
       "source_location": "L304"
+    },
+    {
+      "id": "volta_support_pn",
+      "label": "pn()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "zt",
+      "file_type": "code",
+      "norm_label": "pn()",
+      "source_file": "Volta/support.js",
+      "source_location": "L350"
     },
     {
       "id": "volta_support_pt",
@@ -5463,6 +5535,18 @@
       "source_location": "L304"
     },
     {
+      "id": "volta_support_un",
+      "label": "un()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "zt",
+      "file_type": "code",
+      "norm_label": "un()",
+      "source_file": "Volta/support.js",
+      "source_location": "L350"
+    },
+    {
       "id": "volta_support_zt",
       "label": "zt()",
       "_callable": true,
@@ -5487,64 +5571,40 @@
       "source_location": "L349"
     },
     {
-      "id": "radio_bot_index_button",
-      "label": "button()",
+      "id": "volta_support_dd",
+      "label": "dd()",
       "_callable": true,
       "_origin": "ast",
       "community": 32,
-      "community_name": "healthPayload",
+      "community_name": "ka",
       "file_type": "code",
-      "norm_label": "button()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L263"
+      "norm_label": "dd()",
+      "source_file": "Volta/support.js",
+      "source_location": "L83"
     },
     {
-      "id": "radio_bot_index_healthpayload",
-      "label": "healthPayload()",
+      "id": "volta_support_ka",
+      "label": "ka()",
       "_callable": true,
       "_origin": "ast",
       "community": 32,
-      "community_name": "healthPayload",
+      "community_name": "ka",
       "file_type": "code",
-      "norm_label": "healthpayload()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L953"
+      "norm_label": "ka()",
+      "source_file": "Volta/support.js",
+      "source_location": "L17"
     },
     {
-      "id": "radio_bot_index_now",
-      "label": "now()",
+      "id": "volta_support_ka_b",
+      "label": "b()",
       "_callable": true,
       "_origin": "ast",
       "community": 32,
-      "community_name": "healthPayload",
+      "community_name": "ka",
       "file_type": "code",
-      "norm_label": "now()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L35"
-    },
-    {
-      "id": "radio_bot_index_shardhealth",
-      "label": "shardHealth()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 32,
-      "community_name": "healthPayload",
-      "file_type": "code",
-      "norm_label": "shardhealth()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L945"
-    },
-    {
-      "id": "radio_bot_index_timed",
-      "label": "timed()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 32,
-      "community_name": "healthPayload",
-      "file_type": "code",
-      "norm_label": "timed()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L934"
+      "norm_label": "b()",
+      "source_file": "Volta/support.js",
+      "source_location": "L83"
     },
     {
       "id": "coupe_fruits_auth_get",
@@ -5583,6 +5643,18 @@
       "source_location": "L19"
     },
     {
+      "id": "radio_bot_audio_createstream",
+      "label": "createStream()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 35,
+      "community_name": "audio.js",
+      "file_type": "code",
+      "norm_label": "createstream()",
+      "source_file": "radio-bot/audio.js",
+      "source_location": "L14"
+    },
+    {
       "id": "volta_support_w",
       "label": "w()",
       "_callable": true,
@@ -5619,6 +5691,42 @@
       "source_location": "L18"
     },
     {
+      "id": "volta_support_dn",
+      "label": "dn()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "Nt",
+      "file_type": "code",
+      "norm_label": "dn()",
+      "source_file": "Volta/support.js",
+      "source_location": "L350"
+    },
+    {
+      "id": "volta_support_nt",
+      "label": "Nt()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "Nt",
+      "file_type": "code",
+      "norm_label": "nt()",
+      "source_file": "Volta/support.js",
+      "source_location": "L350"
+    },
+    {
+      "id": "volta_support_qe",
+      "label": "qe()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "Nt",
+      "file_type": "code",
+      "norm_label": "qe()",
+      "source_file": "Volta/support.js",
+      "source_location": "L64"
+    },
+    {
       "id": "radio_bot_card_badgefiles",
       "label": "badgeFiles()",
       "_callable": true,
@@ -5643,172 +5751,64 @@
       "source_location": "L380"
     },
     {
-      "id": "radio_bot_access_flag",
-      "label": "flag()",
+      "id": "volta_support_sc",
+      "label": "sc()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "refresh",
+      "community_name": "Zk",
       "file_type": "code",
-      "norm_label": "flag()",
-      "source_file": "radio-bot/access.js",
-      "source_location": "L21"
+      "norm_label": "sc()",
+      "source_file": "Volta/support.js",
+      "source_location": "L96"
     },
     {
-      "id": "radio_bot_access_parselrc",
-      "label": "parseLrc()",
+      "id": "volta_support_td",
+      "label": "Td()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "refresh",
+      "community_name": "Zk",
       "file_type": "code",
-      "norm_label": "parselrc()",
-      "source_file": "radio-bot/access.js",
-      "source_location": "L30"
+      "norm_label": "td()",
+      "source_file": "Volta/support.js",
+      "source_location": "L244"
     },
     {
-      "id": "radio_bot_index_autocomplete",
-      "label": "autocomplete()",
+      "id": "volta_support_yb",
+      "label": "yb()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "refresh",
+      "community_name": "Zk",
       "file_type": "code",
-      "norm_label": "autocomplete()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L1263"
+      "norm_label": "yb()",
+      "source_file": "Volta/support.js",
+      "source_location": "L222"
     },
     {
-      "id": "radio_bot_index_learnlogocolor",
-      "label": "learnLogoColor()",
+      "id": "volta_support_yi",
+      "label": "Yi()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "refresh",
+      "community_name": "Zk",
       "file_type": "code",
-      "norm_label": "learnlogocolor()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L71"
+      "norm_label": "yi()",
+      "source_file": "Volta/support.js",
+      "source_location": "L245"
     },
     {
-      "id": "radio_bot_index_onnewtitle",
-      "label": "onNewTitle()",
+      "id": "volta_support_zk",
+      "label": "Zk()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "refresh",
+      "community_name": "Zk",
       "file_type": "code",
-      "norm_label": "onnewtitle()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L240"
-    },
-    {
-      "id": "radio_bot_index_refresh",
-      "label": "refresh()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "refresh",
-      "file_type": "code",
-      "norm_label": "refresh()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L394"
-    },
-    {
-      "id": "radio_bot_index_setvoicestatus",
-      "label": "setVoiceStatus()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "refresh",
-      "file_type": "code",
-      "norm_label": "setvoicestatus()",
-      "source_file": "radio-bot/index.js",
-      "source_location": "L431"
-    },
-    {
-      "id": "radio_bot_web_cachedimage",
-      "label": "cachedImage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "refresh",
-      "file_type": "code",
-      "norm_label": "cachedimage()",
-      "source_file": "radio-bot/web.js",
-      "source_location": "L61"
-    },
-    {
-      "id": "radio_bot_web_fetchimage",
-      "label": "fetchImage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "refresh",
-      "file_type": "code",
-      "norm_label": "fetchimage()",
-      "source_file": "radio-bot/web.js",
-      "source_location": "L34"
-    },
-    {
-      "id": "radio_bot_web_fetchlyrics",
-      "label": "fetchLyrics()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "refresh",
-      "file_type": "code",
-      "norm_label": "fetchlyrics()",
-      "source_file": "radio-bot/web.js",
-      "source_location": "L44"
-    },
-    {
-      "id": "radio_bot_web_fetchtrack",
-      "label": "fetchTrack()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "refresh",
-      "file_type": "code",
-      "norm_label": "fetchtrack()",
-      "source_file": "radio-bot/web.js",
-      "source_location": "L13"
-    },
-    {
-      "id": "radio_bot_web_getjson",
-      "label": "getJson()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "refresh",
-      "file_type": "code",
-      "norm_label": "getjson()",
-      "source_file": "radio-bot/web.js",
-      "source_location": "L5"
-    },
-    {
-      "id": "radio_bot_web_searchworld",
-      "label": "searchWorld()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "refresh",
-      "file_type": "code",
-      "norm_label": "searchworld()",
-      "source_file": "radio-bot/web.js",
-      "source_location": "L50"
-    },
-    {
-      "id": "radio_bot_web_worldstation",
-      "label": "worldStation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "refresh",
-      "file_type": "code",
-      "norm_label": "worldstation()",
-      "source_file": "radio-bot/web.js",
-      "source_location": "L55"
+      "norm_label": "zk()",
+      "source_file": "Volta/support.js",
+      "source_location": "L245"
     },
     {
       "id": "radio_bot_bot_test",
@@ -5910,6 +5910,17 @@
       "source_location": "L2"
     },
     {
+      "id": "radio_bot_icy",
+      "label": "icy.js",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "bot.test.js",
+      "file_type": "code",
+      "norm_label": "icy.js",
+      "source_file": "radio-bot/icy.js",
+      "source_location": "L1"
+    },
+    {
       "id": "radio_bot_scripts_badges",
       "label": "badges.py",
       "_origin": "ast",
@@ -5918,6 +5929,17 @@
       "file_type": "code",
       "norm_label": "badges.py",
       "source_file": "radio-bot/scripts/badges.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "coupe_fruits_sw",
+      "label": "sw.js",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "b",
+      "file_type": "code",
+      "norm_label": "sw.js",
+      "source_file": "coupe-fruits/sw.js",
       "source_location": "L1"
     },
     {
@@ -5932,15 +5954,48 @@
       "source_location": "L1"
     },
     {
-      "id": "radio_bot_icy",
-      "label": "icy.js",
+      "id": "radio_bot_shard",
+      "label": "shard.js",
       "_origin": "ast",
-      "community": 2,
-      "community_name": "index.js",
+      "community": 15,
+      "community_name": "discord.js",
       "file_type": "code",
-      "norm_label": "icy.js",
-      "source_file": "radio-bot/icy.js",
+      "norm_label": "shard.js",
+      "source_file": "radio-bot/shard.js",
       "source_location": "L1"
+    },
+    {
+      "id": "radio_bot_shard_manager",
+      "label": "manager",
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "discord.js",
+      "file_type": "code",
+      "norm_label": "manager",
+      "source_file": "radio-bot/shard.js",
+      "source_location": "L4"
+    },
+    {
+      "id": "radio_bot_shard_shardingmanager",
+      "label": "{ ShardingManager }",
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "discord.js",
+      "file_type": "code",
+      "norm_label": "{ shardingmanager }",
+      "source_file": "radio-bot/shard.js",
+      "source_location": "L2"
+    },
+    {
+      "id": "ref_discord_js",
+      "label": "discord.js",
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "discord.js",
+      "file_type": "concept",
+      "norm_label": "discord.js",
+      "source_file": "radio-bot/package.json",
+      "source_location": "L14"
     },
     {
       "id": "radio_bot_index",
@@ -6295,6 +6350,50 @@
       "source_location": "L1"
     },
     {
+      "id": "radio_bot_web",
+      "label": "web.js",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "web.js",
+      "source_file": "radio-bot/web.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "radio_bot_web_headers",
+      "label": "HEADERS",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "headers",
+      "source_file": "radio-bot/web.js",
+      "source_location": "L2"
+    },
+    {
+      "id": "radio_bot_web_images",
+      "label": "images",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "images",
+      "source_file": "radio-bot/web.js",
+      "source_location": "L33"
+    },
+    {
+      "id": "radio_bot_web_tracks",
+      "label": "tracks",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "tracks",
+      "source_file": "radio-bot/web.js",
+      "source_location": "L12"
+    },
+    {
       "id": "radio_bot_card",
       "label": "card.js",
       "_origin": "ast",
@@ -6339,6 +6438,17 @@
       "source_location": "L4"
     },
     {
+      "id": "ref_napi_rs_canvas",
+      "label": "@napi-rs/canvas",
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "card.js",
+      "file_type": "concept",
+      "norm_label": "@napi-rs/canvas",
+      "source_file": "radio-bot/package.json",
+      "source_location": "L13"
+    },
+    {
       "id": "radio_bot_access",
       "label": "access.js",
       "_origin": "ast",
@@ -6359,50 +6469,6 @@
       "norm_label": "{ permissionflagsbits }",
       "source_file": "radio-bot/access.js",
       "source_location": "L1"
-    },
-    {
-      "id": "radio_bot_shard",
-      "label": "shard.js",
-      "_origin": "ast",
-      "community": 24,
-      "community_name": "access.js",
-      "file_type": "code",
-      "norm_label": "shard.js",
-      "source_file": "radio-bot/shard.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "radio_bot_shard_manager",
-      "label": "manager",
-      "_origin": "ast",
-      "community": 24,
-      "community_name": "access.js",
-      "file_type": "code",
-      "norm_label": "manager",
-      "source_file": "radio-bot/shard.js",
-      "source_location": "L4"
-    },
-    {
-      "id": "radio_bot_shard_shardingmanager",
-      "label": "{ ShardingManager }",
-      "_origin": "ast",
-      "community": 24,
-      "community_name": "access.js",
-      "file_type": "code",
-      "norm_label": "{ shardingmanager }",
-      "source_file": "radio-bot/shard.js",
-      "source_location": "L2"
-    },
-    {
-      "id": "ref_discord_js",
-      "label": "discord.js",
-      "_origin": "ast",
-      "community": 24,
-      "community_name": "access.js",
-      "file_type": "concept",
-      "norm_label": "discord.js",
-      "source_file": "radio-bot/package.json",
-      "source_location": "L14"
     },
     {
       "id": "radio_bot_package_dependencies",
@@ -6690,7 +6756,7 @@
       "node_kind": "heading",
       "norm_label": "ce qui change par rapport a claude.ai",
       "source_file": "coupe-fruits/README.md",
-      "source_location": "L42"
+      "source_location": "L47"
     },
     {
       "id": "coupe_fruits_readme_coupe_fruits_version_\u00e0_h\u00e9berger",
@@ -6726,7 +6792,7 @@
       "node_kind": "heading",
       "norm_label": "mettre a jour le jeu",
       "source_file": "coupe-fruits/README.md",
-      "source_location": "L38"
+      "source_location": "L43"
     },
     {
       "id": "coupe_fruits_readme_mise_en_place_environ_20_minutes",
@@ -6738,7 +6804,7 @@
       "node_kind": "heading",
       "norm_label": "mise en place (environ 20 minutes)",
       "source_file": "coupe-fruits/README.md",
-      "source_location": "L18"
+      "source_location": "L21"
     },
     {
       "id": "volta_readme",
@@ -7041,61 +7107,6 @@
       "norm_label": "libsodium-wrappers",
       "source_file": "radio-bot/package.json",
       "source_location": "L16"
-    },
-    {
-      "id": "ref_napi_rs_canvas",
-      "label": "@napi-rs/canvas",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "package.json",
-      "file_type": "concept",
-      "norm_label": "@napi-rs/canvas",
-      "source_file": "radio-bot/package.json",
-      "source_location": "L13"
-    },
-    {
-      "id": "radio_bot_web",
-      "label": "web.js",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "refresh",
-      "file_type": "code",
-      "norm_label": "web.js",
-      "source_file": "radio-bot/web.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "radio_bot_web_headers",
-      "label": "HEADERS",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "refresh",
-      "file_type": "code",
-      "norm_label": "headers",
-      "source_file": "radio-bot/web.js",
-      "source_location": "L2"
-    },
-    {
-      "id": "radio_bot_web_images",
-      "label": "images",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "refresh",
-      "file_type": "code",
-      "norm_label": "images",
-      "source_file": "radio-bot/web.js",
-      "source_location": "L33"
-    },
-    {
-      "id": "radio_bot_web_tracks",
-      "label": "tracks",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "refresh",
-      "file_type": "code",
-      "norm_label": "tracks",
-      "source_file": "radio-bot/web.js",
-      "source_location": "L12"
     },
     {
       "id": "radio_bot_assets_fonts_license_inter_font",
@@ -7877,6 +7888,17 @@
       "type": "external"
     },
     {
+      "id": "ref_node_sqlite",
+      "label": "ref_node_sqlite",
+      "community": 1,
+      "community_name": "bot.test.js",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "ref_node_sqlite",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "ref_node_test",
       "label": "ref_node_test",
       "community": 1,
@@ -7932,6 +7954,17 @@
       "type": "external"
     },
     {
+      "id": "ref_node_fs",
+      "label": "ref_node_fs",
+      "community": 23,
+      "community_name": "card.js",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "ref_node_fs",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "ref_node_http",
       "label": "ref_node_http",
       "community": 28,
@@ -7954,28 +7987,6 @@
       "type": "external"
     },
     {
-      "id": "ref_node_fs",
-      "label": "ref_node_fs",
-      "community": 3,
-      "community_name": "db.js",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "ref_node_fs",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "ref_node_sqlite",
-      "label": "ref_node_sqlite",
-      "community": 3,
-      "community_name": "db.js",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "ref_node_sqlite",
-      "source_file": "",
-      "type": "external"
-    },
-    {
       "id": "pathlib",
       "label": "pathlib",
       "community": 36,
@@ -7983,6 +7994,17 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "pathlib",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "sys",
+      "label": "sys",
+      "community": 36,
+      "community_name": "build.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "sys",
       "source_file": "",
       "type": "external"
     }
@@ -21189,6 +21211,18 @@
       "weight": 1.0
     },
     {
+      "source": "coupe_fruits_build",
+      "target": "sys",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "coupe-fruits/build.py",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
       "source": "radio_bot_bot_test",
       "target": "radio_bot_card_rendercard",
       "relation": "imports",
@@ -21833,7 +21867,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "coupe-fruits/build.py",
-      "source_location": "L3",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -22392,7 +22426,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "coupe-fruits/README.md",
-      "source_location": "L18",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -22403,7 +22437,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "coupe-fruits/README.md",
-      "source_location": "L38",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
@@ -22414,7 +22448,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "coupe-fruits/README.md",
-      "source_location": "L42",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -26609,6 +26643,18 @@
       "weight": 1.0
     },
     {
+      "source": "coupe_fruits_sw",
+      "target": "volta_support_dh_r",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "argument",
+      "source_file": "coupe-fruits/sw.js",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
       "source": "radio_bot_index",
       "target": "radio_bot_index_stationoption",
       "relation": "indirect_call",
@@ -30450,5 +30496,5 @@
       "source_file": "radio-bot/assets/badges/pause_fr_1.png"
     }
   ],
-  "built_at_commit": "0412d221b51d60551ac593deb47682ddbd0b200e"
+  "built_at_commit": "a96eae9c1d6b98e8a65b753bd94b11dca9f8638f"
 }
