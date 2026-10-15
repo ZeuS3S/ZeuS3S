@@ -10,10 +10,13 @@ Sans configuration, la page fonctionne déjà : le jeu tourne en local (progress
 |---|---|
 | `index.html` | La page à héberger. Générée, ne pas modifier à la main. |
 | `jeu.html` | Le jeu lui-même : la même source que l'artifact claude.ai. |
-| `build.py` | Régénère `index.html` à partir de `jeu.html` : `python3 build.py`. |
+| `build.py` | Régénère `index.html` à partir de `jeu.html` : `python3 build.py https://ton-site.fr`. |
 | `auth.js` | Branche le jeu sur Supabase (connexion, classement, sauvegarde). |
 | `config.js` | Tes réglages Supabase, à remplir. |
 | `schema.sql` | La table et les règles d'accès, à exécuter une fois dans Supabase. |
+| `manifest.webmanifest`, `icon-192.png`, `icon-512.png` | Installation sur téléphone (« Ajouter à l'écran d'accueil »), en plein écran. |
+| `sw.js` | Le jeu se recharge même sans réseau (le classement, lui, demande une connexion). |
+| `og.png` | L'image d'aperçu quand on partage le lien sur Discord, WhatsApp… |
 
 ## Mise en place (environ 20 minutes)
 
@@ -33,13 +36,13 @@ Si tu as déjà exécuté une ancienne version de `schema.sql`, supprime d'abord
    - Ajoute la même adresse de rappel Supabase dans *Authorized redirect URIs*.
    - Dans Supabase, active Google et colle le Client ID et le Secret.
 6. **Indiquer ton site** : *Authentication > URL Configuration*, mets l'adresse de ton site dans *Site URL* (et dans *Redirect URLs* si tu en as plusieurs, par exemple une adresse de test).
-7. **Mettre en ligne** les fichiers `index.html`, `config.js` et `auth.js` sur n'importe quel hébergeur de pages statiques : GitHub Pages, Netlify, Vercel, Cloudflare Pages… Il faut une adresse en `https://`.
+7. **Mettre en ligne** tous les fichiers du dossier sauf `jeu.html`, `build.py`, `schema.sql` et `README.md` sur n'importe quel hébergeur de pages statiques : GitHub Pages, Netlify, Vercel, Cloudflare Pages… Il faut une adresse en `https://`.
 
 Si tu n'actives qu'un seul des deux, retire l'autre de `providers` dans `config.js`.
 
 ## Mettre à jour le jeu
 
-Remplace `jeu.html` par la nouvelle version, lance `python3 build.py`, puis remets `index.html` en ligne.
+Remplace `jeu.html` par la nouvelle version, lance `python3 build.py https://ton-site.fr` (l'adresse de ton site : l'image d'aperçu en a besoin), puis remets `index.html` en ligne. Les joueurs reçoivent la nouvelle version au chargement suivant.
 
 ## Ce qui change par rapport à claude.ai
 
