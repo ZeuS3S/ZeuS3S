@@ -5616,7 +5616,7 @@
       "file_type": "code",
       "norm_label": "get()",
       "source_file": "coupe-fruits/auth.js",
-      "source_location": "L14"
+      "source_location": "L16"
     },
     {
       "id": "coupe_fruits_auth_onsnapshot",
@@ -5628,7 +5628,7 @@
       "file_type": "code",
       "norm_label": "onsnapshot()",
       "source_file": "coupe-fruits/auth.js",
-      "source_location": "L25"
+      "source_location": "L27"
     },
     {
       "id": "coupe_fruits_auth_set",
@@ -5640,7 +5640,7 @@
       "file_type": "code",
       "norm_label": "set()",
       "source_file": "coupe-fruits/auth.js",
-      "source_location": "L19"
+      "source_location": "L21"
     },
     {
       "id": "radio_bot_audio_createstream",
@@ -6756,7 +6756,7 @@
       "node_kind": "heading",
       "norm_label": "ce qui change par rapport a claude.ai",
       "source_file": "coupe-fruits/README.md",
-      "source_location": "L47"
+      "source_location": "L48"
     },
     {
       "id": "coupe_fruits_readme_coupe_fruits_version_\u00e0_h\u00e9berger",
@@ -6792,7 +6792,7 @@
       "node_kind": "heading",
       "norm_label": "mettre a jour le jeu",
       "source_file": "coupe-fruits/README.md",
-      "source_location": "L43"
+      "source_location": "L44"
     },
     {
       "id": "coupe_fruits_readme_mise_en_place_environ_20_minutes",
@@ -6804,7 +6804,7 @@
       "node_kind": "heading",
       "norm_label": "mise en place (environ 20 minutes)",
       "source_file": "coupe-fruits/README.md",
-      "source_location": "L21"
+      "source_location": "L22"
     },
     {
       "id": "volta_readme",
@@ -22382,7 +22382,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "coupe-fruits/auth.js",
-      "source_location": "L14",
+      "source_location": "L16",
       "weight": 1.0
     },
     {
@@ -22393,7 +22393,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "coupe-fruits/auth.js",
-      "source_location": "L19",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -22404,7 +22404,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "coupe-fruits/auth.js",
-      "source_location": "L25",
+      "source_location": "L27",
       "weight": 1.0
     },
     {
@@ -22426,7 +22426,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "coupe-fruits/README.md",
-      "source_location": "L21",
+      "source_location": "L22",
       "weight": 1.0
     },
     {
@@ -22437,7 +22437,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "coupe-fruits/README.md",
-      "source_location": "L43",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -22448,7 +22448,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "coupe-fruits/README.md",
-      "source_location": "L47",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -30496,5 +30496,5 @@
       "source_file": "radio-bot/assets/badges/pause_fr_1.png"
     }
   ],
-  "built_at_commit": "a96eae9c1d6b98e8a65b753bd94b11dca9f8638f"
+  "built_at_commit": "624e2c7b87d1c3d01dfa1cd483d0fb358abcf09a"
 }

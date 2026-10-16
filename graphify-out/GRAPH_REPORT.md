@@ -1,7 +1,7 @@
-# Graph Report - ZeuS3S  (2026-10-15)
+# Graph Report - ZeuS3S  (2026-10-16)
 
 ## Corpus Check
-- 29 files · ~94,063 words
+- 29 files · ~122,747 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 6 file(s) not represented in the graph (top: .otf 3, .webmanifest 1, .example 1)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a96eae9c`
+- Built from commit: `624e2c7b`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 

@@ -198,9 +198,9 @@
     "semantic_hash": ""
   },
   "coupe-fruits/auth.js": {
-    "mtime": 1792018119.093616,
-    "seen": 1792018256.1920605,
-    "ast_hash": "9922978fcf3a9e0efb17eeae964fdd94",
+    "mtime": 1792187427.6008298,
+    "seen": 1792190117.8222466,
+    "ast_hash": "9f5228dc5b97c8059dc1f749eb06f049",
     "semantic_hash": ""
   },
   "coupe-fruits/build.py": {
@@ -282,21 +282,21 @@
     "semantic_hash": ""
   },
   "coupe-fruits/README.md": {
-    "mtime": 1792023137.0822093,
-    "seen": 1792023902.5373302,
-    "ast_hash": "1de7357853dcef948975575308ad0ab0",
+    "mtime": 1792187521.4757698,
+    "seen": 1792190117.8231108,
+    "ast_hash": "37a8a81a734cb621b7a64341b4204153",
     "semantic_hash": ""
   },
   "coupe-fruits/index.html": {
-    "mtime": 1792186269.774658,
-    "seen": 1792186271.69418,
-    "ast_hash": "a21a5344977cb57edac63896d1a413e1",
+    "mtime": 1792190115.4107134,
+    "seen": 1792190117.823115,
+    "ast_hash": "1e8b28145a341d35c1df0205f4e7eb44",
     "semantic_hash": ""
   },
   "coupe-fruits/jeu.html": {
-    "mtime": 1792186269.7773337,
-    "seen": 1792186271.6941843,
-    "ast_hash": "a21a5344977cb57edac63896d1a413e1",
+    "mtime": 1792190115.3829262,
+    "seen": 1792190117.823116,
+    "ast_hash": "6a203f9bca066760072b4bbac4088a36",
     "semantic_hash": ""
   },
   "coupe-fruits/sw.js": {
@@ -321,6 +321,12 @@
     "mtime": 1792023076.6357727,
     "seen": 1792023902.5373862,
     "ast_hash": "3759db5062b9ddacc7cb6850c3a07cff",
+    "semantic_hash": ""
+  },
+  "coupe-fruits/confidentialite.html": {
+    "mtime": 1792187512.6385586,
+    "seen": 1792190117.8231132,
+    "ast_hash": "c402fc24f977decf6f08cbef72522419",
     "semantic_hash": ""
   }
 }
