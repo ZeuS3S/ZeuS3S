@@ -17,6 +17,7 @@ Sans configuration, la page fonctionne déjà : le jeu tourne en local (progress
 | `manifest.webmanifest`, `icon-192.png`, `icon-512.png` | Installation sur téléphone (« Ajouter à l'écran d'accueil »), en plein écran. |
 | `sw.js` | Le jeu se recharge même sans réseau (le classement, lui, demande une connexion). |
 | `og.png` | L'image d'aperçu quand on partage le lien sur Discord, WhatsApp… |
+| `confidentialite.html` | Mentions légales et confidentialité, liées depuis l'écran de connexion. **Remplace les passages surlignés en jaune** (ton nom ou « un particulier », ton e-mail, ton hébergeur) avant la mise en ligne. |
 
 ## Mise en place (environ 20 minutes)
 
@@ -26,7 +27,7 @@ Si tu as déjà exécuté une ancienne version de `schema.sql`, supprime d'abord
 
 1. **Créer le projet** sur https://supabase.com (New project).
 2. **Créer la table** : *SQL Editor > New query*, colle le contenu de `schema.sql`, puis *Run*.
-3. **Remplir `config.js`** avec *Project Settings > API* : `Project URL` dans `supabaseUrl`, clé `anon public` dans `supabaseAnonKey`. Cette clé est faite pour être publique : ce sont les règles de `schema.sql` qui protègent les données (chacun n'écrit que ses propres scores et sa propre sauvegarde).
+3. **Remplir `config.js`** avec *Project Settings > API* : `Project URL` dans `supabaseUrl`, clé `anon public` dans `supabaseAnonKey`. Cette clé est faite pour être publique : ce sont les règles de `schema.sql` qui protègent les données (chacun n'écrit que ses propres scores et sa propre sauvegarde, les scores impossibles sont refusés, et le bouton « Supprimer mon compte » efface tout).
 4. **Activer Discord** :
    - Sur https://discord.com/developers/applications : *New Application*, puis *OAuth2*. Note le *Client ID* et le *Client Secret*.
    - Dans *Redirects*, ajoute l'adresse de rappel donnée par Supabase (*Authentication > Providers > Discord*, de la forme `https://<projet>.supabase.co/auth/v1/callback`).
