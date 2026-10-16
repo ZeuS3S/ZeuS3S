@@ -289,7 +289,7 @@ button.blade:disabled{cursor:not-allowed;background:var(--soft)}
 .mis{display:flex;flex-direction:column;gap:6px;background:linear-gradient(135deg,#f4edff,#fff);border-radius:16px;padding:10px 12px;box-shadow:inset 0 0 0 2px #e2d3fb;text-align:left;margin:6px 0}
 .mish{display:flex;justify-content:space-between;align-items:center}.mis small{color:var(--muted);font-weight:800}.mis span{font-weight:800;font-size:14px}
 .event.hallo-ev{font-size:13px;padding:6px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media (max-height:500px){.event{display:none!important}}
+@media (max-height:500px){.event{display:none!important}}@media (max-height:420px){#start .card .logo{display:none}}
 .hallo .awning{background:repeating-linear-gradient(90deg,#ff7a00 0 28px,#2a1a3a 28px 56px)}
 .event.hallo-ev{background:linear-gradient(90deg,#2a1a3a,#7a2f6e,#ff7a00,#7a2f6e,#2a1a3a);background-size:200% 100%;color:#fff;animation:xpflow 8s linear infinite}
 .hallo .play{background:linear-gradient(180deg,#ff9a3d,#ff6a00 60%,#e05400)}
@@ -1028,7 +1028,7 @@ function render(){
   if(ck){g.translate(W/2,H/2);g.scale(1+.06*ck,1+.06*ck);g.translate(-W/2,-H/2)}drawBoard();boardAnim();
   for(const s of splats){g.globalAlpha=Math.min(1,s.life)*.35;g.fillStyle=s.c;g.beginPath();g.arc(s.x,s.y,s.r,0,7);g.fill()}g.globalAlpha=1;
   g.strokeStyle='#3f7d1e';g.lineWidth=4;g.lineCap='round';for(const it of items)if(it.mate&&!it.cut&&!it.mate.cut&&it.x<it.mate.x){const mx=(it.x+it.mate.x)/2,my=Math.min(it.y,it.mate.y)-it.r*1.6;g.beginPath();g.moveTo(it.x,it.y-it.r*.6);g.quadraticCurveTo(mx,my,it.mate.x,it.mate.y-it.r*.6);g.stroke()}
-  for(const it of items){g.save();g.translate(it.x,it.y);if(it.pw==='ghost')g.globalAlpha=.12+.88*Math.abs(Math.sin(performance.now()/700));if(it.kind.power||it.kind.gold||it.kind.coin||it.kind.bomb){const a=g.createRadialGradient(0,0,it.r*.4,0,0,it.r*1.6);a.addColorStop(0,it.kind.c);a.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=a;g.globalAlpha=.6+.3*Math.sin(performance.now()/120);g.beginPath();g.arc(0,0,it.r*1.6,0,7);g.fill();g.globalAlpha=1}
+  for(const it of items){g.save();g.translate(it.x,it.y);if(it.pw==='ghost')g.globalAlpha=.3+.7*Math.abs(Math.sin(performance.now()/700));if(it.kind.power||it.kind.gold||it.kind.coin||it.kind.bomb){const a=g.createRadialGradient(0,0,it.r*.4,0,0,it.r*1.6);a.addColorStop(0,it.kind.c);a.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=a;g.globalAlpha=.6+.3*Math.sin(performance.now()/120);g.beginPath();g.arc(0,0,it.r*1.6,0,7);g.fill();g.globalAlpha=1}
     g.rotate(it.rot);if(it.bad){durian(it.r);if(prefs.cb){g.setLineDash([10,7]);g.lineWidth=5;g.strokeStyle='#fff';g.beginPath();g.arc(0,0,it.r*1.32,0,7);g.stroke();g.setLineDash([]);g.strokeStyle='#d0102a';g.lineWidth=7;g.beginPath();g.moveTo(-it.r*.45,-it.r*.45);g.lineTo(it.r*.45,it.r*.45);g.moveTo(it.r*.45,-it.r*.45);g.lineTo(-it.r*.45,it.r*.45);g.stroke()}}else drawFruit(it);
     if(it.hits){g.strokeStyle='#3a1f0e';g.lineWidth=3;g.beginPath();g.moveTo(-it.r*.5,-it.r*.6);g.lineTo(-it.r*.1,-it.r*.1);g.lineTo(-it.r*.35,it.r*.15);g.lineTo(it.r*.2,it.r*.55);g.stroke()}
     g.restore()}
@@ -1170,7 +1170,7 @@ function spawnBoss(){const n=++S.bossN,kind=BASE[(n-1)%BASE.length],x=W*(.3+Math
   const pw=['','zig','ghost','split'][(n-1)%4];it.pw=pw;
   S.banner={t:tr(`Boss ${n}`),sub:tr(`${it.hp} coups`)+(pw?' · '+tr(BOSS_PW[pw]):''),life:1.6};sfx('ach')}
 const BOSS_PW={zig:'Zigzag',ghost:'Fantôme',split:'Se divise'};
-function bossDown(it){if(it.pw==='split'&&!it.child){say('Il se divise !',it.x,it.y-it.r,'#ff7a00',1.3);for(const sd of[-1,1]){const c=spawn(it.kind,it.x+sd*it.r*.5,Math.min(it.y,H*.6),sd*W*.22,-Math.sqrt(2*H*DIFF[diff].g*.32*H*.3));Object.assign(c,{boss:1,child:1,gs:.32,r:it.r*.6,hp:3,vr:0})}}
+function bossDown(it){if(it.pw==='split'&&!it.child){say('Il se divise !',it.x,it.y-it.r,'#ff7a00',1.3);for(const sd of[-1,1]){const c=spawn(it.kind,it.x+sd*it.r*.5,Math.min(it.y,H*.6),sd*W*.12,-Math.sqrt(2*H*DIFF[diff].g*.32*H*.3));Object.assign(c,{boss:1,child:1,free:1,gs:.32,r:it.r*.6,hp:3,vr:0})}}
   if(it.child){const b=20*S.bossN;addPts(b);say(`+${b}`,it.x,it.y,'#ffd84a',1.1);sfx('cut');hud();return}const b=50*S.bossN;S.bosses++;addPts(b);say(`Boss vaincu ! +${b}`,it.x,it.y,'#ffd84a',1.4);evSound('boss');if(!prefs.reduce)cinema();shake=14;S.bossGap=1.2;hud()}
 function wavesTick(dt){if(S.wvGap>0){S.wvGap-=dt;if(S.wvGap<=0)nextWave();return}if(S.wvLeft>0)return;
   if(!items.some(i=>i.wv===S.wave&&!i.cut&&!i.bad&&i.kind.p)){const b=Math.max(1,4-Math.floor(S.wave/6));S.timeLeft+=b;S.shown=-1;S.banner={t:tr(`Vague ${S.wave} terminée`),sub:tr(`+${b} s`),life:1.2};sfx('ach');if(S.wave%5===0)comment('wave');S.wvGap=.7}}
@@ -1458,8 +1458,8 @@ function musicStop(){if(!mus.timer)return;clearInterval(mus.timer);mus.timer=nul
 const mf=m=>440*2**((m-69)/12);
 // record, boss vaincu, dernier cœur : la sonorité suit le thème du mois (Halloween : orgue grinçant, Noël : clochettes)
 function evSound(k){if(!sound||!ac||prefs.vSfx<=0)return;const th=hallo()?'hallo':new Date().getMonth()===11?'noel':'base';
-  const N={base:{rec:[72,76,79,84],boss:[67,72,76,79,84],last:[84,76,84,76]},hallo:{rec:[57,60,63,69],boss:[45,48,51,54,57],last:[50,49,50,49]},noel:{rec:[79,83,86,91],boss:[84,88,91,96,100],last:[88,84,88,84]}}[th][k];
-  const type={base:'triangle',hallo:'sawtooth',noel:'sine'}[th],t0=ac.currentTime,v=Math.max(.0001,(th==='hallo'?.05:.1)*prefs.vSfx),d=th==='noel'?.6:.25;
+  const N={base:{rec:[72,76,79,84],boss:[67,72,76,79,84],last:[84,76,84,76]},hallo:{rec:[69,72,75,81],boss:[57,60,63,66,69],last:[62,61,62,61]},noel:{rec:[79,83,86,91],boss:[84,88,91,96,100],last:[88,84,88,84]}}[th][k];
+  const type={base:'triangle',hallo:'sawtooth',noel:'sine'}[th],t0=ac.currentTime,v=Math.max(.0001,(th==='hallo'?.09:th==='noel'?.11:.16)*prefs.vSfx),d=th==='noel'?.6:.25;
   N.forEach((m,i)=>{const o=ac.createOscillator(),gn=ac.createGain(),t=t0+i*(k==='last'?.13:.09);o.type=type;o.frequency.value=440*2**((m-69)/12);gn.gain.setValueAtTime(.0001,t);gn.gain.exponentialRampToValueAtTime(v,t+.01);gn.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(gn).connect(ac.destination);o.start(t);o.stop(t+d+.05)})}
 function tone(f,t,d,type,vol){const o=ac.createOscillator(),gn=ac.createGain();o.type=type;o.frequency.value=f;gn.gain.setValueAtTime(.0001,t);gn.gain.exponentialRampToValueAtTime(vol,t+.015);gn.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(gn).connect(mus.gain);o.start(t);o.stop(t+d+.05)}
 function hiss(t,d,vol,type,freq){const sN=ac.createBufferSource();sN.buffer=mus.noise;const f=ac.createBiquadFilter();f.type=type;f.frequency.value=freq;const gn=ac.createGain();gn.gain.setValueAtTime(.0001,t);gn.gain.exponentialRampToValueAtTime(vol,t+Math.min(.4,d/3));gn.gain.exponentialRampToValueAtTime(.0001,t+d);sN.connect(f).connect(gn).connect(mus.gain);sN.start(t);sN.stop(t+d+.05)}
