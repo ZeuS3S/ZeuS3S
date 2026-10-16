@@ -319,6 +319,8 @@ button.blade:disabled{cursor:not-allowed;background:var(--soft)}
 .cb.me{align-self:flex-end;background:var(--cc);color:#fff;border-radius:16px 16px 4px 16px}.cb small{justify-self:end;font-size:10px;font-weight:800;opacity:.7}.cbn{font-size:12px}
 .chide{margin:0;padding:0 4px;min-height:0;background:none;box-shadow:none;font-size:12px}.cqe{display:flex;gap:4px;flex-wrap:wrap}.cqe button{margin:0;min-height:34px;padding:0 8px;background:var(--soft);box-shadow:none;font-size:18px;border-radius:10px}
 .cempty{align-self:center;margin:auto 0}
+.cann{display:grid;gap:6px;background:linear-gradient(135deg,#fff,#f6f0ff);border-radius:16px;padding:12px 14px;box-shadow:inset 0 0 0 2px var(--line),inset 6px 0 0 var(--cc),0 6px 16px rgba(42,26,58,.08)}
+.cann .canh{font:900 12px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--cc)}.cann p{margin:0;font:800 17px var(--body);overflow-wrap:anywhere}.cann small{color:var(--muted);font-weight:800}.cann .cbtns{margin:4px 0 0}
 .mis{display:flex;flex-direction:column;gap:6px;background:linear-gradient(135deg,#f4edff,#fff);border-radius:16px;padding:10px 12px;box-shadow:inset 0 0 0 2px #e2d3fb;text-align:left;margin:6px 0}
 .mish{display:flex;justify-content:space-between;align-items:center}.mis small{color:var(--muted);font-weight:800}.mis span{font-weight:800;font-size:14px}
 .event.hallo-ev{font-size:13px;padding:6px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1846,7 +1848,7 @@ function permsHTML(c,me){const ed=me==='chef';return`<div class="cperm"><h4 clas
   ${CPERMS.map(([k,ic,n])=>`<div class="pr0"><span>${ic} ${n}</span><b aria-label="Chef : oui">✅</b>${['sous','membre'].map(r=>{const on=cPerms(c,r).includes(k);return`<button class="pchk${on?' on':''}" data-perm="${r}:${k}" aria-pressed="${on}" aria-label="${n} : ${CROLES[r].n}" ${ed?'':'disabled'}>${on?'✅':'—'}</button>`}).join('')}</div>`).join('')}
   ${[['👑','Nommer, rétrograder et passer le rôle de chef'],['🔐','Changer cette grille'],['🚪','Ouvrir ou fermer le clan'],['💥','Dissoudre le clan']].map(([ic,n])=>`<div class="pr0"><span>${ic} ${n}</span><b>✅</b><b>—</b><b>—</b></div>`).join('')}</div>
   ${ed?`<label class="copen"><input type="checkbox" id="clanOpen" ${c.open?'checked':''}> Clan ouvert : le code suffit pour entrer. Décoché : il faut une demande acceptée.</label>`:'<p class="cap">Seul le chef peut changer cette grille.</p>'}</div>`}
-let clanMsgEdit=false,permOpen=false,clanBan='',giveArmed='',clanSub='mine',clanEmb='🛡️',chatStick=true,chatLast=0;
+let annDelArmed=false,clanMsgEdit=false,permOpen=false,clanBan='',giveArmed='',clanSub='mine',clanEmb='🛡️',chatStick=true,chatLast=0;
 const offerTo=c=>c.offer&&typeof c.offer.to==='string'&&Date.now()-(+c.offer.at||0)<3*864e5?c.offer.to:'';
 function renderClan(){const el=$('statsBody');
   if(!dbNS||!uid){el.innerHTML=window.coupeAuth?loginHTML('Connecte-toi pour créer ou rejoindre un clan.'):'<p class="empty">Les clans fonctionnent dans claude.ai, pour les personnes avec qui tu partages ce jeu.<br>Ici, ils ne sont pas disponibles.</p>';return}
@@ -1893,14 +1895,16 @@ function paintClans(){misCheck();const id=myClanId(),mineDoc=clanDocs.find(c=>c.
     else if(clanSub==='set'){h+=`<div class="clan" style="--cc:${mine.color}">${head}${permsHTML(mine,me)}
        <div class="row2">${can('edit')?'<button class="alt small" id="clanEdit">✏️ Modifier le clan</button>':''}${me==='chef'?'<button class="danger small" id="clanDel">Dissoudre</button>':'<button class="danger small" id="clanLeave">Quitter le clan</button>'}</div></div>`}
     else{const au=mine.msg&&lbDocs.find(r=>r.id===mine.msg.by),lastMsgs=mine.wall.slice(-2);
+      if(mine.msg||clanMsgEdit)h+=`<div class="cann" style="--cc:${mine.color}"><b class="canh">📣 Annonce du clan</b>
+       ${clanMsgEdit?`<div class="clanform"><label>Ton annonce<input id="clanMsgIn" maxlength="80" value="${esc(mine.msg?mine.msg.t:'')}"></label><div class="cbtns"><button class="small" id="clanMsgSave">Publier</button><button class="alt small" id="clanMsgCancel">Annuler</button></div></div>`
+         :`<p>${esc(mine.msg.t)}</p>${au?`<small>— ${esc(String(au.name||'?').slice(0,16))} · ${ago(mine.msg.at)}</small>`:''}${can('msg')?`<div class="cbtns"><button class="alt small" id="clanMsgBtn">✏️ Changer</button><button class="danger small" id="clanMsgDel">${annDelArmed?'Confirmer la suppression':'🗑️ Supprimer'}</button></div>`:''}`}</div>`;
       h+=`<div class="clan" style="--cc:${mine.color}">${head}
        <p class="myrole">${R.ic} Ton rôle : <b>${R.n}</b></p><div class="cstats"><span>🏆 <b>${myRk>=0?MEDAL[myRk]||'#'+(myRk+1):'—'}</b> du top</span><span>⭐ <b>${myRk>=0?cs[myRk][1]:0}</b> pts</span><span>👥 <b>${mem.length}</b> / ${CLAN_MAX}</span></div>
        ${(()=>{const to=offerTo(mine);if(!to)return'';const tg=lbDocs.find(r=>r.id===to),ch=lbDocs.find(r=>r.id===mine.id);let no='';try{no=localStorage.getItem('coupe.offerNo')||''}catch{}
          if(me==='chef')return`<div class="coffer"><span>👑 Proposition envoyée à <b>${esc(String(tg&&tg.name||'?').slice(0,16))}</b> : le rôle de chef passera dès qu’il ou elle acceptera.</span><button class="alt small" id="giveCancel">Annuler</button></div>`;
          return to===uid&&no!==String(mine.offer.at)?`<div class="coffer"><span>👑 <b>${esc(String(ch&&ch.name||'Le chef').slice(0,16))}</b> te propose de devenir chef du clan. L’ancien chef deviendra sous-chef.</span><span class="cbtns"><button class="small" id="giveYes">Devenir chef</button><button class="alt small" id="giveNo">Refuser</button></span></div>`:''})()}
        ${mine.pending.length&&can('accept')?`<button class="cnote" data-csub="members">📬 ${mine.pending.length} demande${mine.pending.length>1?'s':''} à valider</button>`:''}
-       ${mine.msg?`<div class="cmsg">📣 ${esc(mine.msg.t)}${au?`<small>— ${esc(String(au.name||'?').slice(0,16))}</small>`:''}</div>`:''}
-       ${can('msg')?(clanMsgEdit?`<div class="clanform"><label>Annonce du clan<input id="clanMsgIn" maxlength="80" value="${esc(mine.msg?mine.msg.t:'')}"></label><button class="small" id="clanMsgSave">Publier</button></div>`:`<button class="alt small" id="clanMsgBtn">📣 ${mine.msg?'Changer l’annonce':'Écrire une annonce'}</button>`):''}
+       ${can('msg')&&!mine.msg&&!clanMsgEdit?'<button class="alt small" id="clanMsgBtn">📣 Écrire une annonce</button>':''}
        ${myRk>=0&&myRk<3?`<p class="cpod">${MEDAL[myRk]} Si la saison finissait maintenant : ${['récompenses 1, 2 et 3','récompenses 2 et 3','récompense 3'][myRk]} pour chaque membre.</p>`:''}
        ${misHTML(mineDoc)}
        <button class="cprev" data-csub="chat"><b>💬 Chat${unread?` · ${unread} nouveau${unread>1?'x':''}`:''}</b>${lastMsgs.length?lastMsgs.map(w=>{const a=lbDocs.find(r=>r.id===w.by);return`<span><i>${esc(String(a&&a.name||'?').slice(0,16))}</i> ${esc(w.t)}</span>`}).join(''):'<span>Aucun message. Dis bonjour à ton clan !</span>'}</button></div>`}}
@@ -1935,6 +1939,8 @@ $('statsBody').addEventListener('click',async e=>{const t=e.target;if(!dbNS||!ui
   if(t.closest('#clanEdit')&&mine){clanForm='edit';clanColor=mine.color;clanBan=mine.ban;clanEmb=mine.emb;paintClans();return}
   if(t.closest('#clanJoinBtn')){clanForm='join';paintClans();return}
   if(t.closest('#clanMsgBtn')){clanMsgEdit=true;paintClans();$('clanMsgIn').focus();return}
+  if(t.closest('#clanMsgCancel')){clanMsgEdit=false;paintClans();return}
+  if(t.closest('#clanMsgDel')){if(!annDelArmed){annDelArmed=true;paintClans();setTimeout(()=>{if(annDelArmed){annDelArmed=false;paintClans()}},3000);return}annDelArmed=false;await clanAct('msg','');toastMsg('📣','Annonce supprimée','','#7b4dff');return}
   if(t.closest('#clanMsgSave')){clanMsgEdit=false;await clanAct('msg',cTxt($('clanMsgIn').value,80));return}
   const cc=t.closest('[data-cc]');if(cc){clanColor=cc.dataset.cc;document.querySelectorAll('[data-cc]').forEach(b=>b.classList.toggle('on',b===cc));return}
   const bn=t.closest('[data-bn]');if(bn){clanBan=bn.dataset.bn;document.querySelectorAll('[data-bn]').forEach(b=>b.classList.toggle('on',b===bn));return}
