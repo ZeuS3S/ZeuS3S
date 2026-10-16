@@ -1,3 +1,25 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Tranche les fruits, enchaîne les combos, évite le durian. Classement, clans et passe de saison.">
+<meta name="theme-color" content="#0f3b33">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Coupe-Fruits">
+<meta property="og:description" content="Tranche les fruits, enchaîne les combos, évite le durian.">
+<meta property="og:image" content="og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script>
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="auth.js"></script>
+</head>
+<body>
 <title>Coupe-Fruits</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2420,3 +2442,6 @@ Promise.all([document.fonts?document.fonts.ready.catch(()=>{}):0,new Promise(r=>
 // Accroche de test : lancer un objet à une position donnée.
 window.__coupe={state:()=>S,daily:()=>DAILY.indexOf(daily()),spawnAt:(bad,x,y,k)=>spawn(bad?'durian':POWERS.find(p=>p.power===k)||{coco:COCO,mango:MANGO,coin:COIN,bomb:GRENADE,blue:BLUE}[k]||FRUITS[0],x,y,0,0),size:()=>[W,H],chipY:()=>chipY,texts:()=>texts.map(t=>({s:t.s,y:t.y|0,combo:!!t.combo})),launch:()=>launch(),onBoard:()=>onBoard(),items:()=>items.map(i=>({x:i.x|0,y:i.y|0,r:i.r|0,e:i.kind.e||i.kind,free:i.free,pw:i.pw||'',hp:i.hp|0,child:!!i.child})),musicHeld:()=>!!mus.held,ach:()=>loadAch(),xp:()=>getXp(),lvl:()=>lvlInfo(getXp()),prefs,tr,music:()=>!!mus.timer,card:()=>makeCard(),cherries:(x,y)=>{const a=cherries(x,0,0);a.y=a.mate.y=y;return 1},pass:()=>loadPass(),passXp,stickers:()=>loadStk(),openPub,clans:()=>clanDocs,myClanId,prestige,doPrestige,checkMastery,checkColls,seasonQuests:()=>seasonQuests().map(q=>q.id),loadSQ,seasonProgress,fxOn,addFx,avatar,curTheme:()=>Object.keys(THEMES).find(k=>THEMES[k]===curTheme()),addPts:n=>addPts(n),cutAll:()=>{for(const it of items)if(!it.cut&&!it.bad&&it.kind.p)cutOne(it,0,false)},verdict:()=>verdict(S),comment,setShop:c=>{shopCat=c;renderShop()},titles:()=>gotTitles(),checkTitles,openStats,rerollsLeft,dailyIdx:()=>DAILY.indexOf(daily()),weekIds:()=>weekQuests().map(q=>q.id),dropSticker,league:()=>leagueOf(leaguePts(localBests())).id,feed:()=>myFeed,spawnBoss:()=>spawnBoss(),promos:()=>promos(),priceOf:(k,i)=>priceOf(k,i)};
 </script>
+
+</body>
+</html>
