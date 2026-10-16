@@ -288,15 +288,15 @@
     "semantic_hash": ""
   },
   "coupe-fruits/index.html": {
-    "mtime": 1792108044.1193128,
-    "seen": 1792108069.1366448,
-    "ast_hash": "11309e4f92dff4ee8f409ebd7d568d7c",
+    "mtime": 1792109145.0074513,
+    "seen": 1792109203.620231,
+    "ast_hash": "c4d19de3cbd2bf96de33f29507557a13",
     "semantic_hash": ""
   },
   "coupe-fruits/jeu.html": {
-    "mtime": 1792108044.0901244,
-    "seen": 1792108069.1366494,
-    "ast_hash": "8133fdbde127904b39141f7d72289cd5",
+    "mtime": 1792109144.9650865,
+    "seen": 1792109203.6202343,
+    "ast_hash": "06e1381825b6e9b7fd028f32cd22e300",
     "semantic_hash": ""
   },
   "coupe-fruits/sw.js": {
