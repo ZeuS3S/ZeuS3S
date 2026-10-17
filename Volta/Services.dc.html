@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Volta Électricité — services</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap">
+<style>
+:root{--ground:#EEF1F4;--paper:#FFFFFF;--ink:#0F1722;--muted:#4A5563;--line:#D3DAE2;--signal:#FFCC2E;--earth-g:#2E9E4F;--earth-y:#F2C200;
+--display:"Archivo","Helvetica Neue",Arial,sans-serif;--body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+a{color:var(--accent)}a:hover{color:var(--ink)}
+*{box-sizing:border-box}
+.ublocks{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:20px;padding-block:24px}
+.ub{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:10px;min-width:0;animation:ubIn .35s ease}
+.ub h2{margin:0;font-family:var(--display);font-stretch:112%;font-size:22px;font-weight:750;letter-spacing:-0.01em;text-wrap:balance;overflow-wrap:anywhere}
+.ub p{margin:0;color:var(--muted);overflow-wrap:anywhere}
+.ub-tag{display:inline-flex;align-items:center;align-self:flex-start;min-height:24px;padding:0 10px;border-radius:999px;background:var(--accent);color:#fff;font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.ub-ph{aspect-ratio:16/9;max-width:100%;border-radius:14px;border:1px dashed #9AA6B4;background:repeating-linear-gradient(135deg,#E2E7ED 0 12px,#E8ECF1 12px 24px)}
+.ub-btn{align-self:flex-start;display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;background:var(--accent);color:#fff;font-weight:600;text-decoration:none}.ub-btn:hover{color:#fff}
+.ub summary{cursor:pointer;font-weight:600;font-size:18px;min-height:44px;display:flex;align-items:center}
+.ub-act{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:10px;margin-top:auto;border-top:1px dashed var(--line);font-size:13.5px;color:var(--muted)}
+.ub-x{min-height:36px;padding:0 12px;border-radius:9px;border:1px solid var(--line);background:var(--paper);color:var(--muted);font:500 13.5px var(--body);cursor:pointer}
+.ub-x:hover,.ub-x:focus-visible{border-color:#B42318;color:#B42318;outline:none}
+.ub-yes{background:#B42318;border-color:#B42318;color:#fff}.ub-yes:hover{color:#fff}
+@keyframes ubIn{from{opacity:.4;transform:translateY(6px)}}
+@media (prefers-reduced-motion:reduce){.ub{animation:none}}
+html{scroll-behavior:smooth}[id]{scroll-margin-top:160px}
+.skip{position:absolute;left:16px;top:-80px;z-index:20;background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-weight:600}.skip:focus{top:12px;color:#fff}
+.btn:active{transform:scale(.98)}
+.hphone{font-family:var(--mono);font-size:14px;color:var(--ink);text-decoration:none;white-space:nowrap}.hphone:hover{color:var(--accent)}
+.mbar{display:none}.mbar .call{background:var(--signal);color:var(--ink)}
+@media (max-width:640px){.hphone{display:none}.mbar{position:fixed;left:0;right:0;bottom:0;z-index:10;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-top:1px solid var(--line)}.mbar .btn{justify-content:center}footer{padding-bottom:96px!important}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.wrap{max-width:1440px;margin:0 auto;padding-inline:clamp(16px,5.556vw,80px)}
+.g{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;row-gap:24px}
+.s3{grid-column:span 3}.s4{grid-column:span 4}.s5{grid-column:span 5}.s6{grid-column:span 6}.s7{grid-column:span 7}.s8{grid-column:span 8}.s12{grid-column:span 12}
+.s3,.s4,.s5,.s6,.s7,.s8,.s12{min-width:0}
+.d{font-family:var(--display);font-stretch:118%;letter-spacing:-0.02em;text-wrap:balance;margin:0}
+.lbl{font-family:var(--mono);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font-weight:600;font-size:15px;text-decoration:none;border:1.5px solid transparent;cursor:pointer;font-family:var(--body);transition:transform .15s ease}
+.btn:hover{transform:translateY(-1px)}
+.nl{color:var(--ink);text-decoration:none;padding-block:6px;border-bottom:2px solid transparent;white-space:nowrap}.nl:hover{color:var(--accent)}.nl[aria-current]{border-color:var(--accent);color:var(--accent)}
+.btn:focus-visible,.chip:focus-visible,.nl:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btn-p{background:var(--accent);color:#fff}.btn-p:hover{color:#fff}
+.btn-y{background:var(--signal);color:var(--ink)}.btn-y:hover{color:var(--ink)}
+.chip{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none;font-weight:500}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.subnav{position:sticky;top:72px;z-index:4;background:rgba(238,241,244,.94);backdrop-filter:blur(8px);border-block:1px solid var(--line)}.subnav .chip{flex:none;min-height:40px}
+.ico{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--paper);border:1px solid var(--line);color:var(--accent)}
+.svc{padding-block:56px;border-top:1px solid var(--line);align-items:start}
+.inc{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 24px}
+.inc li{display:flex;gap:10px;align-items:baseline}
+.inc li::before{content:"";flex:none;width:8px;height:8px;border-radius:2px;background:var(--accent);transform:translateY(-1px)}
+.price{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:14px}
+.kv{display:flex;justify-content:space-between;gap:12px;font-size:14px;border-bottom:1px dashed var(--line);padding-bottom:10px}
+.kv b{font-family:var(--mono);font-weight:600}
+.earth{display:inline-block;width:26px;height:8px;border-radius:2px;background:repeating-linear-gradient(90deg,var(--earth-g) 0 6px,var(--earth-y) 6px 12px)}
+@media (max-width:1024px){.s3{grid-column:span 6}.s4,.s5,.s7,.s8{grid-column:span 12}}
+@media (max-width:640px){.s3,.s4,.s5,.s6,.s7,.s8{grid-column:span 12}nav{flex-wrap:wrap}.nav-links{order:3;width:100%;overflow-x:auto;gap:20px!important}.hero-h{font-size:38px!important}.sec-h{font-size:28px!important}.inc{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</helmet>
+<div style="--accent: {{accent}}; background: var(--ground); min-height: 100%">
+
+<a class="skip" href="#contenu">Aller au contenu</a>
+<header style="position: sticky; top: 0; z-index: 5; background: rgba(238,241,244,0.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line)">
+<nav class="wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 16px 24px; padding-block: 16px" aria-label="Navigation principale">
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink)">
+<span style="width: 40px; height: 40px; border-radius: 10px; background: var(--ink); display: grid; place-items: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"></path></svg></span>
+<span style="display: flex; flex-direction: column; line-height: 1.1"><span class="d" style="font-size: 20px; font-weight: 800">Volta</span><span class="lbl" style="font-size: 10px">Électricité générale</span></span>
+</a>
+<div class="nav-links" style="display: flex; gap: 32px; font-weight: 500">
+<a class="nl" href="Services.dc.html" aria-current="page">Services</a>
+<a class="nl" href="Methode.dc.html">Méthode</a>
+<a class="nl" href="Realisations.dc.html">Réalisations</a>
+<a class="nl" href="Contact.dc.html">Contact</a>
+</div>
+<div style="display: flex; align-items: center; gap: 20px"><a class="hphone" href="tel:[VOTRE-TÉLÉPHONE]">[VOTRE TÉLÉPHONE]</a><a class="btn btn-p" href="Devis.dc.html">Devis gratuit</a></div>
+</nav>
+</header>
+
+<main id="contenu">
+<section class="wrap" style="padding-block: 64px 40px">
+<div class="g" style="align-items: end">
+<div class="s8" style="display: flex; flex-direction: column; gap: 20px">
+<span class="lbl" style="display: inline-flex; align-items: center; gap: 10px"><span class="earth"></span>Services</span>
+<h1 class="d hero-h" style="font-size: 60px; line-height: 1.02; font-weight: 800">Tout l'électrique de votre logement, par un seul artisan.</h1>
+</div>
+<p class="s4" style="margin: 0; color: var(--muted); font-size: 18px">Six métiers, un interlocuteur. Chaque prix ci-dessous est indicatif et confirmé par un devis écrit avant travaux.</p>
+
+</div>
+</section>
+
+<!-- Blocs créés depuis l'admin pour cette page (mis à jour en direct) -->
+<sc-if value="{{hasBlocks}}" hint-placeholder-val="{{ false }}">
+<section class="wrap ublocks" aria-label="Annonces">
+<sc-for list="{{pageBlocks}}" as="ub" hint-placeholder-count="1">
+<div class="ub">
+<span class="ub-tag">{{ub.tag}}</span>
+<sc-if value="{{ub.isImage}}" hint-placeholder-val="{{ false }}"><div class="ub-ph" role="img" aria-label="{{ub.title}}"></div></sc-if>
+<sc-if value="{{ub.isPhoto}}" hint-placeholder-val="{{ false }}"><div class="ub-ph" role="img" aria-label="{{ub.title}}"></div></sc-if>
+<sc-if value="{{ub.isFaq}}" hint-placeholder-val="{{ false }}"><details><summary>{{ub.title}}</summary><p>{{ub.text}}</p></details></sc-if>
+<sc-if value="{{ub.isPlain}}" hint-placeholder-val="{{ true }}"><h2>{{ub.title}}</h2><sc-if value="{{ub.text}}" hint-placeholder-val="{{ true }}"><p>{{ub.text}}</p></sc-if></sc-if>
+<sc-if value="{{ub.isButton}}" hint-placeholder-val="{{ false }}"><sc-if value="{{ub.text}}" hint-placeholder-val="{{ false }}"><p>{{ub.text}}</p></sc-if><a class="ub-btn" href="Contact.dc.html">{{ub.title}}</a></sc-if>
+<sc-if value="{{ub.isService}}" hint-placeholder-val="{{ false }}"><a class="ub-btn" href="Devis.dc.html">Demander un devis</a></sc-if>
+<div class="ub-act">
+<sc-if value="{{ub.idle}}" hint-placeholder-val="{{ true }}"><button type="button" class="ub-x" aria-label="Supprimer le bloc {{ub.title}}" onClick="{{ub.ask}}">Supprimer</button></sc-if>
+<sc-if value="{{ub.asking}}" hint-placeholder-val="{{ false }}"><span role="alert">Supprimer ce bloc ?</span><button type="button" class="ub-x ub-yes" onClick="{{ub.remove}}">Oui, supprimer</button><button type="button" class="ub-x" onClick="{{ub.cancel}}">Annuler</button></sc-if>
+</div>
+</div>
+</sc-for>
+</section>
+</sc-if>
+
+
+<nav class="subnav" aria-label="Aller au service"><div class="wrap" style="display: flex; gap: 10px; overflow-x: auto; padding-block: 12px">
+<sc-if value="{{svc.depannage}}" hint-placeholder-val="{{ true }}"><a class="chip" href="#depannage">Dépannage</a></sc-if>
+<sc-if value="{{svc.tableau}}" hint-placeholder-val="{{ true }}"><a class="chip" href="#tableau">Tableau électrique</a></sc-if>
+<sc-if value="{{svc.normes}}" hint-placeholder-val="{{ true }}"><a class="chip" href="#normes">Mise aux normes</a></sc-if>
+<sc-if value="{{svc.borne}}" hint-placeholder-val="{{ true }}"><a class="chip" href="#borne">Borne de recharge</a></sc-if>
+<sc-if value="{{svc.domotique}}" hint-placeholder-val="{{ true }}"><a class="chip" href="#domotique">Domotique</a></sc-if>
+<sc-if value="{{svc.eclairage}}" hint-placeholder-val="{{ true }}"><a class="chip" href="#eclairage">Éclairage LED</a></sc-if>
+</div></nav>
+
+<div class="wrap">
+<sc-if value="{{svc.depannage}}" hint-placeholder-val="{{ true }}"><article id="depannage" class="g svc">
+<div class="s4" style="display: flex; flex-direction: column; gap: 16px">
+<div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"></path></svg></div>
+<h2 class="d sec-h" style="font-size: 34px; font-weight: 800">Dépannage électrique</h2>
+<span class="lbl">Urgence · 7 j/7</span>
+</div>
+<div class="s5" style="display: flex; flex-direction: column; gap: 20px">
+<p style="margin: 0; font-size: 18px">Coupure générale, disjoncteur qui saute, prise qui chauffe ou chauffage en panne. On cherche la cause avant de remplacer quoi que ce soit.</p>
+<span class="lbl" style="color: var(--ink)">Ce qui est compris</span>
+<ul class="inc">
+<li>Recherche de panne au testeur</li>
+<li>Remise en service sécurisée</li>
+<li>Pièce remplacée sur accord</li>
+<li>Compte-rendu écrit</li>
+</ul>
+</div>
+<aside class="s3 price">
+<span class="lbl">Tarif indicatif</span>
+<span class="d" style="font-size: 26px; font-weight: 750">Dès [PRIX] €</span>
+<div class="kv"><span>Durée</span><b>[DURÉE]</b></div>
+<div class="kv"><span>Délai</span><b>[DÉLAI]</b></div>
+<a class="btn btn-y" href="Contact.dc.html" style="justify-content: center">Appeler maintenant</a>
+</aside>
+</article></sc-if>
+<sc-if value="{{svc.tableau}}" hint-placeholder-val="{{ true }}"><article id="tableau" class="g svc">
+<div class="s4" style="display: flex; flex-direction: column; gap: 16px">
+<div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3h16v18H4zM8 8h2M14 8h2M8 13h2M14 13h2"></path></svg></div>
+<h2 class="d sec-h" style="font-size: 34px; font-weight: 800">Tableau électrique</h2>
+<span class="lbl">Remplacement · ajout de circuits</span>
+</div>
+<div class="s5" style="display: flex; flex-direction: column; gap: 20px">
+<p style="margin: 0; font-size: 18px">Un tableau ancien, des fusibles à broche ou plus de place pour un nouveau circuit : on installe un tableau neuf, clair et évolutif.</p>
+<span class="lbl" style="color: var(--ink)">Ce qui est compris</span>
+<ul class="inc">
+<li>Dépose de l’ancien tableau</li>
+<li>Différentiels 30 mA type A et AC</li>
+<li>Repérage de chaque circuit</li>
+<li>Schéma unifilaire remis</li>
+</ul>
+</div>
+<aside class="s3 price">
+<span class="lbl">Tarif indicatif</span>
+<span class="d" style="font-size: 26px; font-weight: 750">Dès [PRIX] €</span>
+<div class="kv"><span>Durée</span><b>≈ 1 journée</b></div>
+<div class="kv"><span>Délai</span><b>[DÉLAI]</b></div>
+<a class="btn btn-p" href="Devis.dc.html" style="justify-content: center">Demander un devis</a>
+<a href="Devis.dc.html" onClick="{{est.tableau}}" style="text-align: center; font-weight: 600">Estimer le prix en 3 questions →</a>
+</aside>
+</article></sc-if>
+<sc-if value="{{svc.normes}}" hint-placeholder-val="{{ true }}"><article id="normes" class="g svc">
+<div class="s4" style="display: flex; flex-direction: column; gap: 16px">
+<div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3zM9 12l2 2 4-4"></path></svg></div>
+<h2 class="d sec-h" style="font-size: 34px; font-weight: 800">Mise aux normes</h2>
+<span class="lbl">Vente · location · rénovation</span>
+</div>
+<div class="s5" style="display: flex; flex-direction: column; gap: 20px">
+<p style="margin: 0; font-size: 18px">Mise en conformité NF C 15-100 après un diagnostic, avant une vente, une location ou des travaux.</p>
+<span class="lbl" style="color: var(--ink)">Ce qui est compris</span>
+<ul class="inc">
+<li>Diagnostic de l’installation</li>
+<li>Mise à la terre vérifiée</li>
+<li>Liaison équipotentielle salle de bain</li>
+<li>Attestation Consuel si requise</li>
+</ul>
+</div>
+<aside class="s3 price">
+<span class="lbl">Tarif indicatif</span>
+<span class="d" style="font-size: 26px; font-weight: 750">Sur devis</span>
+<div class="kv"><span>Durée</span><b>[DURÉE]</b></div>
+<div class="kv"><span>Délai</span><b>[DÉLAI]</b></div>
+<a class="btn btn-p" href="RendezVous.dc.html" style="justify-content: center">Planifier un diagnostic</a>
+<a href="Devis.dc.html" onClick="{{est.normes}}" style="text-align: center; font-weight: 600">Estimer le prix en 3 questions →</a>
+</aside>
+</article></sc-if>
+<sc-if value="{{svc.borne}}" hint-placeholder-val="{{ true }}"><article id="borne" class="g svc">
+<div class="s4" style="display: flex; flex-direction: column; gap: 16px">
+<div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h10v18H6zM16 8h2a2 2 0 0 1 2 2v5a2 2 0 0 1-4 0M10 9l-2 4h4l-2 4"></path></svg></div>
+<h2 class="d sec-h" style="font-size: 34px; font-weight: 800">Borne de recharge</h2>
+<span class="lbl">Maison · copropriété</span>
+</div>
+<div class="s5" style="display: flex; flex-direction: column; gap: 20px">
+<p style="margin: 0; font-size: 18px">Une borne 7 kW sur une ligne dédiée. Au-delà de 3,7 kW, la pose par un électricien qualifié IRVE est obligatoire.</p>
+<span class="lbl" style="color: var(--ink)">Ce qui est compris</span>
+<ul class="inc">
+<li>Étude de puissance</li>
+<li>Ligne dédiée et protection</li>
+<li>Pose et paramétrage</li>
+<li>Dossier pour les aides éligibles</li>
+</ul>
+</div>
+<aside class="s3 price">
+<span class="lbl">Tarif indicatif</span>
+<span class="d" style="font-size: 26px; font-weight: 750">Dès [PRIX] € posée</span>
+<div class="kv"><span>Durée</span><b>≈ ½ journée</b></div>
+<div class="kv"><span>Délai</span><b>[DÉLAI]</b></div>
+<a class="btn btn-p" href="Contact.dc.html" style="justify-content: center">Demander une étude</a>
+<a href="Devis.dc.html" onClick="{{est.borne}}" style="text-align: center; font-weight: 600">Estimer le prix en 3 questions →</a>
+</aside>
+</article></sc-if>
+<sc-if value="{{svc.domotique}}" hint-placeholder-val="{{ true }}"><article id="domotique" class="g svc">
+<div class="s4" style="display: flex; flex-direction: column; gap: 16px">
+<div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 2h10v20H7zM11 18h2"></path></svg></div>
+<h2 class="d sec-h" style="font-size: 34px; font-weight: 800">Domotique</h2>
+<span class="lbl">Volets · chauffage · éclairage</span>
+</div>
+<div class="s5" style="display: flex; flex-direction: column; gap: 20px">
+<p style="margin: 0; font-size: 18px">Pilotez volets, chauffage et lumières depuis votre téléphone ou par scénarios, en gardant vos interrupteurs.</p>
+<span class="lbl" style="color: var(--ink)">Ce qui est compris</span>
+<ul class="inc">
+<li>Étude des besoins</li>
+<li>Modules et passerelle</li>
+<li>Scénarios configurés</li>
+<li>Prise en main avec vous</li>
+</ul>
+</div>
+<aside class="s3 price">
+<span class="lbl">Tarif indicatif</span>
+<span class="d" style="font-size: 26px; font-weight: 750">Sur devis</span>
+<div class="kv"><span>Durée</span><b>[DURÉE]</b></div>
+<div class="kv"><span>Délai</span><b>[DÉLAI]</b></div>
+<a class="btn btn-p" href="Contact.dc.html" style="justify-content: center">Parler de mon projet</a>
+<a href="Devis.dc.html" onClick="{{est.domotique}}" style="text-align: center; font-weight: 600">Estimer le prix en 3 questions →</a>
+</aside>
+</article></sc-if>
+<sc-if value="{{svc.eclairage}}" hint-placeholder-val="{{ true }}"><article id="eclairage" class="g svc">
+<div class="s4" style="display: flex; flex-direction: column; gap: 16px">
+<div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"></path></svg></div>
+<h2 class="d sec-h" style="font-size: 34px; font-weight: 800">Éclairage LED</h2>
+<span class="lbl">Intérieur · extérieur</span>
+</div>
+<div class="s5" style="display: flex; flex-direction: column; gap: 20px">
+<p style="margin: 0; font-size: 18px">Spots encastrés, rubans LED, éclairage extérieur avec détecteur. Moins de consommation, une lumière mieux placée.</p>
+<span class="lbl" style="color: var(--ink)">Ce qui est compris</span>
+<ul class="inc">
+<li>Plan d’éclairage</li>
+<li>Spots, rubans, variateurs</li>
+<li>Détecteurs extérieurs</li>
+<li>Finitions et raccords</li>
+</ul>
+</div>
+<aside class="s3 price">
+<span class="lbl">Tarif indicatif</span>
+<span class="d" style="font-size: 26px; font-weight: 750">Dès [PRIX] € le point</span>
+<div class="kv"><span>Durée</span><b>[DURÉE]</b></div>
+<div class="kv"><span>Délai</span><b>[DÉLAI]</b></div>
+<a class="btn btn-p" href="Devis.dc.html" style="justify-content: center">Demander un devis</a>
+<a href="Devis.dc.html" onClick="{{est.eclairage}}" style="text-align: center; font-weight: 600">Estimer le prix en 3 questions →</a>
+</aside>
+</article></sc-if>
+</div>
+
+<section style="background: var(--ink); color: #fff; margin-top: 40px">
+<div class="wrap g" style="padding-block: 72px; align-items: center">
+<div class="s8" style="display: flex; flex-direction: column; gap: 12px">
+<h2 class="d sec-h" style="font-size: 40px; font-weight: 800">Pas sûr du service qu'il vous faut ?</h2>
+<p style="margin: 0; color: #C9D3E0; font-size: 18px">Décrivez ce qui se passe, ajoutez une photo du tableau : on vous oriente.</p>
+</div>
+<div class="s4" style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end">
+<a class="btn btn-y" href="Contact.dc.html">Décrire mon besoin</a>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="wrap" style="padding-block: 32px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 14px; color: var(--muted)">
+<span>© Volta Électricité · SIRET [NUMÉRO] · Assurance décennale [ASSUREUR]</span>
+<span style="display: flex; gap: 20px"><a href="Main.dc.html">Accueil</a><a href="Contact.dc.html">Contact</a></span>
+<span style="flex-basis: 100%">Zones d'intervention : <a href="Ville.dc.html">[VILLE VOISINE]</a> · <a href="Ville.dc.html">[VILLE VOISINE 2]</a> · <a href="Ville.dc.html">[VILLE VOISINE 3]</a></span>
+</footer>
+<nav class="mbar" aria-label="Actions rapides"><a class="btn call" href="tel:[VOTRE-TÉLÉPHONE]">Appeler</a><a class="btn btn-p" href="Devis.dc.html">Devis gratuit</a></nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2453E6","options":["#2453E6","#0F7B6C","#C2410C","#6D28D9"]},"$preview":{"width":1440,"height":4400}}'>
+class Component extends DCLogic {
+  // Blocs créés dans l'admin : lus dans le navigateur et rechargés dès que l'admin les change.
+  // shortcut: stockés dans ce navigateur seulement ; sur le vrai site, à lire depuis le serveur.
+  componentDidMount() {
+    this.onBlocks = () => this.loadBlocks();
+    this.loadBlocks();
+    try { this.chan = new BroadcastChannel('volta-blocks'); this.chan.onmessage = this.onBlocks; } catch (e) {}
+    window.addEventListener('storage', this.onBlocks);
+  }
+  componentWillUnmount() {
+    try { if (this.chan) this.chan.close(); } catch (e) {}
+    window.removeEventListener('storage', this.onBlocks);
+  }
+  loadBlocks() {
+    let all = [];
+    try { all = JSON.parse(localStorage.getItem('volta.blocks') || '[]'); } catch (e) {}
+    let site = {};
+    try { site = JSON.parse(localStorage.getItem('volta.site') || '{}') || {}; } catch (e) {}
+    this.setState({ siteBlocks: Array.isArray(all) ? all : [], removed: { svc: Array.isArray(site.svc) ? site.svc : [], ch: Array.isArray(site.ch) ? site.ch : [] } });
+  }
+  // Supprime un bloc pour tout le site : enregistre, prévient l'admin et les autres pages.
+  removeBlock(id) {
+    let all = [];
+    try { all = JSON.parse(localStorage.getItem('volta.blocks') || '[]'); } catch (e) {}
+    const next = (Array.isArray(all) ? all : []).filter((b) => b && b.id !== id);
+    try { localStorage.setItem('volta.blocks', JSON.stringify(next)); } catch (e) {}
+    try { const c = new BroadcastChannel('volta-blocks'); c.postMessage('changed'); c.close(); } catch (e) {}
+    this.setState({ askDel: null, siteBlocks: next });
+  }
+  blockVals(page) {
+    const TAG = { texte: 'Info', image: 'Image', bouton: 'Action', faq: 'Question', service: 'Service', chantier: 'Réalisation' };
+    const list = ((this.state && this.state.siteBlocks) || [])
+      .filter((b) => b && b.page === page && !b.hidden && typeof b.title === 'string')
+      .map((b) => ({
+        title: b.title, text: typeof b.text === 'string' ? b.text : '', tag: TAG[b.type] || 'Info',
+        isImage: b.type === 'image', isPhoto: b.type === 'chantier', isFaq: b.type === 'faq', isButton: b.type === 'bouton',
+        isService: b.type === 'service', isPlain: b.type !== 'faq' && b.type !== 'bouton',
+        asking: (this.state || {}).askDel === b.id, idle: (this.state || {}).askDel !== b.id,
+        ask: () => this.setState({ askDel: b.id }),
+        cancel: () => this.setState({ askDel: null }),
+        remove: () => this.removeBlock(b.id),
+      }));
+    return { pageBlocks: list, hasBlocks: list.length > 0 };
+  }
+  renderVals() {
+    return { accent: this.props.accent ?? '#2453E6', ...this.blockVals('Services'),
+      // Ouvre le devis avec ce type de travaux déjà coché.
+      est: Object.fromEntries(['tableau', 'normes', 'borne', 'domotique', 'eclairage']
+        .map((w) => [w, () => { try { localStorage.setItem('volta.prefill', JSON.stringify({ work: w })); } catch (e) {} }])),
+      svc: Object.fromEntries(['depannage', 'tableau', 'normes', 'borne', 'domotique', 'eclairage']
+        .map((id) => [id, !(((this.state || {}).removed || {}).svc || []).includes(id)])) };
+  }
+}
+</script>
+</body>
+</html>
