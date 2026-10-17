@@ -1335,7 +1335,7 @@ function puzzleEnd(){musicStop();S.running=false;pauseLabel();const L=S.puzzle,o
   const met=o.type==='all'?alive&&S.pzMiss===0:o.type==='combo'?S.bestCombo>=o.n:S.score>=o.n,win=alive&&met;
   const prog=pzProgress(),old=prog[L]||0,stars=win?(S.pzMiss===0?3:S.pzMiss<=2?2:1):0;
   if(stars>old){prog[L]=stars;try{localStorage.setItem('coupe.puzzle',JSON.stringify(prog))}catch{}earn((stars-old)*(15+Math.min(L,60)*2))}
-  if(win){addXp(40+L*5);buzz(HAPT.win)}if(win&&pzBoss(L))pzWorldCheck();seasonProgress(null);checkTitles(S);if(win&&!old&&!pzHid(L))pushFeed({k:'pz',n:L});$('overStk').hidden=true;$('overSus').hidden=true;
+  if(win){addXp(40+L*5);buzz(HAPT.win)}if(win&&pzBoss(L))pzWorldCheck();addPumpkins(curEv()?S.fruits[curEv().fruit.e]||0:0);seasonProgress(null);checkTitles(S);if(win&&!old&&!pzHid(L))pushFeed({k:'pz',n:L});$('overStk').hidden=true;$('overSus').hidden=true;
   $('overTitle').textContent=pzHid(L)?(win?'✨ Étoile cachée trouvée !':'Étoile cachée ratée'):win?`Niveau ${L} réussi !`:`Niveau ${L} raté`;
   $('final').innerHTML=win?`<span class="stars">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</span>`:String(S.score);
   $('overStats').textContent=`Objectif : ${pzObjText(o)}`;
@@ -1377,7 +1377,7 @@ function careerEnd(){S.running=false;pauseLabel();const L=S.career,win=!!S.carWo
   if(stars>old){prog[L]=stars;try{localStorage.setItem('coupe.career',JSON.stringify(prog))}catch{}earn((stars-old)*(10+L*2))}
   {const k=Math.floor((L-1)/5),id='c_'+AMB_K[k];if(!ownedSkins().includes(id)&&[1,2,3,4,5].every(j=>prog[k*5+j]===3)){hpGrant([0,'skin',id]);toastMsg('🖼️',tr('Défi 3 étoiles réussi !'),tr(`Nouveau fond : ${tr(CAR_CH[k].n)}`),CAR_CH[k].c)}}
   if(win){addXp(60+L*8);buzz(HAPT.win);if(!old)talDrop(.2,'En livrant une commande');if(stars===3&&Math.random()<.35+.15*tal('pourboire'))tip(L,cl);if(L%5===0&&!old){const ch=CAR_CH[L/5-1];addCoins(100+L*10);dropSticker(L>=30?'epique':'rare');toastMsg(ch.ic,tr(`${ch.n} terminé !`),`+${100+L*10} 🪙 · `+tr('autocollant'),ch.c)}}
-  checkAch(true);seasonProgress(null);checkTitles(S);$('overStk').hidden=true;$('overSus').hidden=true;
+  checkAch(true);addPumpkins(curEv()?S.fruits[curEv().fruit.e]||0:0);seasonProgress(null);checkTitles(S);$('overStk').hidden=true;$('overSus').hidden=true;
   $('overTitle').textContent=win?tr('Commande livrée !'):tr('Commande ratée');
   $('final').innerHTML=win?`<span class="stars">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</span>`:String(S.score);
   $('overStats').textContent=`${cl[0]} ${tr(cl[1])} · ${carTxt()}`;
