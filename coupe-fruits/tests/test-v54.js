@@ -1,0 +1,13 @@
+const { chromium } = require('/opt/node-tools/node_modules/playwright');
+const assert = require('assert');
+(async () => { const b = await chromium.launch(); const pg = await b.newPage({ viewport: { width: 390, height: 800 } });
+  const errs = []; pg.on('pageerror', e => errs.push(e.message));
+  await pg.goto('file://' + __dirname + '/coupe.html');
+  await pg.evaluate(() => { const d = new Date(); d.setDate(d.getDate() - 5); localStorage.setItem('coupe.tuto', '1'); localStorage.setItem('coupe.seen', '3.10'); localStorage.setItem('coupe.lastDay', `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`) });
+  await pg.reload(); await pg.waitForTimeout(2200);
+  assert.strictEqual(await pg.evaluate(() => JSON.parse(localStorage.getItem('coupe.wallet') || '{"coins":0}').coins), 500, 'gift coins');
+  assert.match(await pg.textContent('#toast'), /Bon retour/); await pg.screenshot({ path: 'v54-back.png' });
+  await pg.reload(); await pg.waitForTimeout(2200);
+  assert.strictEqual(await pg.evaluate(() => JSON.parse(localStorage.getItem('coupe.wallet')).coins), 500, 'only once');
+  assert.deepStrictEqual(errs, []); console.log('v5.4 retour OK'); await b.close();
+})().catch(e => { console.error('FAIL', e.message); process.exit(1); });
