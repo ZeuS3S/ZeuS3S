@@ -1,0 +1,87 @@
+<title>Quêtes Kappa Tarkov</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root{--bg:#121411;--card:#1c1f1a;--line:#30352c;--txt:#e8e6dc;--dim:#9a9d8f;--acc:#c7b46b;--ok:#7fb069;color-scheme:dark}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#f3f1ea;--card:#fff;--line:#ddd8c8;--txt:#22241e;--dim:#6a6d60;--acc:#8a7428;--ok:#3f7d2c;color-scheme:light}}
+:root[data-theme="light"]{--bg:#f3f1ea;--card:#fff;--line:#ddd8c8;--txt:#22241e;--dim:#6a6d60;--acc:#8a7428;--ok:#3f7d2c;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:860px;margin:0 auto;padding-block:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{margin:.2em 0;font-size:1.6em}h1 b{color:var(--acc)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:2;background:var(--bg);padding:10px 0;display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-bottom:1px solid var(--line)}
+input[type=search],select{flex:1 1 160px;min-width:0;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--txt);font:inherit}
+label.opt{display:flex;gap:6px;align-items:center;color:var(--dim);white-space:nowrap}
+.prog{width:100%;height:8px;border-radius:4px;background:var(--line);overflow:hidden}.prog i{display:block;height:100%;background:var(--ok);transition:width .3s}
+#count{color:var(--dim);font-size:.9em;width:100%}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:12px 0}
+summary{cursor:pointer;padding:12px 14px;font-weight:700;display:flex;gap:10px;align-items:center}
+summary img{width:32px;height:32px;border-radius:6px}summary small{margin-left:auto;color:var(--dim);font-weight:400}
+ul{list-style:none;margin:0;padding:0 8px 8px}
+#list li{display:flex;gap:10px;align-items:flex-start;padding:8px 6px;border-top:1px solid var(--line)}
+#list li input{width:20px;height:20px;margin-top:2px;accent-color:var(--ok);flex:none}
+#list li.done .nm{text-decoration:line-through;color:var(--dim)}
+.nm{font-weight:600}.meta{color:var(--dim);font-size:.85em}
+a{color:var(--acc)}
+#msg{padding:20px;text-align:center;color:var(--dim)}
+#imp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0}#imp ol{margin:.4em 0;padding-left:1.3em}textarea{width:100%;min-height:70px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--txt);font:12px ui-monospace,monospace;padding:8px}button{font:inherit;padding:8px 14px;border-radius:8px;border:0;background:var(--acc);color:var(--bg);font-weight:700;cursor:pointer}:focus-visible{outline:2px solid var(--acc);outline-offset:2px}#impMsg{color:var(--dim);font-size:.9em;margin-left:8px}
+footer{color:var(--dim);font-size:.85em;margin:24px 0}
+</style>
+<main>
+<h1>Quêtes requises pour le <b>Kappa</b></h1>
+<p class="meta">Liste tirée de tarkov.dev (noms français). Chaque nom renvoie au wiki français. Ta progression reste dans ton navigateur.</p>
+<div class="bar">
+  <input type="search" id="q" placeholder="Rechercher une quête…" aria-label="Rechercher une quête">
+  <select id="map" aria-label="Filtrer par carte"><option value="">Toutes les cartes</option></select>
+  <label class="opt"><input type="checkbox" id="hide"> Masquer les terminées</label>
+  <div class="prog" aria-hidden="true"><i id="bar"></i></div>
+  <div id="count"></div>
+</div>
+<details id="imp"><summary>Importer ou mettre à jour la liste</summary>
+<ol><li><a href="https://api.tarkov.dev/graphql?query=%7Btasks%28lang%3Afr%29%7Bid%20name%20kappaRequired%20minPlayerLevel%20trader%7Bname%20imageLink%7D%20map%7Bname%7D%20taskRequirements%7Btask%7Bname%7D%7D%7D%7D" target="_blank" rel="noopener">Ouvre la liste des quêtes sur tarkov.dev</a> (nouvel onglet).</li><li>Sélectionne tout (Ctrl+A), copie (Ctrl+C).</li><li>Colle ici (Ctrl+V) :</li></ol>
+<textarea id="paste" aria-label="Coller la réponse de tarkov.dev" placeholder='{"data":{"tasks":[…]}}'></textarea>
+<p><button id="go" type="button">Importer</button><span id="impMsg" role="status"></span></p></details>
+<div id="list"><p id="msg">Chargement des quêtes…</p></div>
+<footer>Données : <a href="https://tarkov.dev" rel="noopener">tarkov.dev</a> · Wiki : <a href="https://escapefromtarkov.fandom.com/fr/" rel="noopener">escapefromtarkov.fandom.com/fr</a> · Site non officiel.</footer>
+</main>
+<script>
+const WIKI=n=>'https://escapefromtarkov.fandom.com/fr/wiki/Special:Search?query='+encodeURIComponent(n);
+const $=id=>document.getElementById(id);
+let tasks=[],done={};
+try{done=JSON.parse(localStorage.getItem('kappa.done'))||{}}catch{}
+const save=()=>{try{localStorage.setItem('kappa.done',JSON.stringify(done))}catch{}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function render(){
+  const q=$('q').value.trim().toLowerCase(),m=$('map').value,hide=$('hide').checked;
+  const n=tasks.filter(t=>done[t.id]).length;
+  $('count').textContent=`${n} / ${tasks.length} quêtes terminées`;
+  $('bar').style.width=(tasks.length?100*n/tasks.length:0)+'%';
+  const by={};
+  for(const t of tasks){
+    if(q&&!t.name.toLowerCase().includes(q))continue;
+    if(m&&(t.map?.name||'')!==m)continue;
+    if(hide&&done[t.id])continue;
+    (by[t.trader.name]||=[]).push(t);
+  }
+  $('list').innerHTML=Object.keys(by).map(tr=>{
+    const all=tasks.filter(t=>t.trader.name===tr),d=all.filter(t=>done[t.id]).length,img=all[0].trader.imageLink;
+    return `<details open><summary>${img?`<img src="${esc(img)}" alt="">`:''}${esc(tr)}<small>${d} / ${all.length}</small></summary><ul>${
+      by[tr].map(t=>`<li class="${done[t.id]?'done':''}"><input type="checkbox" data-id="${esc(t.id)}" ${done[t.id]?'checked':''} aria-label="${esc(t.name)} terminée"><div><a class="nm" href="${WIKI(t.name)}" target="_blank" rel="noopener">${esc(t.name)}</a><div class="meta">Niv. ${t.minPlayerLevel||1}${t.map?' · '+esc(t.map.name):''}${t.taskRequirements.length?' · après : '+t.taskRequirements.map(r=>esc(r.task.name)).join(', '):''}</div></div></li>`).join('')
+    }</ul></details>`}).join('')||'<p id="msg">Aucune quête ne correspond.</p>';
+}
+$('list').addEventListener('change',e=>{const id=e.target.dataset.id;if(!id)return;if(e.target.checked)done[id]=1;else delete done[id];save();render()});
+for(const id of['q','map','hide'])$(id).addEventListener('input',render);
+
+function load(list){
+  tasks=list.filter(t=>t.kappaRequired&&t.trader).sort((a,b)=>a.trader.name.localeCompare(b.trader.name)||(a.minPlayerLevel||0)-(b.minPlayerLevel||0)||a.name.localeCompare(b.name,'fr'));
+  const maps=[...new Set(tasks.map(t=>t.map?.name).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'fr'));
+  $('map').innerHTML='<option value="">Toutes les cartes</option>'+maps.map(m=>`<option>${esc(m)}</option>`).join('');
+  render();
+}
+function imp(txt){let j;try{j=JSON.parse(txt)}catch{return'Ce n’est pas la réponse de tarkov.dev : copie toute la page.'}
+  const t=j?.data?.tasks;if(!Array.isArray(t)||!t.length)return'Aucune quête trouvée dans le texte collé.';
+  try{localStorage.setItem('kappa.cache',JSON.stringify(t))}catch{}load(t);$('imp').open=false;return`${tasks.length} quêtes Kappa importées.`}
+$('go').addEventListener('click',()=>{$('impMsg').textContent=imp($('paste').value.trim())});
+{let c=null;try{c=JSON.parse(localStorage.getItem('kappa.cache'))}catch{}
+ if(c)load(c);else{$('imp').open=true;$('list').innerHTML='<p id="msg">Aucune liste encore. Importe-la depuis tarkov.dev avec le panneau ci-dessus (une seule fois, elle reste enregistrée).</p>'}}
+</script>
