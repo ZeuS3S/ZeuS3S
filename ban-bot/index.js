@@ -1,11 +1,14 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits, PermissionFlagsBits, EmbedBuilder, ActivityType } = require('discord.js');
+const { Client, GatewayIntentBits, PermissionFlagsBits, ActivityType } = require('discord.js');
+const store = require('./store');
+const { eph } = require('./util');
+const panels = [require('./panels/piege'), require('./panels/statut'), require('./panels/logs'), require('./panels/bienvenue')];
+const byName = Object.fromEntries(panels.map((p) => [p.name, p]));
+const logs = require('./panels/logs');
 
-const { DISCORD_TOKEN, TRAP_CHANNEL_ID, LOG_CHANNEL_ID, STATUS_KEYWORD, STATUS_ROLE_ID } = process.env;
-const DELETE_SECONDS = Math.min(Number(process.env.DELETE_SECONDS ?? 3600), 604800);
-
-if (!DISCORD_TOKEN || !TRAP_CHANNEL_ID) {
-  console.error('DISCORD_TOKEN et TRAP_CHANNEL_ID sont obligatoires (voir .env.example).');
+const { DISCORD_TOKEN, GUILD_ID } = process.env;
+if (!DISCORD_TOKEN) {
+  console.error('DISCORD_TOKEN est obligatoire (voir .env.example).');
   process.exit(1);
 }
 
@@ -19,76 +22,103 @@ const client = new Client({
   ],
 });
 
-// Rôle automatique : le statut personnalisé du membre contient le mot-clé
-const statusEnabled = Boolean(STATUS_KEYWORD && STATUS_ROLE_ID);
-const keyword = (STATUS_KEYWORD ?? '').toLowerCase();
+// ---------- Rôle selon le statut ----------
+const statusText = (presence) =>
+  (presence?.activities?.find((a) => a.type === ActivityType.Custom)?.state ?? '').toLowerCase();
 
-const hasKeyword = (presence) =>
-  presence?.activities?.some((a) => a.type === ActivityType.Custom && (a.state ?? '').toLowerCase().includes(keyword)) ?? false;
-
-async function syncRole(member, presence) {
+async function syncMember(member, presence) {
   if (!member || member.user.bot) return;
-  const has = member.roles.cache.has(STATUS_ROLE_ID);
-  const want = hasKeyword(presence);
-  try {
-    if (want && !has) await member.roles.add(STATUS_ROLE_ID, 'Mot-clé dans le statut');
-    else if (!want && has) await member.roles.remove(STATUS_ROLE_ID, 'Mot-clé retiré du statut');
-  } catch (err) {
-    console.error(`Rôle impossible pour ${member.user.tag} (le rôle du bot doit être au-dessus) :`, err.message);
+  const rules = store.get(member.guild.id).statusRules;
+  if (!rules.length) return;
+  const text = statusText(presence);
+  const wanted = new Set(rules.filter((r) => text.includes(r.keyword.toLowerCase())).map((r) => r.roleId));
+  for (const roleId of new Set(rules.map((r) => r.roleId))) {
+    const has = member.roles.cache.has(roleId);
+    try {
+      if (wanted.has(roleId) && !has) {
+        await member.roles.add(roleId, 'Mot-clé dans le statut');
+        await logs.record(member.guild, { type: 'role_add', userId: member.id, tag: member.user.tag, detail: `<@&${roleId}>` });
+      } else if (!wanted.has(roleId) && has) {
+        await member.roles.remove(roleId, 'Mot-clé retiré du statut');
+        await logs.record(member.guild, { type: 'role_remove', userId: member.id, tag: member.user.tag, detail: `<@&${roleId}>` });
+      }
+    } catch (err) {
+      console.error(`Rôle impossible pour ${member.user.tag} (mon rôle doit être au-dessus) :`, err.message);
+    }
   }
+}
+
+async function syncGuild(guild) {
+  if (!store.get(guild.id).statusRules.length) return;
+  const members = await guild.members.fetch({ withPresences: true }).catch(() => null);
+  if (!members) return;
+  for (const m of members.values()) await syncMember(m, m.presence);
 }
 
 client.once('clientReady', async () => {
   console.log(`Connecté en tant que ${client.user.tag}`);
-  if (!statusEnabled) return;
-  // Rattrapage au démarrage : vérifie tous les membres en ligne
-  for (const guild of client.guilds.cache.values()) {
-    const members = await guild.members.fetch({ withPresences: true }).catch(() => null);
-    if (!members) continue;
-    for (const member of members.values()) await syncRole(member, member.presence);
-  }
+  const defs = panels.map((p) => p.command.toJSON());
+  if (GUILD_ID) await client.application.commands.set(defs, GUILD_ID); // instantané, pour un seul serveur
+  else await client.application.commands.set(defs);
+  for (const guild of client.guilds.cache.values()) await syncGuild(guild);
 });
 
-client.on('presenceUpdate', (_old, presence) => {
-  if (statusEnabled) syncRole(presence.member, presence);
-});
+client.on('presenceUpdate', (_old, presence) => syncMember(presence.member, presence));
+client.on('guildMemberAdd', (member) => byName.bienvenue.onJoin(member));
 
+// ---------- Salon piège ----------
 client.on('messageCreate', async (message) => {
-  if (message.channelId !== TRAP_CHANNEL_ID) return;
   if (!message.guild || message.author.bot) return;
+  const t = store.get(message.guild.id).trap;
+  if (!t.enabled || message.channelId !== t.channelId) return;
 
   const member = message.member ?? (await message.guild.members.fetch(message.author.id).catch(() => null));
   if (!member) return;
-
-  // Ne jamais bannir le staff
   if (member.permissions.has(PermissionFlagsBits.ManageMessages) || member.permissions.has(PermissionFlagsBits.BanMembers)) return;
+  if (t.exemptRoles.some((r) => member.roles.cache.has(r))) return;
 
-  if (!member.bannable) {
-    console.warn(`Impossible de bannir ${message.author.tag} (rôle trop haut ou permission manquante).`);
-    return;
-  }
-
+  const reason = 'A écrit dans le salon piège';
+  const content = (message.content || 'message vide').slice(0, 300);
   try {
-    await member.ban({ deleteMessageSeconds: DELETE_SECONDS, reason: 'A écrit dans le salon piège' });
-    console.log(`Banni : ${message.author.tag} (${message.author.id})`);
-
-    if (LOG_CHANNEL_ID) {
-      const log = await message.guild.channels.fetch(LOG_CHANNEL_ID).catch(() => null);
-      if (log?.isTextBased()) {
-        await log.send({
-          embeds: [new EmbedBuilder()
-            .setColor(0xd9534f)
-            .setTitle('Membre banni (salon piège)')
-            .addFields(
-              { name: 'Utilisateur', value: `${message.author.tag} (${message.author.id})` },
-              { name: 'Message', value: (message.content || '*vide*').slice(0, 1000) },
-            )
-            .setTimestamp()],
-        });
-      }
+    if (t.action === 'ban') {
+      if (!member.bannable) return console.warn(`Ban impossible pour ${message.author.tag} (rôle trop haut).`);
+      await member.ban({ deleteMessageSeconds: t.deleteSeconds, reason });
+    } else if (t.action === 'kick') {
+      if (!member.kickable) return console.warn(`Expulsion impossible pour ${message.author.tag}.`);
+      await message.delete().catch(() => {});
+      await member.kick(reason);
+    } else {
+      if (!member.moderatable) return console.warn(`Sourdine impossible pour ${message.author.tag}.`);
+      await message.delete().catch(() => {});
+      await member.timeout(t.timeoutMinutes * 60_000, reason);
     }
+    await logs.record(message.guild, { type: t.action, userId: member.id, tag: member.user.tag, detail: content });
   } catch (err) {
-    console.error('Échec du ban :', err);
+    console.error('Action du piège échouée :', err);
+  }
+});
+
+// ---------- Commandes et composants ----------
+client.on('interactionCreate', async (i) => {
+  try {
+    if (!i.inGuild()) return;
+    if (i.isChatInputCommand()) {
+      const panel = byName[i.commandName];
+      if (panel) await i.reply({ ...panel.render(i.guildId), ...eph });
+      return;
+    }
+    if (!i.customId) return;
+    const panel = byName[i.customId.split(':')[0]];
+    if (!panel) return;
+    if (!i.memberPermissions?.has(PermissionFlagsBits.Administrator)) {
+      return void i.reply({ content: 'Réservé aux administrateurs.', ...eph });
+    }
+    await panel.handle(i, { syncGuild });
+  } catch (err) {
+    console.error('Erreur d’interaction :', err);
+    const msg = { content: 'Une erreur est survenue.', ...eph };
+    if (i.replied || i.deferred) i.followUp(msg).catch(() => {});
+    else if (i.isRepliable()) i.reply(msg).catch(() => {});
   }
 });
 
