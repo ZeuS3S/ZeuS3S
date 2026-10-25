@@ -5,9 +5,13 @@ Les membres avec la permission « Gérer les messages » ou « Bannir des membre
 
 ## Installation
 1. Va sur https://discord.com/developers/applications, crée une application, puis un bot. Copie le token.
-2. Dans l’onglet **Bot**, active **Message Content Intent**.
+2. Dans l’onglet **Bot**, active **Message Content Intent**, **Server Members Intent** et **Presence Intent**.
 3. Invite le bot avec les permissions **Bannir des membres**, **Voir le salon**, **Envoyer des messages** (scope `bot`).
-4. Dans ton serveur, place le rôle du bot **au-dessus** des rôles des membres à bannir.
+4. Ajoute la permission **Gérer les rôles** au bot. Dans ton serveur, place le rôle du bot **au-dessus** des rôles des membres à bannir.
 5. Crée un salon piège avec un nom clair, par exemple « ne-pas-écrire-ici », et écris dedans un message qui prévient du ban.
 6. Copie `.env.example` en `.env` et remplis les valeurs.
 7. `npm install` puis `npm start`.
+
+## Rôle selon le statut
+Si `STATUS_KEYWORD` et `STATUS_ROLE_ID` sont remplis, le bot donne le rôle aux membres dont le **statut personnalisé** contient le texte, et le retire quand il disparaît.
+Discord ne permet pas aux bots de lire la bio (« À propos de moi ») des membres, seulement le statut personnalisé. Le membre doit être en ligne, pas en « invisible ».
