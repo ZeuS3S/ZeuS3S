@@ -6,7 +6,7 @@ let db = {};
 try { db = JSON.parse(fs.readFileSync(FILE, 'utf8')); } catch { /* premier lancement */ }
 
 const defaults = () => ({
-  trap: { enabled: false, channelId: null, action: 'ban', deleteSeconds: 3600, timeoutMinutes: 60, exemptRoles: [] },
+  trap: { enabled: false, channelId: null, count: 0, noticeChannelId: null, noticeMessageId: null, action: 'ban', deleteSeconds: 3600, timeoutMinutes: 60, exemptRoles: [] },
   statusRules: [],
   logs: { channelId: null, history: [] },
   welcome: {

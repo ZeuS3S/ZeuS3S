@@ -93,6 +93,9 @@ client.on('messageCreate', async (message) => {
       await member.timeout(t.timeoutMinutes * 60_000, reason);
     }
     await logs.record(message.guild, { type: t.action, userId: member.id, tag: member.user.tag, detail: content });
+    t.count = (t.count ?? 0) + 1;
+    store.save();
+    byName.piege.syncNotice(message.guild).catch(() => {});
   } catch (err) {
     console.error('Action du piège échouée :', err);
   }
