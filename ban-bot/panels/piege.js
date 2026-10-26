@@ -6,8 +6,6 @@ const {
 const store = require('../store');
 const { COLORS, eph, dur, num } = require('../util');
 
-const POT_URL = 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/72x72/1f36f.png';
-
 function consequence(t) {
   if (t.action === 'ban') return `un **bannissement** immédiat${t.deleteSeconds ? ', et ses messages récents sont supprimés' : ''}`;
   if (t.action === 'kick') return 'une **expulsion** immédiate du serveur';
@@ -19,10 +17,9 @@ function noticePayload(t) {
   const embed = new EmbedBuilder()
     .setColor(COLORS.red)
     .setTitle('NE PAS ÉCRIRE DANS CE SALON')
-    .setDescription(`Ce salon sert à repérer les bots de spam et les comptes piratés.\nTout message envoyé ici entraîne ${consequence(t)}.\n\nSi tu lis ceci, ne réponds pas et retourne dans un autre salon.`)
-    .setThumbnail(POT_URL);
+    .setDescription(`Ce salon sert à repérer les bots de spam et les comptes piratés.\nTout message envoyé ici entraîne ${consequence(t)}.\n\nSi tu lis ceci, ne réponds pas et retourne dans un autre salon.`);
   const counter = new ButtonBuilder().setCustomId('piege:counter').setLabel(`Sanctions : ${t.count ?? 0}`)
-    .setEmoji('🍯').setStyle(ButtonStyle.Secondary).setDisabled(true);
+    .setStyle(ButtonStyle.Secondary).setDisabled(true);
   return { embeds: [embed], components: [new ActionRowBuilder().addComponents(counter)] };
 }
 
