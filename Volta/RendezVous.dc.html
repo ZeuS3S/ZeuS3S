@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Volta Électricité — prendre rendez-vous</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap">
+<style>
+/* Proposition : réservation en 3 étapes ; agenda 8 colonnes, récapitulatif 4 colonnes. */
+:root{--ground:#F4F6F8;--paper:#FFFFFF;--ink:#0F1722;--muted:#4A5563;--line:#D3DAE2;--signal:#FFCC2E;--ok:#1E7F4F;--okbg:#E3F3EA;
+--display:"Archivo","Helvetica Neue",Arial,sans-serif;--body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+*{box-sizing:border-box}
+a{color:var(--accent)}a:hover{color:var(--ink)}
+.wrap{max-width:1440px;margin:0 auto;padding-inline:clamp(16px,5.556vw,80px)}
+.g{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;row-gap:24px}
+.s4{grid-column:span 4}.s8{grid-column:span 8}.s4,.s8{min-width:0}
+.d{font-family:var(--display);font-stretch:118%;letter-spacing:-0.02em;text-wrap:balance;margin:0}
+.lbl{font-family:var(--mono);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font:600 15px var(--body);text-decoration:none;border:1.5px solid transparent;cursor:pointer}
+.btn-p{background:var(--accent);color:#fff}.btn-p:hover{color:#fff}.btn-p[disabled]{opacity:.4;cursor:not-allowed}
+.btn-o{border-color:var(--line);background:var(--paper);color:var(--ink)}.btn-o[disabled]{opacity:.4;cursor:not-allowed}
+.tile{background:var(--paper);border:1px solid var(--line);border-radius:28px;padding:clamp(20px,3vw,36px);display:flex;flex-direction:column;gap:22px;min-width:0}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:10px}
+.opt{min-height:72px;padding:14px 16px;border-radius:16px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);font:600 16px var(--body);cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:2px}
+.opt small{font:400 13px var(--body);color:var(--muted)}
+.opt:hover{border-color:var(--accent)}.opt.on{border-color:var(--accent);background:var(--accent);color:#fff}.opt.on small{color:#E3E9FC}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.step{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 14px;border-radius:999px;background:var(--ground);font-size:14px;color:var(--muted)}
+.step.on{background:var(--ink);color:#fff}.step.ok{background:var(--okbg);color:var(--ok)}
+.week{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.day{display:flex;flex-direction:column;gap:8px;min-width:0}
+.dh{display:flex;flex-direction:column;align-items:center;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.dh b{font-family:var(--display);font-size:22px}
+.slot{min-height:44px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);font:600 14px var(--mono);color:var(--ink);cursor:pointer}
+.slot:hover{border-color:var(--accent)}.slot.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.slot[disabled]{background:repeating-linear-gradient(135deg,#EEF1F4 0 6px,#F4F6F8 6px 12px);color:#8A94A3;cursor:not-allowed;text-decoration:line-through}
+.f{display:flex;flex-direction:column;gap:6px}.f label{font-size:14px;font-weight:600}
+.f input,.f textarea{font:16px var(--body);color:var(--ink);border:1.5px solid var(--line);border-radius:12px;min-height:48px;padding:10px 14px;background:var(--paper)}
+.recap{background:var(--ink);color:#fff;border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.rl{display:flex;flex-direction:column;gap:2px;padding-block:10px;border-bottom:1px solid #2C3A4E}
+.rl span{color:#C9D3E0;font-size:13px}
+.sms{background:var(--okbg);color:var(--ok);border-radius:16px;padding:16px;font-size:15px}
+.btn:focus-visible,.opt:focus-visible,.slot:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media (max-width:1024px){.s4,.s8{grid-column:span 12}}
+@media (max-width:640px){.week{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</helmet>
+<div style="--accent: {{accent}}; background: var(--ground); min-height: 100%">
+<header style="border-bottom: 1px solid var(--line); background: var(--paper)">
+<nav class="wrap" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding-block: 16px" aria-label="Navigation principale">
+<a href="Main.dc.html" class="d" style="font-size: 20px; font-weight: 800; color: var(--ink); text-decoration: none">Volta</a>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; font-weight: 500"><a href="Services.dc.html" style="color: var(--ink); text-decoration: none">Services</a><a href="Methode.dc.html" style="color: var(--ink); text-decoration: none">Méthode</a><a href="Realisations.dc.html" style="color: var(--ink); text-decoration: none">Réalisations</a><a href="Contact.dc.html" style="color: var(--ink); text-decoration: none">Contact</a></div>
+</nav>
+</header>
+
+<main class="wrap" style="padding-block: 56px 80px">
+<div class="g" style="align-items: start">
+<section class="s8 tile">
+<div class="tabs" aria-label="Étapes">
+<span class="{{tabs.t1}}">1 · Motif</span><span class="{{tabs.t2}}">2 · Créneau</span><span class="{{tabs.t3}}">3 · Coordonnées</span>
+</div>
+
+<sc-if value="{{st.s1}}" hint-placeholder-val="{{ true }}">
+<h1 class="d" style="font-size: 34px; font-weight: 800">Pourquoi voulez-vous nous voir ?</h1>
+<div class="opts" role="group" aria-label="Motif">
+<button type="button" class="{{m.cls.visite}}" aria-pressed="{{m.on.visite}}" onClick="{{m.go.visite}}">Visite pour un devis<small>30 min · gratuit</small></button>
+<button type="button" class="{{m.cls.depannage}}" aria-pressed="{{m.on.depannage}}" onClick="{{m.go.depannage}}">Dépannage non urgent<small>1 h · dès [PRIX] €</small></button>
+<button type="button" class="{{m.cls.borne}}" aria-pressed="{{m.on.borne}}" onClick="{{m.go.borne}}">Étude borne de recharge<small>45 min · gratuit</small></button>
+</div>
+<p style="margin: 0; font-size: 14px; color: var(--muted)">Une urgence ? N'attendez pas un créneau : appelez le <a href="tel:[VOTRE-TÉLÉPHONE]">[VOTRE TÉLÉPHONE]</a>.</p>
+</sc-if>
+
+<sc-if value="{{st.s2}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<h1 class="d" style="font-size: 34px; font-weight: 800">Choisissez un créneau</h1>
+<div style="display: flex; align-items: center; gap: 8px">
+<button type="button" class="btn btn-o" style="min-height: 40px" disabled="{{wk.first}}" onClick="{{wk.prev}}" aria-label="Semaine précédente">←</button>
+<span class="lbl" style="min-width: 150px; text-align: center">{{wk.label}}</span>
+<button type="button" class="btn btn-o" style="min-height: 40px" disabled="{{wk.last}}" onClick="{{wk.next}}" aria-label="Semaine suivante">→</button>
+</div>
+</div>
+<sc-if value="{{wk.w1}}" hint-placeholder-val="{{ true }}">
+<div class="week">
+<div class="day"><div class="dh"><span class="lbl">Lun</span><b>13</b></div><button type="button" class="{{sl.cls.a1}}" onClick="{{sl.go.a1}}" disabled="{{sl.off.a1}}">8:00</button><button type="button" class="slot" disabled="disabled">10:30</button><button type="button" class="{{sl.cls.a3}}" onClick="{{sl.go.a3}}" disabled="{{sl.off.a3}}">14:00</button></div>
+<div class="day"><div class="dh"><span class="lbl">Mar</span><b>14</b></div><button type="button" class="slot" disabled="disabled">8:00</button><button type="button" class="{{sl.cls.b2}}" onClick="{{sl.go.b2}}" disabled="{{sl.off.b2}}">10:30</button><button type="button" class="{{sl.cls.b3}}" onClick="{{sl.go.b3}}" disabled="{{sl.off.b3}}">16:00</button></div>
+<div class="day"><div class="dh"><span class="lbl">Mer</span><b>15</b></div><button type="button" class="{{sl.cls.c1}}" onClick="{{sl.go.c1}}" disabled="{{sl.off.c1}}">8:00</button><button type="button" class="{{sl.cls.c2}}" onClick="{{sl.go.c2}}" disabled="{{sl.off.c2}}">10:30</button><button type="button" class="slot" disabled="disabled">14:00</button></div>
+<div class="day"><div class="dh"><span class="lbl">Jeu</span><b>16</b></div><button type="button" class="slot" disabled="disabled">8:00</button><button type="button" class="slot" disabled="disabled">10:30</button><button type="button" class="{{sl.cls.d3}}" onClick="{{sl.go.d3}}" disabled="{{sl.off.d3}}">14:00</button></div>
+<div class="day"><div class="dh"><span class="lbl">Ven</span><b>17</b></div><button type="button" class="{{sl.cls.e1}}" onClick="{{sl.go.e1}}" disabled="{{sl.off.e1}}">8:00</button><button type="button" class="{{sl.cls.e2}}" onClick="{{sl.go.e2}}" disabled="{{sl.off.e2}}">10:30</button><button type="button" class="{{sl.cls.e3}}" onClick="{{sl.go.e3}}" disabled="{{sl.off.e3}}">16:00</button></div>
+</div>
+</sc-if>
+<sc-if value="{{wk.w2}}" hint-placeholder-val="{{ false }}">
+<div class="week">
+<div class="day"><div class="dh"><span class="lbl">Lun</span><b>20</b></div><button type="button" class="{{sl.cls.f1}}" onClick="{{sl.go.f1}}" disabled="{{sl.off.f1}}">8:00</button><button type="button" class="{{sl.cls.f2}}" onClick="{{sl.go.f2}}" disabled="{{sl.off.f2}}">10:30</button><button type="button" class="{{sl.cls.f3}}" onClick="{{sl.go.f3}}" disabled="{{sl.off.f3}}">14:00</button></div>
+<div class="day"><div class="dh"><span class="lbl">Mar</span><b>21</b></div><button type="button" class="{{sl.cls.g1}}" onClick="{{sl.go.g1}}" disabled="{{sl.off.g1}}">8:00</button><button type="button" class="slot" disabled="disabled">10:30</button><button type="button" class="{{sl.cls.g3}}" onClick="{{sl.go.g3}}" disabled="{{sl.off.g3}}">16:00</button></div>
+<div class="day"><div class="dh"><span class="lbl">Mer</span><b>22</b></div><button type="button" class="{{sl.cls.h1}}" onClick="{{sl.go.h1}}" disabled="{{sl.off.h1}}">8:00</button><button type="button" class="{{sl.cls.h2}}" onClick="{{sl.go.h2}}" disabled="{{sl.off.h2}}">10:30</button><button type="button" class="{{sl.cls.h3}}" onClick="{{sl.go.h3}}" disabled="{{sl.off.h3}}">14:00</button></div>
+<div class="day"><div class="dh"><span class="lbl">Jeu</span><b>23</b></div><button type="button" class="{{sl.cls.i1}}" onClick="{{sl.go.i1}}" disabled="{{sl.off.i1}}">8:00</button><button type="button" class="{{sl.cls.i2}}" onClick="{{sl.go.i2}}" disabled="{{sl.off.i2}}">10:30</button><button type="button" class="slot" disabled="disabled">14:00</button></div>
+<div class="day"><div class="dh"><span class="lbl">Ven</span><b>24</b></div><button type="button" class="slot" disabled="disabled">8:00</button><button type="button" class="{{sl.cls.j2}}" onClick="{{sl.go.j2}}" disabled="{{sl.off.j2}}">10:30</button><button type="button" class="{{sl.cls.j3}}" onClick="{{sl.go.j3}}" disabled="{{sl.off.j3}}">16:00</button></div>
+</div>
+</sc-if>
+<span style="font-size: 14px; color: var(--muted)">Créneaux barrés : déjà réservés. Choisissez un créneau libre.</span>
+</sc-if>
+
+<sc-if value="{{st.s3}}" hint-placeholder-val="{{ false }}">
+<h1 class="d" style="font-size: 34px; font-weight: 800">Vos coordonnées</h1>
+<div class="g" style="gap: 16px">
+<div class="f" style="grid-column: span 6"><label for="r-nom">Nom</label><input id="r-nom" type="text" autocomplete="name" placeholder="Camille Martin"></div>
+<div class="f" style="grid-column: span 6"><label for="r-tel">Téléphone (pour le SMS)</label><input id="r-tel" type="tel" autocomplete="tel" placeholder="06 12 34 56 78"></div>
+<div class="f" style="grid-column: span 12"><label for="r-adr">Adresse de l'intervention</label><input id="r-adr" type="text" autocomplete="street-address" placeholder="12 rue des Lilas, 75011 Paris"></div>
+<div class="f" style="grid-column: span 12"><label for="r-msg">Précisions <span style="font-weight: 400; color: var(--muted)">(facultatif)</span></label><textarea id="r-msg" rows="3" placeholder="Code d'accès, étage, photo du tableau à apporter…"></textarea></div>
+</div>
+<sc-if value="{{err}}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 0; color: #B42318; font-weight: 600">{{err}}</p></sc-if>
+</sc-if>
+
+<sc-if value="{{st.s4}}" hint-placeholder-val="{{ false }}">
+<h1 class="d" style="font-size: 34px; font-weight: 800">Rendez-vous confirmé</h1>
+<div class="sms" role="status">SMS envoyé : « Volta Électricité : RDV {{slotName}}. Pour déplacer ou annuler, répondez à ce message. »</div>
+<p style="margin: 0; color: var(--muted)">Un rappel est envoyé la veille. Le créneau apparaît aussitôt dans l'agenda de l'admin.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 10px"><a class="btn btn-o" href="Main.dc.html">Retour à l'accueil</a><button type="button" class="btn btn-o" onClick="{{restart}}">Prendre un autre rendez-vous</button></div>
+</sc-if>
+
+<sc-if value="{{showNav}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; justify-content: space-between; gap: 12px; padding-top: 8px; border-top: 1px solid var(--line)">
+<button type="button" class="btn btn-o" disabled="{{noBack}}" onClick="{{back}}">Retour</button>
+<button type="button" class="btn btn-p" disabled="{{noNext}}" onClick="{{next}}">{{nextLabel}}</button>
+</div>
+</sc-if>
+</section>
+
+<aside class="s4 recap" aria-live="polite">
+<span class="lbl" style="color: var(--signal)">Votre rendez-vous</span>
+<div class="rl"><span>Motif</span><b>{{sum.motif}}</b></div>
+<div class="rl"><span>Créneau</span><b>{{sum.slot}}</b></div>
+<div class="rl" style="border-bottom: 0"><span>Lieu</span><b>Chez vous · [VILLE] et alentours</b></div>
+<span style="font-size: 13px; color: #C9D3E0">Annulation gratuite jusqu'à 24 h avant.</span>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2453E6","options":["#2453E6","#0F7B6C","#C2410C","#6D28D9"]},"$preview":{"width":1440,"height":1300}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { step: 1, motif: null, week: 1, slot: null, err: '', taken: [] };
+  }
+  // Créneaux fermés dans l'admin ou déjà réservés, et créneau choisi sur l'accueil (même navigateur).
+  componentDidMount() {
+    this.loadTaken = () => {
+      try {
+        const c = JSON.parse(localStorage.getItem('volta.closed') || '[]'), r = JSON.parse(localStorage.getItem('volta.requests') || '[]');
+        this.setState({ taken: (Array.isArray(c) ? c : []).concat((Array.isArray(r) ? r : []).filter((x) => x && x.kind === 'rdv').map((x) => x.slot)) });
+      } catch (e) {}
+    };
+    this.loadTaken();
+    try {
+      const p = JSON.parse(localStorage.getItem('volta.prefill') || 'null');
+      if (p && p.slot && !this.state.taken.includes(p.slot)) this.setState({ slot: p.slot, week: p.slot < 'f' ? 1 : 2 });
+      if (p && p.slot) localStorage.removeItem('volta.prefill');
+    } catch (e) {}
+    try { this.chan = new BroadcastChannel('volta-blocks'); this.chan.onmessage = this.loadTaken; } catch (e) {}
+    window.addEventListener('storage', this.loadTaken);
+  }
+  componentWillUnmount() {
+    try { if (this.chan) this.chan.close(); } catch (e) {}
+    window.removeEventListener('storage', this.loadTaken);
+  }
+  // shortcut: le rendez-vous reste dans ce navigateur (localStorage) et le SMS est simulé ; à brancher sur un serveur et un service SMS.
+  book(fields) {
+    const v = (id) => ((document.getElementById(id) || {}).value || '').trim();
+    const name = v('r-nom'), tel = v('r-tel').replace(/[\s.]/g, '');
+    if (!name) return this.setState({ err: 'Indiquez votre nom.' });
+    if (!/^(?:\+33|0)\d{9}$/.test(tel)) return this.setState({ err: 'Numéro de téléphone invalide : 10 chiffres, ex. 06 12 34 56 78.' });
+    if (!v('r-adr')) return this.setState({ err: "Indiquez l'adresse de l'intervention." });
+    try {
+      const all = JSON.parse(localStorage.getItem('volta.requests') || '[]');
+      const list = Array.isArray(all) ? all : [];
+      if (list.some((x) => x && x.kind === 'rdv' && x.slot === this.state.slot)) return this.setState({ err: 'Ce créneau vient d\'être pris : revenez en arrière pour en choisir un autre.' });
+      list.unshift({ id: Date.now(), kind: 'rdv', name, tel, cp: v('r-adr'), detail: v('r-msg'), ...fields, at: Date.now() });
+      localStorage.setItem('volta.requests', JSON.stringify(list));
+      const c = new BroadcastChannel('volta-blocks'); c.postMessage('changed'); c.close();
+    } catch (e) {}
+    this.setState({ err: '', step: 4 });
+  }
+  renderVals() {
+    const s = this.state;
+    const M = { visite: 'Visite pour un devis', depannage: 'Dépannage non urgent', borne: 'Étude borne de recharge' };
+    // Créneaux libres d'exemple ; les autres sont affichés comme réservés.
+    const SL = { a1: 'lun. 13 · 8:00', a3: 'lun. 13 · 14:00', b2: 'mar. 14 · 10:30', b3: 'mar. 14 · 16:00', c1: 'mer. 15 · 8:00', c2: 'mer. 15 · 10:30', d3: 'jeu. 16 · 14:00', e1: 'ven. 17 · 8:00', e2: 'ven. 17 · 10:30', e3: 'ven. 17 · 16:00',
+      f1: 'lun. 20 · 8:00', f2: 'lun. 20 · 10:30', f3: 'lun. 20 · 14:00', g1: 'mar. 21 · 8:00', g3: 'mar. 21 · 16:00', h1: 'mer. 22 · 8:00', h2: 'mer. 22 · 10:30', h3: 'mer. 22 · 14:00', i1: 'jeu. 23 · 8:00', i2: 'jeu. 23 · 10:30', j2: 'ven. 24 · 10:30', j3: 'ven. 24 · 16:00' };
+    const m = { cls: {}, on: {}, go: {} };
+    for (const id of Object.keys(M)) { const a = s.motif === id; m.cls[id] = a ? 'opt on' : 'opt'; m.on[id] = a ? 'true' : 'false'; m.go[id] = () => this.setState({ motif: id }); }
+    const sl = { cls: {}, go: {} };
+    sl.off = {};
+    for (const id of Object.keys(SL)) { sl.cls[id] = s.slot === id ? 'slot on' : 'slot'; sl.off[id] = (s.taken || []).includes(id); sl.go[id] = () => this.setState({ slot: id, err: '' }); }
+    const ok = { 1: !!s.motif, 2: !!s.slot, 3: true }[s.step];
+    const tab = (n) => (s.step === n ? 'step on' : s.step > n ? 'step ok' : 'step');
+    return {
+      accent: this.props.accent ?? '#2453E6',
+      st: { s1: s.step === 1, s2: s.step === 2, s3: s.step === 3, s4: s.step === 4 },
+      tabs: { t1: tab(1), t2: tab(2), t3: tab(3) },
+      m, sl,
+      wk: { w1: s.week === 1, w2: s.week === 2, first: s.week === 1, last: s.week === 2, label: s.week === 1 ? 'Semaine du 13 octobre' : 'Semaine du 20 octobre',
+        prev: () => this.setState({ week: 1 }), next: () => this.setState({ week: 2 }) },
+      showNav: s.step < 4, noBack: s.step === 1, noNext: !ok,
+      nextLabel: s.step === 3 ? 'Confirmer le rendez-vous' : 'Suivant',
+      back: () => this.setState({ step: Math.max(1, s.step - 1) }),
+      next: () => {
+        if (!ok) return;
+        if (s.step === 3) return this.book({ slot: s.slot, need: M[s.motif], when: SL[s.slot] });
+        this.setState({ step: s.step + 1 });
+      },
+      err: s.err,
+      restart: () => this.setState({ step: 1, motif: null, slot: null, week: 1, err: '' }),
+      slotName: SL[s.slot] || '',
+      sum: { motif: M[s.motif] || 'À choisir', slot: SL[s.slot] || 'À choisir' },
+    };
+  }
+}
+</script>
+</body>
+</html>

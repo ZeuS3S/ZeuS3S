@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quêtes Kappa · Tarkov</title>
+<style>
+:root{--bg:#121411;--card:#1c1f1a;--line:#30352c;--txt:#e8e6dc;--dim:#9a9d8f;--acc:#c7b46b;--ok:#7fb069}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#f3f1ea;--card:#fff;--line:#ddd8c8;--txt:#22241e;--dim:#6a6d60;--acc:#8a7428;--ok:#3f7d2c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:860px;margin:0 auto;padding:16px}
+h1{margin:.2em 0;font-size:1.6em}h1 b{color:var(--acc)}
+.bar{position:sticky;top:0;z-index:2;background:var(--bg);padding:10px 0;display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-bottom:1px solid var(--line)}
+input[type=search],select{flex:1 1 160px;min-width:0;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--txt);font:inherit}
+label.opt{display:flex;gap:6px;align-items:center;color:var(--dim);white-space:nowrap}
+.prog{width:100%;height:8px;border-radius:4px;background:var(--line);overflow:hidden}.prog i{display:block;height:100%;background:var(--ok);transition:width .3s}
+#count{color:var(--dim);font-size:.9em;width:100%}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:12px 0}
+summary{cursor:pointer;padding:12px 14px;font-weight:700;display:flex;gap:10px;align-items:center}
+summary img{width:32px;height:32px;border-radius:6px}summary small{margin-left:auto;color:var(--dim);font-weight:400}
+ul{list-style:none;margin:0;padding:0 8px 8px}
+li{display:flex;gap:10px;align-items:flex-start;padding:8px 6px;border-top:1px solid var(--line)}
+li input{width:20px;height:20px;margin-top:2px;accent-color:var(--ok);flex:none}
+li.done .nm{text-decoration:line-through;color:var(--dim)}
+.nm{font-weight:600}.meta{color:var(--dim);font-size:.85em}
+a{color:var(--acc)}
+#msg{padding:20px;text-align:center;color:var(--dim)}
+footer{color:var(--dim);font-size:.85em;margin:24px 0}
+</style>
+</head>
+<body>
+<main>
+<h1>Quêtes requises pour le <b>Kappa</b></h1>
+<p class="meta">Liste à jour chargée depuis tarkov.dev (noms français). Chaque nom renvoie au wiki français. Ta progression reste dans ton navigateur.</p>
+<div class="bar">
+  <input type="search" id="q" placeholder="Rechercher une quête…" aria-label="Rechercher une quête">
+  <select id="map" aria-label="Filtrer par carte"><option value="">Toutes les cartes</option></select>
+  <label class="opt"><input type="checkbox" id="hide"> Masquer les terminées</label>
+  <div class="prog" aria-hidden="true"><i id="bar"></i></div>
+  <div id="count"></div>
+</div>
+<div id="list"><p id="msg">Chargement des quêtes…</p></div>
+<footer>Données : <a href="https://tarkov.dev" rel="noopener">tarkov.dev</a> · Wiki : <a href="https://escapefromtarkov.fandom.com/fr/" rel="noopener">escapefromtarkov.fandom.com/fr</a> · Site non officiel.</footer>
+</main>
+<script>
+const API='https://api.tarkov.dev/graphql';
+const Q='{tasks(lang:fr){id name kappaRequired minPlayerLevel trader{name imageLink} map{name} taskRequirements{task{name}}}}';
+const WIKI=n=>'https://escapefromtarkov.fandom.com/fr/wiki/Special:Search?query='+encodeURIComponent(n);
+const $=id=>document.getElementById(id);
+let tasks=[],done={};
+try{done=JSON.parse(localStorage.getItem('kappa.done'))||{}}catch{}
+const save=()=>{try{localStorage.setItem('kappa.done',JSON.stringify(done))}catch{}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function render(){
+  const q=$('q').value.trim().toLowerCase(),m=$('map').value,hide=$('hide').checked;
+  const n=tasks.filter(t=>done[t.id]).length;
+  $('count').textContent=`${n} / ${tasks.length} quêtes terminées`;
+  $('bar').style.width=(tasks.length?100*n/tasks.length:0)+'%';
+  const by={};
+  for(const t of tasks){
+    if(q&&!t.name.toLowerCase().includes(q))continue;
+    if(m&&(t.map?.name||'')!==m)continue;
+    if(hide&&done[t.id])continue;
+    (by[t.trader.name]||=[]).push(t);
+  }
+  $('list').innerHTML=Object.keys(by).map(tr=>{
+    const all=tasks.filter(t=>t.trader.name===tr),d=all.filter(t=>done[t.id]).length,img=all[0].trader.imageLink;
+    return `<details open><summary>${img?`<img src="${esc(img)}" alt="">`:''}${esc(tr)}<small>${d} / ${all.length}</small></summary><ul>${
+      by[tr].map(t=>`<li class="${done[t.id]?'done':''}"><input type="checkbox" data-id="${esc(t.id)}" ${done[t.id]?'checked':''} aria-label="${esc(t.name)} terminée"><div><a class="nm" href="${WIKI(t.name)}" target="_blank" rel="noopener">${esc(t.name)}</a><div class="meta">Niv. ${t.minPlayerLevel||1}${t.map?' · '+esc(t.map.name):''}${t.taskRequirements.length?' · après : '+t.taskRequirements.map(r=>esc(r.task.name)).join(', '):''}</div></div></li>`).join('')
+    }</ul></details>`}).join('')||'<p id="msg">Aucune quête ne correspond.</p>';
+}
+$('list').addEventListener('change',e=>{const id=e.target.dataset.id;if(!id)return;if(e.target.checked)done[id]=1;else delete done[id];save();render()});
+for(const id of['q','map','hide'])$(id).addEventListener('input',render);
+
+function load(list){
+  tasks=list.filter(t=>t.kappaRequired&&t.trader).sort((a,b)=>a.trader.name.localeCompare(b.trader.name)||(a.minPlayerLevel||0)-(b.minPlayerLevel||0)||a.name.localeCompare(b.name,'fr'));
+  const maps=[...new Set(tasks.map(t=>t.map?.name).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'fr'));
+  $('map').innerHTML='<option value="">Toutes les cartes</option>'+maps.map(m=>`<option>${esc(m)}</option>`).join('');
+  render();
+}
+fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:Q})})
+  .then(r=>r.ok?r.json():Promise.reject(r.status))
+  .then(j=>{if(!j.data?.tasks)throw 'vide';try{localStorage.setItem('kappa.cache',JSON.stringify(j.data.tasks))}catch{}load(j.data.tasks)})
+  .catch(()=>{let c=null;try{c=JSON.parse(localStorage.getItem('kappa.cache'))}catch{}
+    if(c){load(c);$('count').textContent+=' · hors ligne (dernière liste chargée)'}
+    else $('list').innerHTML='<p id="msg">Impossible de charger les quêtes. Vérifie ta connexion et recharge la page.</p>'});
+</script>
+</body>
+</html>

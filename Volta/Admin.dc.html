@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Volta Électricité — administration</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap">
+<style>
+/* Menu latéral + contenu sur la grille 12 colonnes ; le menu passe au-dessus sur téléphone. */
+:root{--ground:#F4F6F8;--paper:#FFFFFF;--ink:#0F1722;--muted:#4A5563;--line:#D3DAE2;--signal:#FFCC2E;--ok:#1E7F4F;--okbg:#E3F3EA;--warn:#8A5A00;--warnbg:#FFF2CC;--new:#1D3FB8;--newbg:#E3E9FC;--hot:#B42318;
+--display:"Archivo","Helvetica Neue",Arial,sans-serif;--body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+a{color:var(--accent)}a:hover{color:var(--ink)}
+*{box-sizing:border-box}
+.g{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px}
+.s3{grid-column:span 3}.s4{grid-column:span 4}.s5{grid-column:span 5}.s6{grid-column:span 6}.s7{grid-column:span 7}.s8{grid-column:span 8}.s12{grid-column:span 12}
+.s3,.s4,.s5,.s6,.s7,.s8,.s12{min-width:0}
+.d{font-family:var(--display);font-stretch:115%;letter-spacing:-0.02em;margin:0}
+.lbl{font-family:var(--mono);font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+.side{flex:1 1 240px;max-width:280px;background:var(--ink);color:#C9D3E0;padding:24px 16px;display:flex;flex-direction:column;gap:6px}
+.tab{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 14px;border-radius:10px;border:0;background:transparent;color:#C9D3E0;font:500 15px var(--body);cursor:pointer;text-align:left;width:100%}
+.tab:hover{background:#1B2636;color:#fff}
+.tab.on{background:#1B2636;color:#fff;box-shadow:inset 3px 0 0 var(--signal)}
+.cnt{margin-left:auto;font-family:var(--mono);font-size:12px;background:var(--signal);color:var(--ink);border-radius:999px;padding:1px 8px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.kpi b{font-family:var(--display);font-stretch:112%;font-size:32px;font-weight:800}
+.delta{font-family:var(--mono);font-size:12px;color:var(--ok)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font:600 14px var(--body);border:1.5px solid transparent;cursor:pointer;text-decoration:none}
+.btn-p{background:var(--accent);color:#fff}.btn-p:hover{color:#fff}
+.btn-p[disabled]{opacity:.45;cursor:not-allowed}
+.btn-o{border-color:var(--line);background:var(--paper);color:var(--ink)}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--ground)}
+.seg button{min-height:36px;padding:0 14px;border-radius:999px;border:0;background:transparent;font:500 13px var(--body);color:var(--muted);cursor:pointer}
+.seg button.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(15,23,34,.12)}
+.bars{display:flex;align-items:flex-end;gap:8px;height:200px;border-bottom:1px solid var(--line);background:repeating-linear-gradient(0deg,transparent 0 49px,#EEF1F4 49px 50px)}
+.bar{flex:1 1 0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%;min-width:0}
+.bar i{display:block;width:100%;max-width:36px;border-radius:6px 6px 0 0;background:var(--accent);opacity:.35}
+.bar.last i{opacity:1}
+.bar span{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.hb{display:grid;grid-template-columns:130px minmax(0,1fr) 36px;align-items:center;gap:12px;font-size:14px}
+.hb i{display:block;height:12px;border-radius:6px;background:var(--accent)}
+.hb b{font-family:var(--mono);font-weight:600;text-align:right}
+.dot{width:10px;height:10px;border-radius:3px;flex:none}
+.st{display:inline-flex;align-items:center;min-height:26px;padding:0 10px;border-radius:999px;font-size:12.5px;font-weight:600;white-space:nowrap}
+.st.new{background:var(--newbg);color:var(--new)}.st.wait{background:var(--warnbg);color:var(--warn)}.st.done{background:var(--okbg);color:var(--ok)}
+.urgent{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--hot)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font:600 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:14px 12px;border-bottom:1px solid #E7EBF0;vertical-align:middle}
+.tel{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:10px;border-top:1px solid #E7EBF0}
+.f{display:flex;flex-direction:column;gap:6px}
+.f label,.fl{font-size:13.5px;font-weight:600}
+.f input,.f textarea,.f select{font:15px var(--body);color:var(--ink);border:1.5px solid var(--line);border-radius:10px;min-height:44px;padding:8px 12px;background:var(--paper)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.sw{width:46px;height:28px;border-radius:999px;border:0;background:#C3CBD5;position:relative;cursor:pointer;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .15s}
+.sw.on{background:var(--ok)}.sw.on::after{left:21px}
+.chip{min-height:38px;padding:0 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--paper);font:500 14px var(--body);color:var(--ink);cursor:pointer}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.blk{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--paper)}
+.blk.off{opacity:.55}
+.blk .type{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--ground);font:600 12px var(--mono);color:var(--accent)}
+.ibtn{width:36px;height:36px;border-radius:9px;border:1px solid var(--line);background:var(--paper);cursor:pointer;display:grid;place-items:center;color:var(--ink)}
+.ibtn:hover{border-color:var(--accent);color:var(--accent)}
+.ibtn[disabled]{opacity:.35;cursor:not-allowed}
+.prev{border:1.5px dashed #9AA6B4;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px;background:var(--ground)}
+.rbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:var(--paper)}
+.rtime{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.lv{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--ok)}
+.lv i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.lv.on i{animation:pulse 2s infinite}
+.lv.paused{color:var(--muted)}.lv.paused i{background:#9AA6B4}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(30,127,79,.5)}70%{box-shadow:0 0 0 8px rgba(30,127,79,0)}100%{box-shadow:0 0 0 0 rgba(30,127,79,0)}}
+.spin{animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ibtn.del:hover{border-color:var(--hot);color:var(--hot)}
+.btn-del{background:var(--hot);color:#fff}.btn-del:hover{color:#fff}
+.confirm{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:#FEF3F2;border:1px solid #FECDCA;color:var(--hot);font-weight:500}
+.confirm span{flex:1 1 220px}
+.agw{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.ag{min-height:64px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;padding:8px 12px;font:14px var(--body);color:var(--ink);cursor:pointer;text-align:left}
+.ag:hover{border-color:var(--accent)}.ag span{font-size:12.5px;color:var(--muted)}
+.ag.closed{background:repeating-linear-gradient(135deg,#EEF1F4 0 6px,#F4F6F8 6px 12px)}
+.ag.booked{background:var(--okbg);border-color:var(--ok);cursor:default}.ag.booked span{color:var(--ok);font-weight:600}
+.ag:focus-visible,.pin:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.pin{width:100%;min-width:130px;font:15px var(--body);color:var(--ink);border:1.5px solid var(--line);border-radius:10px;min-height:44px;padding:8px 12px;background:var(--paper)}
+.ex{display:inline-flex;align-items:center;min-height:28px;padding:0 10px;border-radius:8px;background:var(--warnbg);color:var(--warn);font-size:12.5px;font-weight:600}
+.tab:focus-visible,.btn:focus-visible,.seg button:focus-visible,.sw:focus-visible,.chip:focus-visible,.ibtn:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media (max-width:1100px){.s3{grid-column:span 6}.s4,.s5,.s7,.s8{grid-column:span 12}}
+@media (max-width:640px){.side{max-width:none}.s3,.s6{grid-column:span 12}.hb{grid-template-columns:100px minmax(0,1fr) 30px}.blk{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</helmet>
+<div style="--accent: {{accent}}; display: flex; flex-wrap: wrap; min-height: 100%; background: var(--ground)">
+
+<!-- Menu -->
+<aside class="side" aria-label="Menu d'administration" style="background-color: #0f1722; position: relative">
+<div style="display: flex; align-items: center; gap: 12px; padding: 4px 8px 20px">
+<span style="width: 36px; height: 36px; border-radius: 9px; background: #1B2636; display: grid; place-items: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"></path></svg></span>
+<span style="display: flex; flex-direction: column; line-height: 1.15"><span class="d" style="font-size: 18px; font-weight: 800; color: #fff">Volta</span><span class="lbl" style="font-size: 10px; color: #C9D3E0">Administration</span></span>
+</div>
+<button type="button" class="{{tab.cls.dash}}" aria-current="{{tab.cur.dash}}" onClick="{{tab.go.dash}}">Tableau de bord</button>
+<button type="button" class="{{tab.cls.leads}}" aria-current="{{tab.cur.leads}}" onClick="{{tab.go.leads}}">Demandes <span class="cnt">{{openCount}}</span></button>
+<button type="button" class="{{tab.cls.agenda}}" aria-current="{{tab.cur.agenda}}" onClick="{{tab.go.agenda}}">Agenda</button>
+<button type="button" class="{{tab.cls.prices}}" aria-current="{{tab.cur.prices}}" onClick="{{tab.go.prices}}">Grille de prix</button>
+<button type="button" class="{{tab.cls.blocks}}" aria-current="{{tab.cur.blocks}}" onClick="{{tab.go.blocks}}">Blocs de page</button>
+<button type="button" class="{{tab.cls.content}}" aria-current="{{tab.cur.content}}" onClick="{{tab.go.content}}">Contenu du site</button>
+<button type="button" class="{{tab.cls.settings}}" aria-current="{{tab.cur.settings}}" onClick="{{tab.go.settings}}">Réglages</button>
+<div style="margin-top: auto; padding: 20px 8px 0; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #2C3A4E">
+<a href="Main.dc.html" style="color: #fff; font-weight: 500">← Voir le site</a>
+<span style="font-size: 13px">Connecté : [VOTRE NOM]</span>
+</div>
+</aside>
+
+<main style="flex: 999 1 560px; min-width: 0; padding: clamp(16px, 3vw, 40px); display: flex; flex-direction: column; gap: 24px">
+
+<!-- Actualisation automatique -->
+<div class="rbar" role="region" aria-label="Actualisation">
+<span class="{{liveCls}}"><i aria-hidden="true"></i>{{online}} visiteurs en ligne</span>
+<span class="rtime" aria-live="polite">{{agoText}}</span>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-left: auto">
+<span style="font-size: 14px; font-weight: 600">Actualisation auto</span>
+<button type="button" class="{{autoCls}}" aria-pressed="{{autoOn}}" aria-label="Actualisation automatique" onClick="{{toggleAuto}}"></button>
+<div class="seg" role="group" aria-label="Fréquence d'actualisation">
+<button type="button" class="{{ev.cls.i30}}" aria-pressed="{{ev.on.i30}}" onClick="{{ev.go.i30}}">30 s</button>
+<button type="button" class="{{ev.cls.i60}}" aria-pressed="{{ev.on.i60}}" onClick="{{ev.go.i60}}">1 min</button>
+<button type="button" class="{{ev.cls.i300}}" aria-pressed="{{ev.on.i300}}" onClick="{{ev.go.i300}}">5 min</button>
+</div>
+<button type="button" class="btn btn-o" style="min-height: 40px" onClick="{{refresh}}"><svg class="{{spinCls}}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"></path></svg>Actualiser</button>
+</div>
+</div>
+
+<!-- ===== Tableau de bord ===== -->
+<sc-if value="{{tab.show.dash}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="lbl">Lundi 12 octobre</span><h1 class="d" style="font-size: 32px; font-weight: 800">Tableau de bord</h1></div>
+<span class="ex">Données d'exemple</span>
+</div>
+<div class="g">
+<div class="panel kpi s3"><span class="lbl">Visites · 30 j</span><b class="num">2 960</b><span class="delta">+12 % vs mois précédent</span></div>
+<div class="panel kpi s3"><span class="lbl">Demandes · 30 j</span><b class="num">91</b><span class="delta">+8 %</span></div>
+<div class="panel kpi s3"><span class="lbl">Taux de demande</span><b class="num">3,1 %</b><span class="delta">visites → demandes</span></div>
+<div class="panel kpi s3"><span class="lbl">Délai de réponse</span><b class="num">2 h 10</b><span class="delta">moyenne, jours ouvrés</span></div>
+
+<div class="panel s8">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<div><h2 class="d" style="font-size: 20px; font-weight: 700">Visites du site</h2><span style="color: var(--muted); font-size: 13px">Par semaine · la dernière en couleur pleine</span></div>
+<div class="seg" role="group" aria-label="Période">
+<button type="button" class="{{per.cls.w4}}" aria-pressed="{{per.on.w4}}" onClick="{{per.go.w4}}">4 sem.</button>
+<button type="button" class="{{per.cls.w12}}" aria-pressed="{{per.on.w12}}" onClick="{{per.go.w12}}">12 sem.</button>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 8px">
+<div style="display: flex; flex-direction: column; justify-content: space-between; height: 200px; font-family: var(--mono); font-size: 11px; color: var(--muted); text-align: right"><span>800</span><span>600</span><span>400</span><span>200</span><span>0</span></div>
+<sc-if value="{{per.show.w12}}" hint-placeholder-val="{{ true }}">
+<div class="bars" role="img" aria-label="Visites sur 12 semaines">
+<div class="bar"><span class="num">420</span><i style="height: 52.5%"></i></div>
+<div class="bar"><span class="num">460</span><i style="height: 57.5%"></i></div>
+<div class="bar"><span class="num">510</span><i style="height: 63.75%"></i></div>
+<div class="bar"><span class="num">480</span><i style="height: 60%"></i></div>
+<div class="bar"><span class="num">560</span><i style="height: 70%"></i></div>
+<div class="bar"><span class="num">610</span><i style="height: 76.25%"></i></div>
+<div class="bar"><span class="num">590</span><i style="height: 73.75%"></i></div>
+<div class="bar"><span class="num">650</span><i style="height: 81.25%"></i></div>
+<div class="bar"><span class="num">700</span><i style="height: 87.5%"></i></div>
+<div class="bar"><span class="num">680</span><i style="height: 85%"></i></div>
+<div class="bar"><span class="num">740</span><i style="height: 92.5%"></i></div>
+<div class="bar last"><span class="num">790</span><i style="height: 98.75%"></i></div>
+</div>
+</sc-if>
+<sc-if value="{{per.show.w4}}" hint-placeholder-val="{{ false }}">
+<div class="bars" role="img" aria-label="Visites sur 4 semaines">
+<div class="bar"><span class="num">700</span><i style="height: 87.5%"></i></div>
+<div class="bar"><span class="num">680</span><i style="height: 85%"></i></div>
+<div class="bar"><span class="num">740</span><i style="height: 92.5%"></i></div>
+<div class="bar last"><span class="num">790</span><i style="height: 98.75%"></i></div>
+</div>
+</sc-if>
+</div>
+<div style="display: flex; justify-content: space-between; padding-left: 48px; font-family: var(--mono); font-size: 11px; color: var(--muted)"><span>Plus ancienne</span><span>Cette semaine</span></div>
+</div>
+
+<div class="panel s4">
+<h2 class="d" style="font-size: 20px; font-weight: 700">Demandes par service</h2>
+<span style="color: var(--muted); font-size: 13px">30 derniers jours</span>
+<div style="display: flex; flex-direction: column; gap: 14px; padding-top: 6px">
+<div class="hb"><span>Dépannage</span><i style="width: 100%"></i><b>34</b></div>
+<div class="hb"><span>Tableau</span><i style="width: 53%"></i><b>18</b></div>
+<div class="hb"><span>Borne</span><i style="width: 41%"></i><b>14</b></div>
+<div class="hb"><span>Mise aux normes</span><i style="width: 32%"></i><b>11</b></div>
+<div class="hb"><span>Éclairage</span><i style="width: 26%"></i><b>9</b></div>
+<div class="hb"><span>Domotique</span><i style="width: 15%"></i><b>5</b></div>
+</div>
+</div>
+
+<div class="panel s6">
+<h2 class="d" style="font-size: 20px; font-weight: 700">D'où viennent les visiteurs</h2>
+<div style="display: flex; height: 14px; border-radius: 7px; overflow: hidden; gap: 2px">
+<i style="flex: 52 1 0; background: var(--accent)"></i><i style="flex: 24 1 0; background: #5B7BEA"></i><i style="flex: 16 1 0; background: #9AB0F2"></i><i style="flex: 8 1 0; background: #C9D3E0"></i>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; font-size: 14px">
+<span style="display: flex; align-items: center; gap: 8px"><i class="dot" style="background: var(--accent)"></i>Recherche Google <b class="num" style="margin-left: auto; font-family: var(--mono)">52 %</b></span>
+<span style="display: flex; align-items: center; gap: 8px"><i class="dot" style="background: #5B7BEA"></i>Fiche Google <b class="num" style="margin-left: auto; font-family: var(--mono)">24 %</b></span>
+<span style="display: flex; align-items: center; gap: 8px"><i class="dot" style="background: #9AB0F2"></i>Accès direct <b class="num" style="margin-left: auto; font-family: var(--mono)">16 %</b></span>
+<span style="display: flex; align-items: center; gap: 8px"><i class="dot" style="background: #C9D3E0"></i>Réseaux sociaux <b class="num" style="margin-left: auto; font-family: var(--mono)">8 %</b></span>
+</div>
+</div>
+
+<div class="panel s6">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 class="d" style="font-size: 20px; font-weight: 700">À traiter</h2><button type="button" class="btn btn-o" onClick="{{tab.go.leads}}">Toutes les demandes</button></div>
+<sc-if value="{{ld.todo.l1}}" hint-placeholder-val="{{ true }}"><div class="row"><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Camille M. · Dépannage</span><span style="font-size: 13px; color: var(--muted)">Aujourd'hui 9:14 · 75011</span></div><span class="{{ld.cls.l1}}">{{ld.name.l1}}</span></div></sc-if>
+<sc-if value="{{ld.todo.l2}}" hint-placeholder-val="{{ true }}"><div class="row"><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Karim B. · Borne de recharge</span><span style="font-size: 13px; color: var(--muted)">Aujourd'hui 8:02 · 93100</span></div><span class="{{ld.cls.l2}}">{{ld.name.l2}}</span></div></sc-if>
+<sc-if value="{{ld.todo.l3}}" hint-placeholder-val="{{ true }}"><div class="row"><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Syndic Les Tilleuls · Borne de recharge</span><span style="font-size: 13px; color: var(--muted)">Hier 17:40 · 75020</span></div><span class="{{ld.cls.l3}}">{{ld.name.l3}}</span></div></sc-if>
+<sc-if value="{{ld.todo.l4}}" hint-placeholder-val="{{ false }}"><div class="row"><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Léa D. · Tableau électrique</span><span style="font-size: 13px; color: var(--muted)">Hier 11:05 · 94300</span></div><span class="{{ld.cls.l4}}">{{ld.name.l4}}</span></div></sc-if>
+<sc-if value="{{ld.todo.l5}}" hint-placeholder-val="{{ false }}"><div class="row"><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Thomas R. · Mise aux normes</span><span style="font-size: 13px; color: var(--muted)">Lun. 15:22 · 75012</span></div><span class="{{ld.cls.l5}}">{{ld.name.l5}}</span></div></sc-if>
+<sc-if value="{{ld.todo.l6}}" hint-placeholder-val="{{ false }}"><div class="row"><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Inès P. · Éclairage</span><span style="font-size: 13px; color: var(--muted)">Lun. 10:48 · 93260</span></div><span class="{{ld.cls.l6}}">{{ld.name.l6}}</span></div></sc-if>
+<sc-if value="{{ld.allDone}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; color: var(--muted)">Rien à traiter. Toutes les demandes ont une réponse.</p></sc-if>
+</div>
+</div>
+</sc-if>
+
+<!-- ===== Demandes ===== -->
+<sc-if value="{{tab.show.leads}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="lbl">Lundi 12 octobre</span><h1 class="d" style="font-size: 32px; font-weight: 800">Demandes</h1></div>
+<span class="ex">Données d'exemple</span>
+</div>
+<div class="panel">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px"><h2 class="d" style="font-size: 20px; font-weight: 700">Reçues depuis le site</h2><span class="lbl">Devis en ligne · rendez-vous</span></div>
+<sc-if value="{{noWeb}}" hint-placeholder-val="{{ true }}"><p style="margin: 0; color: var(--muted)">Aucune pour l'instant. Les devis en 3 questions et les rendez-vous pris en ligne arrivent ici dès qu'ils sont envoyés.</p></sc-if>
+<sc-for list="{{web}}" as="r" hint-placeholder-count="2">
+<div class="row"><div style="display: flex; flex-direction: column; min-width: 0; flex: 1"><span style="font-weight: 600">{{r.name}} · {{r.need}}</span><span style="font-size: 13px; color: var(--muted)">{{r.line}}</span></div><span class="{{r.cls}}">{{r.kindName}}</span><button type="button" class="ibtn del" aria-label="Supprimer cette demande" onClick="{{r.ask}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></div>
+<sc-if value="{{r.asking}}" hint-placeholder-val="{{ false }}"><div class="confirm" role="alert"><span>Supprimer la demande de {{r.name}} ?{{r.freeNote}}</span><button type="button" class="btn btn-del" onClick="{{r.remove}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></sc-if>
+</sc-for>
+</div>
+<div class="panel">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<div class="seg" role="group" aria-label="Filtrer par statut">
+<button type="button" class="{{lf.cls.all}}" aria-pressed="{{lf.on.all}}" onClick="{{lf.go.all}}">Toutes</button>
+<button type="button" class="{{lf.cls.new}}" aria-pressed="{{lf.on.new}}" onClick="{{lf.go.new}}">Nouvelles</button>
+<button type="button" class="{{lf.cls.wait}}" aria-pressed="{{lf.on.wait}}" onClick="{{lf.go.wait}}">Devis envoyé</button>
+<button type="button" class="{{lf.cls.done}}" aria-pressed="{{lf.on.done}}" onClick="{{lf.go.done}}">Traitées</button>
+</div>
+<span class="lbl">{{openCount}} à traiter sur {{leadTotal}}</span>
+</div>
+<div style="overflow-x: auto">
+<table>
+<thead><tr><th>Client</th><th>Besoin</th><th>Reçue</th><th>Code postal</th><th>Statut</th><th>Action</th></tr></thead>
+<tbody>
+<sc-if value="{{ld.show.l1}}" hint-placeholder-val="{{ true }}"><tr><td><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Camille M.</span><span class="tel">06 •• •• •• 12</span></div></td><td><div style="display: flex; flex-direction: column"><span>Dépannage</span><span class="urgent">URGENT</span></div></td><td class="num">Aujourd'hui 9:14</td><td class="num">75011</td><td><span class="{{ld.cls.l1}}">{{ld.name.l1}}</span></td><td><button type="button" class="btn btn-o" style="min-height: 38px" onClick="{{ld.go.l1}}">{{ld.next.l1}}</button><button type="button" class="ibtn del" style="margin-left: 6px" aria-label="Supprimer la demande de Camille M." onClick="{{del.ask.ld_l1}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></td></tr><sc-if value="{{del.asking.ld_l1}}" hint-placeholder-val="{{ false }}"><tr><td colspan="6"><div class="confirm" role="alert"><span>Supprimer la demande de Camille M. ? Elle disparaît de la liste et du tableau de bord.</span><button type="button" class="btn btn-del" onClick="{{del.go.ld_l1}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></td></tr></sc-if></sc-if>
+<sc-if value="{{ld.show.l2}}" hint-placeholder-val="{{ true }}"><tr><td><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Karim B.</span><span class="tel">06 •• •• •• 48</span></div></td><td>Borne de recharge</td><td class="num">Aujourd'hui 8:02</td><td class="num">93100</td><td><span class="{{ld.cls.l2}}">{{ld.name.l2}}</span></td><td><button type="button" class="btn btn-o" style="min-height: 38px" onClick="{{ld.go.l2}}">{{ld.next.l2}}</button><button type="button" class="ibtn del" style="margin-left: 6px" aria-label="Supprimer la demande de Karim B." onClick="{{del.ask.ld_l2}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></td></tr><sc-if value="{{del.asking.ld_l2}}" hint-placeholder-val="{{ false }}"><tr><td colspan="6"><div class="confirm" role="alert"><span>Supprimer la demande de Karim B. ? Elle disparaît de la liste et du tableau de bord.</span><button type="button" class="btn btn-del" onClick="{{del.go.ld_l2}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></td></tr></sc-if></sc-if>
+<sc-if value="{{ld.show.l3}}" hint-placeholder-val="{{ true }}"><tr><td><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Syndic Les Tilleuls</span><span class="tel">01 •• •• •• 30</span></div></td><td>Borne de recharge</td><td class="num">Hier 17:40</td><td class="num">75020</td><td><span class="{{ld.cls.l3}}">{{ld.name.l3}}</span></td><td><button type="button" class="btn btn-o" style="min-height: 38px" onClick="{{ld.go.l3}}">{{ld.next.l3}}</button><button type="button" class="ibtn del" style="margin-left: 6px" aria-label="Supprimer la demande de Syndic Les Tilleuls" onClick="{{del.ask.ld_l3}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></td></tr><sc-if value="{{del.asking.ld_l3}}" hint-placeholder-val="{{ false }}"><tr><td colspan="6"><div class="confirm" role="alert"><span>Supprimer la demande de Syndic Les Tilleuls ? Elle disparaît de la liste et du tableau de bord.</span><button type="button" class="btn btn-del" onClick="{{del.go.ld_l3}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></td></tr></sc-if></sc-if>
+<sc-if value="{{ld.show.l4}}" hint-placeholder-val="{{ true }}"><tr><td><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Léa D.</span><span class="tel">07 •• •• •• 91</span></div></td><td>Tableau électrique</td><td class="num">Hier 11:05</td><td class="num">94300</td><td><span class="{{ld.cls.l4}}">{{ld.name.l4}}</span></td><td><button type="button" class="btn btn-o" style="min-height: 38px" onClick="{{ld.go.l4}}">{{ld.next.l4}}</button><button type="button" class="ibtn del" style="margin-left: 6px" aria-label="Supprimer la demande de Léa D." onClick="{{del.ask.ld_l4}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></td></tr><sc-if value="{{del.asking.ld_l4}}" hint-placeholder-val="{{ false }}"><tr><td colspan="6"><div class="confirm" role="alert"><span>Supprimer la demande de Léa D. ? Elle disparaît de la liste et du tableau de bord.</span><button type="button" class="btn btn-del" onClick="{{del.go.ld_l4}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></td></tr></sc-if></sc-if>
+<sc-if value="{{ld.show.l5}}" hint-placeholder-val="{{ true }}"><tr><td><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Thomas R.</span><span class="tel">06 •• •• •• 07</span></div></td><td>Mise aux normes</td><td class="num">Lun. 15:22</td><td class="num">75012</td><td><span class="{{ld.cls.l5}}">{{ld.name.l5}}</span></td><td><button type="button" class="btn btn-o" style="min-height: 38px" onClick="{{ld.go.l5}}">{{ld.next.l5}}</button><button type="button" class="ibtn del" style="margin-left: 6px" aria-label="Supprimer la demande de Thomas R." onClick="{{del.ask.ld_l5}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></td></tr><sc-if value="{{del.asking.ld_l5}}" hint-placeholder-val="{{ false }}"><tr><td colspan="6"><div class="confirm" role="alert"><span>Supprimer la demande de Thomas R. ? Elle disparaît de la liste et du tableau de bord.</span><button type="button" class="btn btn-del" onClick="{{del.go.ld_l5}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></td></tr></sc-if></sc-if>
+<sc-if value="{{ld.show.l6}}" hint-placeholder-val="{{ true }}"><tr><td><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Inès P.</span><span class="tel">06 •• •• •• 63</span></div></td><td>Éclairage</td><td class="num">Lun. 10:48</td><td class="num">93260</td><td><span class="{{ld.cls.l6}}">{{ld.name.l6}}</span></td><td><button type="button" class="btn btn-o" style="min-height: 38px" onClick="{{ld.go.l6}}">{{ld.next.l6}}</button><button type="button" class="ibtn del" style="margin-left: 6px" aria-label="Supprimer la demande de Inès P." onClick="{{del.ask.ld_l6}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></td></tr><sc-if value="{{del.asking.ld_l6}}" hint-placeholder-val="{{ false }}"><tr><td colspan="6"><div class="confirm" role="alert"><span>Supprimer la demande de Inès P. ? Elle disparaît de la liste et du tableau de bord.</span><button type="button" class="btn btn-del" onClick="{{del.go.ld_l6}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></td></tr></sc-if></sc-if>
+</tbody>
+</table>
+</div>
+</div>
+</sc-if>
+
+<!-- ===== Blocs de page : créer, ordonner, masquer, supprimer ===== -->
+<sc-if value="{{tab.show.blocks}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="lbl">Constructeur</span><h1 class="d" style="font-size: 32px; font-weight: 800">Blocs de page</h1></div>
+<div class="g">
+<form class="panel s5" aria-label="Nouveau bloc">
+<h2 class="d" style="font-size: 20px; font-weight: 700">Créer un bloc</h2>
+<div class="f"><label for="b-page">Page</label>
+<select id="b-page" value="{{draft.page}}" onChange="{{setPage}}">
+<option>Accueil</option><option>Services</option><option>Méthode</option><option>Réalisations</option><option>Contact</option>
+</select></div>
+<fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+<legend class="fl" style="padding: 0; margin-bottom: 8px">Type de bloc</legend>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" class="{{bt.cls.texte}}" aria-pressed="{{bt.on.texte}}" onClick="{{bt.go.texte}}">Texte</button>
+<button type="button" class="{{bt.cls.image}}" aria-pressed="{{bt.on.image}}" onClick="{{bt.go.image}}">Image</button>
+<button type="button" class="{{bt.cls.bouton}}" aria-pressed="{{bt.on.bouton}}" onClick="{{bt.go.bouton}}">Bouton</button>
+<button type="button" class="{{bt.cls.faq}}" aria-pressed="{{bt.on.faq}}" onClick="{{bt.go.faq}}">Question / réponse</button>
+<button type="button" class="{{bt.cls.service}}" aria-pressed="{{bt.on.service}}" onClick="{{bt.go.service}}">Service</button>
+<button type="button" class="{{bt.cls.chantier}}" aria-pressed="{{bt.on.chantier}}" onClick="{{bt.go.chantier}}">Réalisation</button>
+</div>
+</fieldset>
+<div class="f"><label for="b-title">Titre</label><input id="b-title" type="text" value="{{draft.title}}" onChange="{{setTitle}}" placeholder="Ex. : Nouveau : bornes en copropriété"></div>
+<div class="f"><label for="b-text">Texte</label><textarea id="b-text" rows="3" value="{{draft.text}}" onChange="{{setText}}" placeholder="Ce que le visiteur doit savoir, en une ou deux phrases."></textarea></div>
+<div class="prev" aria-live="polite">
+<span class="lbl">Aperçu · {{draftType}} · {{draft.page}}</span>
+<b class="d" style="font-size: 18px; font-weight: 700">{{previewTitle}}</b>
+<span style="color: var(--muted)">{{previewText}}</span>
+</div>
+<button type="button" class="btn btn-p" disabled="{{cantAdd}}" onClick="{{addBlock}}">Ajouter le bloc</button>
+</form>
+
+<div class="panel s7">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
+<h2 class="d" style="font-size: 20px; font-weight: 700">Blocs créés</h2>
+<div style="display: flex; align-items: center; gap: 12px"><span class="lbl">{{blockCount}}</span><sc-if value="{{hasAny}}" hint-placeholder-val="{{ true }}"><button type="button" class="btn btn-o" style="min-height: 36px" onClick="{{askRemoveAll}}">Tout supprimer</button></sc-if></div>
+</div>
+<sc-if value="{{noBlocks}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; color: var(--muted)">Aucun bloc pour l'instant. Créez-en un avec le formulaire.</p></sc-if>
+<sc-for list="{{blocks}}" as="b" hint-placeholder-count="2">
+<div class="{{b.cls}}">
+<span class="type" aria-hidden="true">{{b.short}}</span>
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+<span class="lbl">{{b.typeName}} · {{b.page}}{{b.hiddenTag}}</span>
+<b style="overflow-wrap: anywhere">{{b.title}}</b>
+<span style="font-size: 13.5px; color: var(--muted); overflow-wrap: anywhere">{{b.text}}</span>
+</div>
+<div style="display: flex; gap: 6px">
+<button type="button" class="ibtn" aria-label="Monter" disabled="{{b.first}}" onClick="{{b.up}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="m6 15 6-6 6 6"></path></svg></button>
+<button type="button" class="ibtn" aria-label="Descendre" disabled="{{b.last}}" onClick="{{b.down}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button>
+<button type="button" class="ibtn" aria-label="{{b.eyeLabel}}" onClick="{{b.toggle}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
+<button type="button" class="ibtn del" aria-label="Supprimer {{b.title}}" onClick="{{b.ask}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button>
+</div>
+<sc-if value="{{b.asking}}" hint-placeholder-val="{{ false }}">
+<div class="confirm" role="alert" style="grid-column: 1 / -1"><span>Supprimer ce bloc du site ? Cette action est définitive.</span><button type="button" class="btn btn-del" onClick="{{b.remove}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div>
+</sc-if>
+</div>
+</sc-for>
+<sc-if value="{{askAll}}" hint-placeholder-val="{{ false }}">
+<div class="confirm" role="alert"><span>Supprimer les {{blockCount}} de toutes les pages ?</span><button type="button" class="btn btn-del" onClick="{{removeAll}}">Tout supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<!-- ===== Contenu du site ===== -->
+<sc-if value="{{tab.show.content}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="lbl">Site public</span><h1 class="d" style="font-size: 32px; font-weight: 800">Contenu du site</h1></div>
+<div class="g">
+<div class="panel s7">
+<h2 class="d" style="font-size: 20px; font-weight: 700">Services et tarifs</h2>
+<span style="color: var(--muted); font-size: 13px">Le prix « dès » s'affiche sur la page Services. Masquez un service sans le supprimer.</span>
+<sc-if value="{{del.keep.sv_s0}}" hint-placeholder-val="{{ true }}"><sc-if value="{{del.keep.sv_s1}}" hint-placeholder-val="{{ true }}"><sc-if value="{{del.keep.sv_s2}}" hint-placeholder-val="{{ true }}"><sc-if value="{{del.keep.sv_s3}}" hint-placeholder-val="{{ true }}"><sc-if value="{{del.keep.sv_s4}}" hint-placeholder-val="{{ true }}"><sc-if value="{{del.keep.sv_s5}}" hint-placeholder-val="{{ true }}"><div class="row"><span style="font-weight: 600; flex: 1">Dépannage</span><label class="sr" for="p-0">Prix Dépannage</label><input id="p-0" type="text" placeholder="[PRIX] €" style="width: 130px; font: 15px var(--body); border: 1.5px solid var(--line); border-radius: 10px; min-height: 44px; padding: 8px 12px"><button type="button" class="{{sv.cls.s0}}" aria-pressed="{{sv.on.s0}}" aria-label="Afficher Dépannage" onClick="{{sv.go.s0}}"></button><button type="button" class="ibtn del" aria-label="Supprimer Dépannage" onClick="{{del.ask.sv_s0}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></div><sc-if value="{{del.asking.sv_s0}}" hint-placeholder-val="{{ false }}"><div class="confirm" role="alert"><span>Supprimer « Dépannage » de la page Services ?</span><button type="button" class="btn btn-del" onClick="{{del.go.sv_s0}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></sc-if></sc-if>
+<div class="row"><span style="font-weight: 600; flex: 1">Tableau électrique</span><label class="sr" for="p-1">Prix Tableau électrique</label><input id="p-1" type="text" placeholder="[PRIX] €" style="width: 130px; font: 15px var(--body); border: 1.5px solid var(--line); border-radius: 10px; min-height: 44px; padding: 8px 12px"><button type="button" class="{{sv.cls.s1}}" aria-pressed="{{sv.on.s1}}" aria-label="Afficher Tableau électrique" onClick="{{sv.go.s1}}"></button><button type="button" class="ibtn del" aria-label="Supprimer Dépannage" onClick="{{del.ask.sv_s1}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></div><sc-if value="{{del.asking.sv_s1}}" hint-placeholder-val="{{ false }}"><div class="confirm" role="alert"><span>Supprimer « Dépannage » de la page Services ?</span><button type="button" class="btn btn-del" onClick="{{del.go.sv_s1}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></sc-if></sc-if>
+<div class="row"><span style="font-weight: 600; flex: 1">Mise aux normes</span><label class="sr" for="p-2">Prix Mise aux normes</label><input id="p-2" type="text" placeholder="Sur devis" style="width: 130px; font: 15px var(--body); border: 1.5px solid var(--line); border-radius: 10px; min-height: 44px; padding: 8px 12px"><button type="button" class="{{sv.cls.s2}}" aria-pressed="{{sv.on.s2}}" aria-label="Afficher Mise aux normes" onClick="{{sv.go.s2}}"></button><button type="button" class="ibtn del" aria-label="Supprimer Dépannage" onClick="{{del.ask.sv_s2}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></div><sc-if value="{{del.asking.sv_s2}}" hint-placeholder-val="{{ false }}"><div class="confirm" role="alert"><span>Supprimer « Dépannage » de la page Services ?</span><button type="button" class="btn btn-del" onClick="{{del.go.sv_s2}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></sc-if></sc-if>
+<div class="row"><span style="font-weight: 600; flex: 1">Borne de recharge</span><label class="sr" for="p-3">Prix Borne de recharge</label><input id="p-3" type="text" placeholder="[PRIX] €" style="width: 130px; font: 15px var(--body); border: 1.5px solid var(--line); border-radius: 10px; min-height: 44px; padding: 8px 12px"><button type="button" class="{{sv.cls.s3}}" aria-pressed="{{sv.on.s3}}" aria-label="Afficher Borne de recharge" onClick="{{sv.go.s3}}"></button><button type="button" class="ibtn del" aria-label="Supprimer Dépannage" onClick="{{del.ask.sv_s3}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></div><sc-if value="{{del.asking.sv_s3}}" hint-placeholder-val="{{ false }}"><div class="confirm" role="alert"><span>Supprimer « Dépannage » de la page Services ?</span><button type="button" class="btn btn-del" onClick="{{del.go.sv_s3}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></sc-if></sc-if>
+<div class="row"><span style="font-weight: 600; flex: 1">Domotique</span><label class="sr" for="p-4">Prix Domotique</label><input id="p-4" type="text" placeholder="Sur devis" style="width: 130px; font: 15px var(--body); border: 1.5px solid var(--line); border-radius: 10px; min-height: 44px; padding: 8px 12px"><button type="button" class="{{sv.cls.s4}}" aria-pressed="{{sv.on.s4}}" aria-label="Afficher Domotique" onClick="{{sv.go.s4}}"></button><button type="button" class="ibtn del" aria-label="Supprimer Dépannage" onClick="{{del.ask.sv_s4}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></div><sc-if value="{{del.asking.sv_s4}}" hint-placeholder-val="{{ false }}"><div class="confirm" role="alert"><span>Supprimer « Dépannage » de la page Services ?</span><button type="button" class="btn btn-del" onClick="{{del.go.sv_s4}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></sc-if></sc-if>
+<div class="row"><span style="font-weight: 600; flex: 1">Éclairage LED</span><label class="sr" for="p-5">Prix Éclairage LED</label><input id="p-5" type="text" placeholder="[PRIX] €" style="width: 130px; font: 15px var(--body); border: 1.5px solid var(--line); border-radius: 10px; min-height: 44px; padding: 8px 12px"><button type="button" class="{{sv.cls.s5}}" aria-pressed="{{sv.on.s5}}" aria-label="Afficher Éclairage LED" onClick="{{sv.go.s5}}"></button><button type="button" class="ibtn del" aria-label="Supprimer Dépannage" onClick="{{del.ask.sv_s5}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></div><sc-if value="{{del.asking.sv_s5}}" hint-placeholder-val="{{ false }}"><div class="confirm" role="alert"><span>Supprimer « Dépannage » de la page Services ?</span><button type="button" class="btn btn-del" onClick="{{del.go.sv_s5}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></sc-if></sc-if>
+</div>
+<div class="panel s5">
+<h2 class="d" style="font-size: 20px; font-weight: 700">Photos des réalisations</h2>
+<span style="color: var(--muted); font-size: 13px">Glissez des photos, puis créez un bloc « Réalisation » pour les présenter. La corbeille retire un chantier de la page Réalisations.</span>
+<div style="border: 1.5px dashed #9AA6B4; border-radius: 14px; padding: 28px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; color: var(--muted)">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"></path></svg>
+<label for="a-photos">Déposer des photos ici</label>
+<input id="a-photos" type="file" accept="image/*" multiple="multiple" style="max-width: 100%; font: 13px var(--body)">
+</div>
+<sc-if value="{{del.keep.ch_c0}}" hint-placeholder-val="{{ true }}"><div class="row"><span style="width: 56px; height: 42px; border-radius: 8px; background: repeating-linear-gradient(135deg,#E2E7ED 0 8px,#E8ECF1 8px 16px); flex: none"></span><span style="flex: 1; min-width: 0">Tableau 2 rangées en appartement</span><span class="st done">En ligne</span><button type="button" class="ibtn del" aria-label="Supprimer Tableau 2 rangées en appartement" onClick="{{del.ask.ch_c0}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></div><sc-if value="{{del.asking.ch_c0}}" hint-placeholder-val="{{ false }}"><div class="confirm" role="alert"><span>Retirer « Tableau 2 rangées en appartement » de la page Réalisations ?</span><button type="button" class="btn btn-del" onClick="{{del.go.ch_c0}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></sc-if></sc-if>
+<sc-if value="{{del.keep.ch_c1}}" hint-placeholder-val="{{ true }}"><div class="row"><span style="width: 56px; height: 42px; border-radius: 8px; background: repeating-linear-gradient(135deg,#E2E7ED 0 8px,#E8ECF1 8px 16px); flex: none"></span><span style="flex: 1; min-width: 0">Wallbox 7 kW en garage</span><span class="st done">En ligne</span><button type="button" class="ibtn del" aria-label="Supprimer Wallbox 7 kW en garage" onClick="{{del.ask.ch_c1}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></div><sc-if value="{{del.asking.ch_c1}}" hint-placeholder-val="{{ false }}"><div class="confirm" role="alert"><span>Retirer « Wallbox 7 kW en garage » de la page Réalisations ?</span><button type="button" class="btn btn-del" onClick="{{del.go.ch_c1}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></sc-if></sc-if>
+<sc-if value="{{del.keep.ch_c2}}" hint-placeholder-val="{{ true }}"><div class="row"><span style="width: 56px; height: 42px; border-radius: 8px; background: repeating-linear-gradient(135deg,#E2E7ED 0 8px,#E8ECF1 8px 16px); flex: none"></span><span style="flex: 1; min-width: 0">Cuisine en spots et ruban LED</span><span class="st done">En ligne</span><button type="button" class="ibtn del" aria-label="Supprimer Cuisine en spots et ruban LED" onClick="{{del.ask.ch_c2}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></div><sc-if value="{{del.asking.ch_c2}}" hint-placeholder-val="{{ false }}"><div class="confirm" role="alert"><span>Retirer « Cuisine en spots et ruban LED » de la page Réalisations ?</span><button type="button" class="btn btn-del" onClick="{{del.go.ch_c2}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></sc-if></sc-if>
+<sc-if value="{{del.keep.ch_c3}}" hint-placeholder-val="{{ true }}"><div class="row"><span style="width: 56px; height: 42px; border-radius: 8px; background: repeating-linear-gradient(135deg,#E2E7ED 0 8px,#E8ECF1 8px 16px); flex: none"></span><span style="flex: 1; min-width: 0">Mise en conformité avant location</span><span class="st done">En ligne</span><button type="button" class="ibtn del" aria-label="Supprimer Mise en conformité avant location" onClick="{{del.ask.ch_c3}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></div><sc-if value="{{del.asking.ch_c3}}" hint-placeholder-val="{{ false }}"><div class="confirm" role="alert"><span>Retirer « Mise en conformité avant location » de la page Réalisations ?</span><button type="button" class="btn btn-del" onClick="{{del.go.ch_c3}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></sc-if></sc-if>
+<sc-if value="{{del.keep.ch_c4}}" hint-placeholder-val="{{ true }}"><div class="row"><span style="width: 56px; height: 42px; border-radius: 8px; background: repeating-linear-gradient(135deg,#E2E7ED 0 8px,#E8ECF1 8px 16px); flex: none"></span><span style="flex: 1; min-width: 0">Volets et chauffage connectés</span><span class="st done">En ligne</span><button type="button" class="ibtn del" aria-label="Supprimer Volets et chauffage connectés" onClick="{{del.ask.ch_c4}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></div><sc-if value="{{del.asking.ch_c4}}" hint-placeholder-val="{{ false }}"><div class="confirm" role="alert"><span>Retirer « Volets et chauffage connectés » de la page Réalisations ?</span><button type="button" class="btn btn-del" onClick="{{del.go.ch_c4}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></sc-if></sc-if>
+<sc-if value="{{del.keep.ch_c5}}" hint-placeholder-val="{{ true }}"><div class="row"><span style="width: 56px; height: 42px; border-radius: 8px; background: repeating-linear-gradient(135deg,#E2E7ED 0 8px,#E8ECF1 8px 16px); flex: none"></span><span style="flex: 1; min-width: 0">Bornes en copropriété</span><span class="st done">En ligne</span><button type="button" class="ibtn del" aria-label="Supprimer Bornes en copropriété" onClick="{{del.ask.ch_c5}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></div><sc-if value="{{del.asking.ch_c5}}" hint-placeholder-val="{{ false }}"><div class="confirm" role="alert"><span>Retirer « Bornes en copropriété » de la page Réalisations ?</span><button type="button" class="btn btn-del" onClick="{{del.go.ch_c5}}">Supprimer</button><button type="button" class="btn btn-o" onClick="{{cancelDel}}">Annuler</button></div></sc-if></sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{tab.show.content}}" hint-placeholder-val="{{ false }}"><sc-if value="{{del.any}}" hint-placeholder-val="{{ false }}">
+<div class="confirm" style="background: var(--paper); border-color: var(--line); color: var(--ink)"><span>{{del.count}} élément(s) supprimé(s) du site.</span><button type="button" class="btn btn-o" onClick="{{restoreAll}}">Tout restaurer</button></div>
+</sc-if></sc-if>
+
+<!-- ===== Agenda : créneaux proposés sur la page Rendez-vous ===== -->
+<sc-if value="{{tab.show.agenda}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="lbl">Rendez-vous en ligne</span><h1 class="d" style="font-size: 32px; font-weight: 800">Agenda</h1></div>
+<div class="panel">
+<span style="color: var(--muted); font-size: 14px">Touchez un créneau pour le fermer ou le rouvrir : il disparaît aussitôt du site. Pour libérer un créneau réservé, supprimez la demande dans « Demandes ».</span>
+<h2 class="d" style="font-size: 20px; font-weight: 700">Semaine du 13 octobre</h2>
+<div class="agw"><sc-for list="{{ag1}}" as="a" hint-placeholder-count="10"><button type="button" class="{{a.cls}}" disabled="{{a.booked}}" aria-pressed="{{a.closed}}" onClick="{{a.go}}"><b>{{a.label}}</b><span>{{a.state}}</span></button></sc-for></div>
+<h2 class="d" style="font-size: 20px; font-weight: 700">Semaine du 20 octobre</h2>
+<div class="agw"><sc-for list="{{ag2}}" as="a" hint-placeholder-count="12"><button type="button" class="{{a.cls}}" disabled="{{a.booked}}" aria-pressed="{{a.closed}}" onClick="{{a.go}}"><b>{{a.label}}</b><span>{{a.state}}</span></button></sc-for></div>
+</div>
+</sc-if>
+
+<!-- ===== Grille de prix du devis en ligne ===== -->
+<sc-if value="{{tab.show.prices}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="lbl">Devis en ligne</span><h1 class="d" style="font-size: 32px; font-weight: 800">Grille de prix</h1></div>
+<div class="panel">
+<span style="color: var(--muted); font-size: 14px">La fourchette affichée au client selon les travaux et la surface, par exemple « 800 – 1 200 ». Une case vide affiche [PRIX]. Enregistré à chaque saisie.</span>
+<div style="overflow-x: auto">
+<table>
+<thead><tr><th>Travaux</th><th>Moins de 50 m²</th><th>50 à 100 m²</th><th>Plus de 100 m²</th></tr></thead>
+<tbody>
+<tr><td style="font-weight: 600">Tableau électrique</td><td><input class="pin" type="text" aria-label="Tableau électrique, moins de 50 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.tableau_s1}}" onChange="{{pr.set.tableau_s1}}"></td><td><input class="pin" type="text" aria-label="Tableau électrique, 50 à 100 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.tableau_s2}}" onChange="{{pr.set.tableau_s2}}"></td><td><input class="pin" type="text" aria-label="Tableau électrique, plus de 100 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.tableau_s3}}" onChange="{{pr.set.tableau_s3}}"></td></tr>
+<tr><td style="font-weight: 600">Mise aux normes</td><td><input class="pin" type="text" aria-label="Mise aux normes, moins de 50 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.normes_s1}}" onChange="{{pr.set.normes_s1}}"></td><td><input class="pin" type="text" aria-label="Mise aux normes, 50 à 100 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.normes_s2}}" onChange="{{pr.set.normes_s2}}"></td><td><input class="pin" type="text" aria-label="Mise aux normes, plus de 100 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.normes_s3}}" onChange="{{pr.set.normes_s3}}"></td></tr>
+<tr><td style="font-weight: 600">Borne de recharge</td><td><input class="pin" type="text" aria-label="Borne de recharge, moins de 50 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.borne_s1}}" onChange="{{pr.set.borne_s1}}"></td><td><input class="pin" type="text" aria-label="Borne de recharge, 50 à 100 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.borne_s2}}" onChange="{{pr.set.borne_s2}}"></td><td><input class="pin" type="text" aria-label="Borne de recharge, plus de 100 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.borne_s3}}" onChange="{{pr.set.borne_s3}}"></td></tr>
+<tr><td style="font-weight: 600">Éclairage</td><td><input class="pin" type="text" aria-label="Éclairage, moins de 50 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.eclairage_s1}}" onChange="{{pr.set.eclairage_s1}}"></td><td><input class="pin" type="text" aria-label="Éclairage, 50 à 100 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.eclairage_s2}}" onChange="{{pr.set.eclairage_s2}}"></td><td><input class="pin" type="text" aria-label="Éclairage, plus de 100 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.eclairage_s3}}" onChange="{{pr.set.eclairage_s3}}"></td></tr>
+<tr><td style="font-weight: 600">Domotique</td><td><input class="pin" type="text" aria-label="Domotique, moins de 50 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.domotique_s1}}" onChange="{{pr.set.domotique_s1}}"></td><td><input class="pin" type="text" aria-label="Domotique, 50 à 100 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.domotique_s2}}" onChange="{{pr.set.domotique_s2}}"></td><td><input class="pin" type="text" aria-label="Domotique, plus de 100 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.domotique_s3}}" onChange="{{pr.set.domotique_s3}}"></td></tr>
+<tr><td style="font-weight: 600">Autre</td><td><input class="pin" type="text" aria-label="Autre, moins de 50 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.autre_s1}}" onChange="{{pr.set.autre_s1}}"></td><td><input class="pin" type="text" aria-label="Autre, 50 à 100 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.autre_s2}}" onChange="{{pr.set.autre_s2}}"></td><td><input class="pin" type="text" aria-label="Autre, plus de 100 m²" placeholder="[PRIX] – [PRIX]" value="{{pr.v.autre_s3}}" onChange="{{pr.set.autre_s3}}"></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</sc-if>
+
+<!-- ===== Réglages ===== -->
+<sc-if value="{{tab.show.settings}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="lbl">Entreprise</span><h1 class="d" style="font-size: 32px; font-weight: 800">Réglages</h1></div>
+<div class="g">
+<div class="panel s7">
+<h2 class="d" style="font-size: 20px; font-weight: 700">Coordonnées affichées</h2>
+<div class="g" style="gap: 16px">
+<div class="f s6"><label for="r-tel">Téléphone</label><input id="r-tel" type="tel" placeholder="[VOTRE TÉLÉPHONE]"></div>
+<div class="f s6"><label for="r-mail">E-mail</label><input id="r-mail" type="email" placeholder="[CONTACT@VOTRE-DOMAINE.FR]"></div>
+<div class="f s6"><label for="r-zone">Zone d'intervention</label><input id="r-zone" type="text" placeholder="[VILLE] + [XX] km"></div>
+<div class="f s6"><label for="r-delai">Délai de réponse annoncé</label><input id="r-delai" type="text" placeholder="[DÉLAI]"></div>
+<div class="f s12"><label for="r-h">Horaires</label><input id="r-h" type="text" placeholder="Lun–ven 8 h–18 h · samedi sur rendez-vous"></div>
+</div>
+</div>
+<div class="panel s5">
+<h2 class="d" style="font-size: 20px; font-weight: 700">Affichage</h2>
+<div class="row"><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Bandeau d'urgence</span><span style="font-size: 13px; color: var(--muted)">Téléphone en haut de chaque page</span></div><button type="button" class="{{tg.cls.banner}}" aria-pressed="{{tg.on.banner}}" aria-label="Bandeau d'urgence" onClick="{{tg.go.banner}}"></button></div>
+<div class="row"><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Prix indicatifs</span><span style="font-size: 13px; color: var(--muted)">Afficher les « dès … € »</span></div><button type="button" class="{{tg.cls.prices}}" aria-pressed="{{tg.on.prices}}" aria-label="Prix indicatifs" onClick="{{tg.go.prices}}"></button></div>
+<div class="row"><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Formulaire de devis</span><span style="font-size: 13px; color: var(--muted)">Recevoir les demandes en ligne</span></div><button type="button" class="{{tg.cls.form}}" aria-pressed="{{tg.on.form}}" aria-label="Formulaire de devis" onClick="{{tg.go.form}}"></button></div>
+<div class="row"><div style="display: flex; flex-direction: column"><span style="font-weight: 600">Créneaux de rendez-vous</span><span style="font-size: 13px; color: var(--muted)">Bloc « Prendre rendez-vous » de l'accueil</span></div><button type="button" class="{{tg.cls.slots}}" aria-pressed="{{tg.on.slots}}" aria-label="Créneaux de rendez-vous" onClick="{{tg.go.slots}}"></button></div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{showSave}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 14px">
+<sc-if value="{{saved}}" hint-placeholder-val="{{ false }}"><span role="status" style="color: var(--ok); font-weight: 600">Modifications enregistrées</span></sc-if>
+<button type="button" class="btn btn-p" onClick="{{save}}">Enregistrer</button>
+</div>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2453E6","options":["#2453E6","#0F7B6C","#C2410C","#6D28D9"]},"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tab: 'dash', per: 'w12', lf: 'all', saved: false,
+      st: { l1: 'new', l2: 'new', l3: 'wait', l4: 'wait', l5: 'done', l6: 'done' },
+      sv: { s0: true, s1: true, s2: true, s3: true, s4: true, s5: true },
+      tg: { banner: true, prices: true, form: true, slots: true },
+      draft: { page: 'Accueil', type: 'texte', title: '', text: '' },
+      // Blocs d'exemple : ce sont des données saisies dans l'admin, pas du texte du site.
+      blocks: [
+        { id: 1, page: 'Accueil', type: 'texte', title: 'Fermeture du 1er au 15 août', text: 'Les urgences restent assurées au [VOTRE TÉLÉPHONE].', hidden: false },
+        { id: 2, page: 'Services', type: 'faq', title: 'Intervenez-vous le week-end ?', text: 'Oui pour les urgences, sur rendez-vous pour le reste.', hidden: true },
+      ],
+      nextId: 3, removed: {}, requests: [], prices: {}, closed: [],
+      auto: true, every: 'i60', last: Date.now(), now: Date.now(), online: 4, busy: false,
+    };
+  }
+  // Blocs partagés avec les pages du site (même navigateur) : chargés au démarrage, enregistrés et diffusés à chaque changement.
+  saveBlocks(blocks) {
+    try { localStorage.setItem('volta.blocks', JSON.stringify(blocks)); } catch (e) {}
+    try { const c = new BroadcastChannel('volta-blocks'); c.postMessage('changed'); c.close(); } catch (e) {}
+  }
+  // Ce qui est supprimé ou masqué dans l'admin, partagé avec les pages Services et Réalisations.
+  saveSite() {
+    const r = this.state.removed, SV = ['depannage', 'tableau', 'normes', 'borne', 'domotique', 'eclairage'];
+    const site = {
+      svc: SV.filter((id, i) => r['sv_s' + i] || !this.state.sv['s' + i]),
+      ch: Object.keys(r).filter((k) => r[k] && k.startsWith('ch_')).map((k) => k.slice(3)),
+    };
+    try {
+      localStorage.setItem('volta.site', JSON.stringify(site));
+      localStorage.setItem('volta.admin', JSON.stringify({ removed: r, sv: this.state.sv }));
+    } catch (e) {}
+    try { const c = new BroadcastChannel('volta-blocks'); c.postMessage('changed'); c.close(); } catch (e) {}
+  }
+  // Demandes envoyées par le site, grille de prix et créneaux fermés : partagés avec Devis et Rendez-vous (même navigateur).
+  loadShared() {
+    const read = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k) || 'null'); return v && typeof v === 'object' ? v : d; } catch (e) { return d; } };
+    const next = { requests: read('volta.requests', []), prices: read('volta.prices', {}), closed: read('volta.closed', []) };
+    for (const k of Object.keys(next)) if (JSON.stringify(next[k]) !== JSON.stringify(this.state[k])) this.setState({ [k]: next[k] });
+  }
+  store(state, key, val) {
+    this.setState({ [state]: val });
+    try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
+    try { const c = new BroadcastChannel('volta-blocks'); c.postMessage('changed'); c.close(); } catch (e) {}
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState && (prevState.removed !== this.state.removed || prevState.sv !== this.state.sv)) this.saveSite();
+    if (prevState && prevState.blocks !== this.state.blocks) this.saveBlocks(this.state.blocks);
+  }
+  componentDidMount() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('volta.blocks') || 'null');
+      const adm = JSON.parse(localStorage.getItem('volta.admin') || 'null');
+      if (adm && typeof adm === 'object') this.setState({ removed: adm.removed || {}, sv: { ...this.state.sv, ...(adm.sv || {}) } });
+      if (Array.isArray(saved)) this.setState({ blocks: saved, nextId: saved.reduce((m, b) => Math.max(m, b.id || 0), 0) + 1 });
+      else this.saveBlocks(this.state.blocks);
+    } catch (e) {}
+    this.loadShared();
+    this.onBlocks = () => {
+      this.loadShared();
+      try {
+        const saved = JSON.parse(localStorage.getItem('volta.blocks') || 'null');
+        if (Array.isArray(saved) && JSON.stringify(saved) !== JSON.stringify(this.state.blocks)) this.setState({ blocks: saved });
+      } catch (e) {}
+    };
+    try { this.chan = new BroadcastChannel('volta-blocks'); this.chan.onmessage = this.onBlocks; } catch (e) {}
+    window.addEventListener('storage', this.onBlocks);
+    // Une horloge à la seconde : affiche « il y a … » et déclenche l'actualisation quand l'intervalle est écoulé.
+    this.timer = setInterval(() => {
+      const now = Date.now(), s = this.state;
+      const sec = { i30: 30, i60: 60, i300: 300 }[s.every];
+      if (s.auto && !s.busy && now - s.last >= sec * 1000) this.refreshNow();
+      else this.setState({ now });
+    }, 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    try { if (this.chan) this.chan.close(); } catch (e) {}
+    window.removeEventListener('storage', this.onBlocks);
+    clearTimeout(this.busyTimer);
+  }
+  // shortcut: simule un rechargement (visiteurs en ligne au hasard) ; à brancher sur l'API des statistiques et des demandes.
+  refreshNow() {
+    this.setState({ busy: true, now: Date.now() });
+    clearTimeout(this.busyTimer);
+    this.busyTimer = setTimeout(() => {
+      const t = Date.now();
+      this.setState({ busy: false, last: t, now: t, online: Math.max(1, this.state.online + Math.round(Math.random() * 4) - 2) });
+    }, 700);
+  }
+  // Un groupe de choix exclusif : classe, état, action et visibilité pour chaque id.
+  pick(key, ids, base, curAttr) {
+    const o = { cls: {}, on: {}, go: {}, show: {}, cur: {} };
+    for (const id of ids) {
+      const a = this.state[key] === id;
+      o.cls[id] = base + (a ? ' on' : '');
+      o.on[id] = a ? 'true' : 'false';
+      o.cur[id] = a ? 'page' : 'false';
+      o.go[id] = () => this.setState({ [key]: id, saved: false });
+      o.show[id] = a;
+    }
+    return o;
+  }
+  // Des interrupteurs indépendants rangés dans un objet du state.
+  switches(key) {
+    const o = { cls: {}, on: {}, go: {} };
+    for (const id of Object.keys(this.state[key])) {
+      const v = this.state[key][id];
+      o.cls[id] = v ? 'sw on' : 'sw';
+      o.on[id] = v ? 'true' : 'false';
+      o.go[id] = () => this.setState({ saved: false, [key]: { ...this.state[key], [id]: !this.state[key][id] } });
+    }
+    return o;
+  }
+  renderVals() {
+    const s = this.state;
+    const ST = { new: ['Nouvelle', 'st new', 'Rappeler', 'wait'], wait: ['Devis envoyé', 'st wait', 'Marquer traitée', 'done'], done: ['Traitée', 'st done', 'Rouvrir', 'new'] };
+    const ld = { cls: {}, name: {}, next: {}, go: {}, show: {}, todo: {}, allDone: false };
+    let todoLeft = 3, open = 0;
+    for (const id of Object.keys(s.st)) {
+      if (s.removed['ld_' + id]) { ld.show[id] = false; ld.todo[id] = false; ld.cls[id] = ''; ld.name[id] = ''; ld.next[id] = ''; ld.go[id] = null; continue; }
+      const st = s.st[id];
+      ld.cls[id] = ST[st][1]; ld.name[id] = ST[st][0]; ld.next[id] = ST[st][2];
+      ld.go[id] = () => this.setState({ st: { ...s.st, [id]: ST[st][3] } });
+      ld.show[id] = s.lf === 'all' || s.lf === st;
+      ld.todo[id] = st !== 'done' && todoLeft-- > 0;
+      if (st !== 'done') open++;
+    }
+    ld.allDone = open === 0;
+
+    const REQ = Array.isArray(s.requests) ? s.requests.filter((r) => r && typeof r === 'object') : [];
+    // Les créneaux proposés sur la page Rendez-vous (mêmes ids).
+    const SL = { a1: 'Lun. 13 · 8:00', a3: 'Lun. 13 · 14:00', b2: 'Mar. 14 · 10:30', b3: 'Mar. 14 · 16:00', c1: 'Mer. 15 · 8:00', c2: 'Mer. 15 · 10:30', d3: 'Jeu. 16 · 14:00', e1: 'Ven. 17 · 8:00', e2: 'Ven. 17 · 10:30', e3: 'Ven. 17 · 16:00',
+      f1: 'Lun. 20 · 8:00', f2: 'Lun. 20 · 10:30', f3: 'Lun. 20 · 14:00', g1: 'Mar. 21 · 8:00', g3: 'Mar. 21 · 16:00', h1: 'Mer. 22 · 8:00', h2: 'Mer. 22 · 10:30', h3: 'Mer. 22 · 14:00', i1: 'Jeu. 23 · 8:00', i2: 'Jeu. 23 · 10:30', j2: 'Ven. 24 · 10:30', j3: 'Ven. 24 · 16:00' };
+    const AG = Object.keys(SL), closed = Array.isArray(s.closed) ? s.closed : [];
+    const booked = {};
+    for (const r of REQ) if (r.kind === 'rdv') booked[r.slot] = String(r.name || 'client');
+    const ag = (id) => {
+      const b = booked[id], c = closed.includes(id);
+      return { label: SL[id], booked: !!b, closed: c ? 'true' : 'false', cls: b ? 'ag booked' : c ? 'ag closed' : 'ag', state: b ? 'Réservé · ' + b : c ? 'Fermé' : 'Libre',
+        go: () => !b && this.store('closed', 'volta.closed', c ? closed.filter((x) => x !== id) : closed.concat(id)) };
+    };
+    const prices = s.prices && typeof s.prices === 'object' ? s.prices : {};
+    const pr = { v: {}, set: {} };
+    for (const w of ['tableau', 'normes', 'borne', 'eclairage', 'domotique', 'autre']) for (const z of ['s1', 's2', 's3']) {
+      pr.v[w + '_' + z] = String((prices[w] || {})[z] || '');
+      pr.set[w + '_' + z] = (e) => { const p = this.state.prices || {}; this.store('prices', 'volta.prices', { ...p, [w]: { ...(p[w] || {}), [z]: e.target.value } }); };
+    }
+    const TYPES = { texte: ['Texte', 'T'], image: ['Image', 'IMG'], bouton: ['Bouton', 'BTN'], faq: ['Question / réponse', '?'], service: ['Service', 'SRV'], chantier: ['Réalisation', 'PH'] };
+    const d = s.draft;
+    const setDraft = (k) => (e) => this.setState({ draft: { ...this.state.draft, [k]: e.target.value } });
+    const bt = this.pick('_t', Object.keys(TYPES), 'chip');
+    for (const id of Object.keys(TYPES)) {
+      const a = d.type === id;
+      bt.cls[id] = a ? 'chip on' : 'chip'; bt.on[id] = a ? 'true' : 'false';
+      bt.go[id] = () => this.setState({ draft: { ...this.state.draft, type: id } });
+    }
+    const move = (i, j) => { const b = s.blocks.slice(); [b[i], b[j]] = [b[j], b[i]]; this.setState({ blocks: b }); };
+    const n = s.blocks.length;
+
+    const ago = Math.max(0, Math.round((s.now - s.last) / 1000));
+    const sec = { i30: 30, i60: 60, i300: 300 }[s.every];
+    const left = Math.max(0, sec - ago);
+    const fmt = (x) => (x < 60 ? x + ' s' : Math.floor(x / 60) + ' min' + (x % 60 ? ' ' + (x % 60) + ' s' : ''));
+    const ev = this.pick('every', ['i30', 'i60', 'i300'], '');
+    for (const id of ['i30', 'i60', 'i300']) ev.go[id] = () => this.setState({ every: id, last: Date.now(), now: Date.now() });
+
+    return {
+      accent: this.props.accent ?? '#2453E6',
+      online: s.online,
+      liveCls: s.auto ? 'lv on' : 'lv paused',
+      agoText: s.busy ? 'Actualisation…' : 'Mis à jour il y a ' + fmt(ago) + (s.auto ? ' · prochaine dans ' + fmt(left) : ' · actualisation auto en pause'),
+      autoCls: s.auto ? 'sw on' : 'sw', autoOn: s.auto ? 'true' : 'false',
+      toggleAuto: () => this.setState({ auto: !s.auto, last: Date.now(), now: Date.now() }),
+      ev, refresh: () => this.refreshNow(), spinCls: s.busy ? 'spin' : '',
+      tab: this.pick('tab', ['dash', 'leads', 'agenda', 'prices', 'blocks', 'content', 'settings'], 'tab'),
+      per: this.pick('per', ['w4', 'w12'], ''),
+      lf: this.pick('lf', ['all', 'new', 'wait', 'done'], ''),
+      ld, openCount: open + REQ.length,
+      noWeb: REQ.length === 0,
+      web: REQ.map((r) => ({
+        name: String(r.name || ''), need: String(r.need || ''),
+        kindName: r.kind === 'rdv' ? 'Rendez-vous' : 'Devis en ligne', cls: r.kind === 'rdv' ? 'st done' : 'st new',
+        line: [r.tel, r.when || r.range, r.cp, r.detail, r.at ? 'reçue ' + new Date(r.at).toLocaleString('fr-FR', { weekday: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : ''].filter(Boolean).join(' · '),
+        freeNote: r.kind === 'rdv' ? ' Le créneau redevient libre sur le site.' : '',
+        asking: s.confirmDel === 'rq' + r.id,
+        ask: () => this.setState({ confirmDel: 'rq' + r.id }),
+        remove: () => { this.setState({ confirmDel: null }); this.store('requests', 'volta.requests', REQ.filter((x) => x.id !== r.id)); },
+      })),
+      ag1: AG.filter((id) => id < 'f').map(ag), ag2: AG.filter((id) => id >= 'f').map(ag),
+      pr,
+      leadTotal: Object.keys(s.st).filter((id) => !s.removed['ld_' + id]).length,
+      del: (() => {
+        // Suppression avec confirmation, pour tout élément identifié par une clé (ld_l1, sv_s0, ch_c0…).
+        const keys = ['l1', 'l2', 'l3', 'l4', 'l5', 'l6'].map((k) => 'ld_' + k)
+          .concat(['s0', 's1', 's2', 's3', 's4', 's5'].map((k) => 'sv_' + k), ['c0', 'c1', 'c2', 'c3', 'c4', 'c5'].map((k) => 'ch_' + k));
+        const o = { ask: {}, asking: {}, go: {}, keep: {}, any: false, count: 0 };
+        for (const k of keys) {
+          o.ask[k] = () => this.setState({ confirmDel: k });
+          o.asking[k] = s.confirmDel === k;
+          o.go[k] = () => this.setState({ confirmDel: null, removed: { ...this.state.removed, [k]: true } });
+          o.keep[k] = !s.removed[k];
+          if (s.removed[k]) o.count++;
+        }
+        o.any = o.count > 0;
+        return o;
+      })(),
+      restoreAll: () => this.setState({ removed: {}, confirmDel: null }),
+      sv: this.switches('sv'), tg: this.switches('tg'),
+      showSave: s.tab === 'content' || s.tab === 'settings', saved: s.saved, save: () => this.setState({ saved: true }),
+      draft: d, bt,
+      setPage: setDraft('page'), setTitle: setDraft('title'), setText: setDraft('text'),
+      draftType: TYPES[d.type][0],
+      previewTitle: d.title.trim() || 'Titre du bloc',
+      previewText: d.text.trim() || 'Le texte apparaîtra ici.',
+      cantAdd: !d.title.trim(),
+      addBlock: () => {
+        if (!d.title.trim()) return;
+        this.setState({
+          blocks: [...s.blocks, { id: s.nextId, page: d.page, type: d.type, title: d.title.trim(), text: d.text.trim(), hidden: false }],
+          nextId: s.nextId + 1, draft: { ...d, title: '', text: '' },
+        });
+      },
+      noBlocks: n === 0, hasAny: n > 0,
+      askAll: s.confirmDel === 'all' && n > 0,
+      askRemoveAll: () => this.setState({ confirmDel: 'all' }),
+      removeAll: () => this.setState({ confirmDel: null, blocks: [] }),
+      cancelDel: () => this.setState({ confirmDel: null }),
+      blockCount: n + (n > 1 ? ' blocs' : ' bloc'),
+      blocks: s.blocks.map((b, i) => ({
+        ...b, typeName: TYPES[b.type][0], short: TYPES[b.type][1],
+        cls: b.hidden ? 'blk off' : 'blk', hiddenTag: b.hidden ? ' · masqué' : '',
+        eyeLabel: b.hidden ? 'Afficher' : 'Masquer',
+        first: i === 0, last: i === n - 1,
+        up: () => i > 0 && move(i, i - 1),
+        down: () => i < n - 1 && move(i, i + 1),
+        toggle: () => this.setState({ blocks: s.blocks.map((x) => (x.id === b.id ? { ...x, hidden: !x.hidden } : x)) }),
+        asking: s.confirmDel === b.id,
+        ask: () => this.setState({ confirmDel: b.id }),
+        remove: () => this.setState({ confirmDel: null, blocks: s.blocks.filter((x) => x.id !== b.id) }),
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>

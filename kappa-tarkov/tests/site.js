@@ -1,0 +1,14 @@
+const {chromium}=require(process.argv[2]);const assert=require('assert');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:390,height:800}});
+const errs=[];p.on('pageerror',e=>errs.push(e.message));
+const T=(id,name,tr,k,map,req=[])=>({id,name,kappaRequired:k,minPlayerLevel:id.length,trader:{name:tr,imageLink:null},map:map?{name:map}:null,taskRequirements:req.map(n=>({task:{name:n}}))});
+await p.route('https://api.tarkov.dev/graphql',r=>r.fulfill({contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:JSON.stringify({data:{tasks:[T('a','Débuts','Prapor',true,'Douanes'),T('bb','Contrôle <x>','Prapor',true,null,['Débuts']),T('c','Pas Kappa','Prapor',false),T('d','Docteur','Therapist',true,'Usine')]}})}));
+await p.goto('file://'+process.argv[3]);await p.waitForSelector('li');
+assert.equal(await p.locator('li').count(),3);assert.match(await p.textContent('#count'),/0 \/ 3/);
+assert.equal(await p.locator('.nm',{hasText:'Contrôle <x>'}).count(),1);
+await p.locator('li input').first().check();assert.match(await p.textContent('#count'),/1 \/ 3/);
+await p.check('#hide');assert.equal(await p.locator('li').count(),2);
+await p.selectOption('#map','Usine');assert.equal(await p.locator('li').count(),1);
+await p.reload();await p.waitForSelector('li');assert.match(await p.textContent('#count'),/1 \/ 3/);
+await p.screenshot({path:process.argv[4],fullPage:true});
+assert.deepEqual(errs,[]);console.log('ok');await b.close()})().catch(e=>{console.error(e);process.exit(1)});
