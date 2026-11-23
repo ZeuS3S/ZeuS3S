@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>SNO · visuels de lancement</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@500;700;900&family=Inter:wght@400;600&display=swap">
+<style>
+/* Chaque .v est un visuel carré 1080×1080, capturé à part par render.js */
+:root{--noir:#0b0b0c;--blanc:#fff;--papier:#f1efea;--gris:#8b8b8f;--beton:#c9c6bf}
+*{box-sizing:border-box;margin:0}
+body{background:#555;display:flex;flex-wrap:wrap;gap:20px;padding:20px;font-family:Inter,system-ui,sans-serif}
+.v{width:1080px;height:1080px;position:relative;overflow:hidden;flex:none}
+.cond{font-family:"Roboto Condensed","Arial Narrow",sans-serif;text-transform:uppercase}
+
+/* 1 — emblème blanc sur noir, cercles concentriques */
+.v1{background:var(--noir);display:grid;place-items:center}
+.v1 .ring{position:absolute;border:2px solid #ffffff14;border-radius:50%}
+.v1 img{width:520px;position:relative}
+.v1 .tag{position:absolute;bottom:70px;left:0;right:0;text-align:center;color:#ffffffb0;font-size:30px;letter-spacing:.35em}
+
+/* 2 — logo complet sur papier */
+.v2{background:var(--papier);display:grid;place-items:center}
+.v2 img{width:820px}
+.v2 .coin{position:absolute;font-size:26px;color:var(--gris);letter-spacing:.2em}
+
+/* 3 — affiche collée sur un mur de béton */
+.v3{background:
+  radial-gradient(ellipse at 30% 20%,#ffffff40,transparent 60%),
+  repeating-linear-gradient(0deg,transparent 0 179px,#00000022 179px 181px),
+  repeating-linear-gradient(90deg,transparent 0 359px,#00000018 359px 361px),var(--beton)}
+.v3 .sol{position:absolute;left:0;right:0;bottom:0;height:150px;background:linear-gradient(#6d6a64,#4a4843)}
+.v3 .affiche{position:absolute;left:250px;top:110px;width:580px;height:800px;background:var(--noir);color:#fff;
+  box-shadow:0 30px 50px #0006,0 4px 8px #0004;transform:rotate(-1.2deg);padding:60px 50px;display:flex;flex-direction:column;align-items:center}
+.v3 .affiche::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,#ffffff10 30%,transparent 31%,transparent 70%,#ffffff08 71%)}
+.v3 .affiche img{width:300px;margin-top:30px}
+.v3 .affiche h2{font-size:76px;line-height:.95;margin-top:50px;text-align:center}
+.v3 .affiche p{margin-top:auto;font-size:22px;letter-spacing:.3em;color:#ffffffa0}
+.v3 .scotch{position:absolute;width:120px;height:36px;background:#f3efe4cc;top:-14px}
+
+/* 4 — téléphone, page de profil */
+.v4{background:linear-gradient(160deg,#1c1c1f,#000)}
+.v4 .tel{position:absolute;left:300px;top:90px;width:480px;height:980px;border-radius:70px;background:#000;border:14px solid #2a2a2e;
+  box-shadow:0 0 0 2px #4a4a50,0 40px 80px #000a;overflow:hidden;transform:rotate(6deg)}
+.v4 .ecran{position:absolute;inset:0;background:#fff;font-size:20px;color:#111}
+.v4 .cover{height:230px;background:var(--noir);display:flex;align-items:center;justify-content:flex-end;padding-right:36px}
+.v4 .cover img{width:190px}
+.v4 .avatar{width:150px;height:150px;border-radius:50%;background:#fff;border:6px solid #fff;margin:-80px 0 0 30px;position:relative;display:grid;place-items:center}
+.v4 .avatar img{width:136px}
+.v4 .nom{padding:16px 30px 0;font-weight:600;font-size:34px}
+.v4 .bio{padding:6px 30px;color:#666;font-size:20px}
+.v4 .btn{margin:22px 30px;background:var(--noir);color:#fff;border-radius:14px;padding:18px;text-align:center;font-weight:600;font-size:24px}
+.v4 .grille{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:0 4px}
+.v4 .grille i{aspect-ratio:1;background:#eee;display:grid;place-items:center}
+.v4 .grille i:nth-child(odd){background:var(--noir)}
+.v4 .grille img{width:60%}
+.v4 .encoche{position:absolute;top:14px;left:50%;width:130px;height:34px;margin-left:-65px;background:#000;border-radius:20px;z-index:2}
+
+/* 5 — papeterie : cartes de visite et badge sur bureau */
+.v5{background:var(--papier)}
+.v5 .carte{position:absolute;width:560px;height:320px;border-radius:10px;box-shadow:0 24px 40px #0003,0 3px 6px #0002;display:grid;place-items:center}
+.v5 .c1{left:90px;top:150px;background:var(--noir);transform:rotate(-12deg)}
+.v5 .c1 img{width:230px}
+.v5 .c2{left:330px;top:420px;background:#fff;transform:rotate(7deg);padding:40px}
+.v5 .c2 img{width:430px}
+.v5 .badge{position:absolute;right:90px;top:90px;width:230px;height:230px;border-radius:50%;background:var(--noir);
+  box-shadow:inset 0 -10px 20px #0008,inset 0 8px 14px #ffffff30,0 18px 30px #0004;display:grid;place-items:center}
+.v5 .badge img{width:170px}
+.v5 .stylo{position:absolute;left:120px;bottom:120px;width:520px;height:26px;border-radius:13px;background:linear-gradient(#333,#000);transform:rotate(-24deg);box-shadow:0 14px 16px #0003}
+</style>
+</head>
+<body>
+
+<section class="v v1" id="v1">
+  <div class="ring" style="width:700px;height:700px"></div>
+  <div class="ring" style="width:880px;height:880px"></div>
+  <div class="ring" style="width:1060px;height:1060px"></div>
+  <img src="logo/embleme-blanc.png" alt="Emblème SNO">
+  <p class="tag cond">Nouvelle identité</p>
+</section>
+
+<section class="v v2" id="v2">
+  <img src="logo/logo-noir.png" alt="Logo SNO">
+  <span class="coin cond" style="top:60px;left:70px">SNO — 2026</span>
+  <span class="coin cond" style="bottom:60px;right:70px">Services numériques aux organisations</span>
+</section>
+
+<section class="v v3" id="v3">
+  <div class="sol"></div>
+  <div class="affiche">
+    <span class="scotch" style="left:40px;transform:rotate(-8deg)"></span>
+    <span class="scotch" style="right:40px;transform:rotate(9deg)"></span>
+    <img src="logo/embleme-blanc.png" alt="">
+    <h2 class="cond">Même équipe.<br>Nouvelle allure.</h2>
+    <p class="cond">sno</p>
+  </div>
+</section>
+
+<section class="v v4" id="v4">
+  <div class="tel"><div class="encoche"></div><div class="ecran">
+    <div class="cover"><img src="logo/texte-blanc.png" alt=""></div>
+    <div class="avatar"><img src="logo/embleme-noir.png" alt=""></div>
+    <p class="nom">SNO</p>
+    <p class="bio">Services Numériques aux Organisations</p>
+    <div class="btn">S’abonner</div>
+    <div class="grille">
+      <i><img src="logo/embleme-blanc.png" alt=""></i><i><img src="logo/embleme-noir.png" alt=""></i><i><img src="logo/embleme-blanc.png" alt=""></i>
+      <i><img src="logo/embleme-noir.png" alt=""></i><i><img src="logo/embleme-blanc.png" alt=""></i><i><img src="logo/embleme-noir.png" alt=""></i>
+    </div>
+  </div></div>
+</section>
+
+<section class="v v5" id="v5">
+  <div class="stylo"></div>
+  <div class="carte c1"><img src="logo/embleme-blanc.png" alt=""></div>
+  <div class="carte c2"><img src="logo/logo-noir.png" alt=""></div>
+  <div class="badge"><img src="logo/embleme-blanc.png" alt=""></div>
+</section>
+
+</body>
+</html>
