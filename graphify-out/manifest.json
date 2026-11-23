@@ -690,9 +690,9 @@
     "semantic_hash": ""
   },
   "sno-lancement/index.html": {
-    "mtime": 1795463761.7927825,
-    "seen": 1795463770.4536746,
-    "ast_hash": "82f57fada7440ef3aa6fbd02193b2c96",
+    "mtime": 1795464327.439842,
+    "seen": 1795464337.2081437,
+    "ast_hash": "21385daffe12028373c4ec88ab268110",
     "semantic_hash": ""
   },
   "sno-lancement/visuels.html": {
@@ -795,6 +795,24 @@
     "mtime": 1795463734.404198,
     "seen": 1795463770.4541066,
     "ast_hash": "c109e039bf1e1ee1ba91cb3d9c0f4a91",
+    "semantic_hash": ""
+  },
+  "sno-lancement/pull.py": {
+    "mtime": 1795464318.5733726,
+    "seen": 1795464337.2075484,
+    "ast_hash": "6008adad3851bb69160dc70c231fb7af",
+    "semantic_hash": ""
+  },
+  "sno-lancement/logo/sweat-photo.png": {
+    "mtime": 1795464335.6040535,
+    "seen": 1795464337.208563,
+    "ast_hash": "5faaf371113c91beec6b1843aba716c1",
+    "semantic_hash": ""
+  },
+  "sno-lancement/visuels/sno-11.png": {
+    "mtime": 1795464318.9242327,
+    "seen": 1795464337.208717,
+    "ast_hash": "3b22e23d0cc9797c75803d49a1eb126b",
     "semantic_hash": ""
   },
   "radio-bot/package-lock.json": {
