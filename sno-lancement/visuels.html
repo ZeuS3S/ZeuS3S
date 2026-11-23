@@ -66,6 +66,18 @@ body{background:#555;display:flex;flex-wrap:wrap;gap:20px;padding:20px;font-fami
   box-shadow:inset 0 -10px 20px #0008,inset 0 8px 14px #ffffff30,0 18px 30px #0004;display:grid;place-items:center}
 .v5 .badge img{width:170px}
 .v5 .stylo{position:absolute;left:120px;bottom:120px;width:520px;height:26px;border-radius:13px;background:linear-gradient(#333,#000);transform:rotate(-24deg);box-shadow:0 14px 16px #0003}
+
+/* 6 à 10 — vêtements et objets : formes SVG, logo posé par-dessus en <img> */
+.m{display:grid;place-items:center}
+.m svg{position:absolute;inset:0;width:100%;height:100%}
+.m .lg{position:absolute;mix-blend-mode:multiply;opacity:.92}
+.m .lgb{position:absolute;opacity:.95}
+.m .cap{position:absolute;bottom:60px;left:0;right:0;text-align:center;font-size:26px;letter-spacing:.3em}
+.v6{background:radial-gradient(circle at 50% 35%,#d9d9dc,#a9a9ae)}
+.v7{background:var(--papier)}
+.v8{background:linear-gradient(160deg,#2a2a2e,#0d0d0f)}
+.v9{background:radial-gradient(circle at 50% 30%,#e9e6df,#cfcac0)}
+.v10{background:linear-gradient(180deg,#e7e4de 0 68%,#b9b3a8 68%)}
 </style>
 </head>
 <body>
@@ -114,6 +126,74 @@ body{background:#555;display:flex;flex-wrap:wrap;gap:20px;padding:20px;font-fami
   <div class="carte c1"><img src="logo/embleme-blanc.png" alt=""></div>
   <div class="carte c2"><img src="logo/logo-noir.png" alt=""></div>
   <div class="badge"><img src="logo/embleme-blanc.png" alt=""></div>
+</section>
+
+<section class="v v6 m" id="v6">
+  <svg viewBox="0 0 1080 1080" aria-hidden="true"><defs>
+    <linearGradient id="tee" x1="0" x2="1"><stop offset="0" stop-color="#e9e9ea"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#e2e2e4"/></linearGradient></defs>
+    <ellipse cx="540" cy="975" rx="330" ry="28" fill="#0002"/>
+    <path d="M330 170 L440 130 Q540 190 640 130 L750 170 L930 320 L840 440 L770 390 L770 950 Q540 975 310 950 L310 390 L240 440 L150 320 Z" fill="url(#tee)" stroke="#0001" stroke-width="2"/>
+    <path d="M440 130 Q540 215 640 130 Q540 175 440 130" fill="#d4d4d6"/>
+    <path d="M330 420 Q360 700 340 930 M760 430 Q720 690 745 935 M470 560 Q520 640 480 760" stroke="#0000000d" stroke-width="18" fill="none" stroke-linecap="round"/>
+  </svg>
+  <img class="lg" src="logo/embleme-noir.png" alt="" style="width:230px;top:300px;left:425px">
+  <p class="cap cond" style="color:#3a3a3e">T-shirt</p>
+</section>
+
+<section class="v v7 m" id="v7">
+  <svg viewBox="0 0 1080 1080" aria-hidden="true"><defs>
+    <linearGradient id="hood" x1="0" x2="1"><stop offset="0" stop-color="#1a1a1c"/><stop offset=".5" stop-color="#2c2c30"/><stop offset="1" stop-color="#151517"/></linearGradient></defs>
+    <ellipse cx="540" cy="985" rx="360" ry="28" fill="#0002"/>
+    <path d="M420 120 Q540 40 660 120 Q720 200 690 270 L390 270 Q360 200 420 120 Z" fill="#111113"/>
+    <path d="M300 230 L420 180 Q540 300 660 180 L780 230 L940 420 Q960 700 920 900 L840 905 L800 470 L800 960 Q540 985 280 960 L280 470 L240 905 L160 900 Q120 700 140 420 Z" fill="url(#hood)"/>
+    <path d="M440 190 Q540 320 640 190" fill="none" stroke="#000" stroke-width="22"/>
+    <path d="M500 270 L495 430 M580 270 L585 430" stroke="#ddd" stroke-width="7" stroke-linecap="round"/>
+    <path d="M400 720 L680 720 L720 880 L360 880 Z" fill="#00000030" stroke="#00000055" stroke-width="3"/>
+    <path d="M280 940 L800 940" stroke="#0005" stroke-width="40"/>
+  </svg>
+  <img class="lgb" src="logo/embleme-blanc.png" alt="" style="width:190px;top:470px;left:445px">
+  <p class="cap cond" style="color:#55555a">Sweat à capuche</p>
+</section>
+
+<section class="v v8 m" id="v8">
+  <svg viewBox="0 0 1080 1080" aria-hidden="true"><defs>
+    <radialGradient id="dome" cx=".45" cy=".3" r=".8"><stop offset="0" stop-color="#4a4a50"/><stop offset="1" stop-color="#151518"/></radialGradient><linearGradient id="visor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3c3c42"/><stop offset="1" stop-color="#1a1a1d"/></linearGradient></defs>
+    <ellipse cx="540" cy="860" rx="380" ry="40" fill="#0008"/>
+    <path d="M220 700 Q220 330 540 300 Q860 330 860 700 Z" fill="url(#dome)"/>
+    <path d="M540 300 L540 700 M380 330 Q330 500 340 700 M700 330 Q750 500 740 700" stroke="#ffffff10" stroke-width="4" fill="none"/>
+    <circle cx="540" cy="305" r="16" fill="#1c1c1f"/>
+    <path d="M200 700 Q540 640 880 700 Q930 800 540 850 Q150 800 200 700 Z" fill="url(#visor)"/>
+    <path d="M220 705 Q540 660 860 705" stroke="#ffffff22" stroke-width="5" fill="none"/>
+  </svg>
+  <img class="lgb" src="logo/embleme-blanc.png" alt="" style="width:200px;top:400px;left:440px">
+  <p class="cap cond" style="color:#ffffff99">Casquette</p>
+</section>
+
+<section class="v v9 m" id="v9">
+  <svg viewBox="0 0 1080 1080" aria-hidden="true">
+    <ellipse cx="540" cy="985" rx="320" ry="26" fill="#0002"/>
+    <path d="M400 380 Q400 130 540 130 Q680 130 680 380" fill="none" stroke="#d8d1c0" stroke-width="34"/>
+    <path d="M400 380 Q400 130 540 130 Q680 130 680 380" fill="none" stroke="#0000000f" stroke-width="34" stroke-dasharray="2 12"/>
+    <path d="M250 360 L830 360 L860 970 L220 970 Z" fill="#f1ebdc"/>
+    <path d="M250 360 L830 360 L833 400 L247 400 Z" fill="#00000010"/>
+    <path d="M300 420 Q330 700 290 940 M790 430 Q760 690 800 950" stroke="#0000000c" stroke-width="16" fill="none"/>
+  </svg>
+  <img class="lg" src="logo/logo-noir.png" alt="" style="width:360px;top:590px;left:360px">
+  <p class="cap cond" style="color:#6e6a62;bottom:36px">Tote bag</p>
+</section>
+
+<section class="v v10 m" id="v10">
+  <svg viewBox="0 0 1080 1080" aria-hidden="true"><defs>
+    <linearGradient id="mug" x1="0" x2="1"><stop offset="0" stop-color="#050506"/><stop offset=".35" stop-color="#2d2d31"/><stop offset=".55" stop-color="#151517"/><stop offset="1" stop-color="#030304"/></linearGradient></defs>
+    <ellipse cx="520" cy="860" rx="300" ry="40" fill="#0004"/>
+    <path d="M760 420 Q900 420 900 580 Q900 740 760 740" fill="none" stroke="#111113" stroke-width="58"/>
+    <path d="M260 330 L260 820 Q520 880 780 820 L780 330 Z" fill="url(#mug)"/>
+    <ellipse cx="520" cy="330" rx="260" ry="48" fill="#1d1d20"/>
+    <ellipse cx="520" cy="338" rx="236" ry="38" fill="#3b2416"/>
+    <path d="M450 270 Q420 200 470 150 Q520 100 480 40 M570 270 Q540 200 590 150 Q640 100 600 40" stroke="#ffffff70" stroke-width="10" fill="none" stroke-linecap="round"/>
+  </svg>
+  <img class="lgb" src="logo/embleme-blanc.png" alt="" style="width:230px;top:470px;left:395px">
+  <p class="cap cond" style="color:#fff;bottom:90px">Mug</p>
 </section>
 
 </body>

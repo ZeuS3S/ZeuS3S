@@ -684,21 +684,21 @@
     "semantic_hash": ""
   },
   "sno-lancement/render.js": {
-    "mtime": 1795463324.8858101,
-    "seen": 1795463427.1268318,
-    "ast_hash": "e9ed811aa0f79548f9241025d79e4a92",
+    "mtime": 1795463711.9241748,
+    "seen": 1795463770.4531758,
+    "ast_hash": "d895d908608b8337f897cf8f1b606229",
     "semantic_hash": ""
   },
   "sno-lancement/index.html": {
-    "mtime": 1795463406.0638876,
-    "seen": 1795463427.12689,
-    "ast_hash": "d5390d8b5c1dcb1197746524971465b3",
+    "mtime": 1795463761.7927825,
+    "seen": 1795463770.4536746,
+    "ast_hash": "82f57fada7440ef3aa6fbd02193b2c96",
     "semantic_hash": ""
   },
   "sno-lancement/visuels.html": {
-    "mtime": 1795463338.485597,
-    "seen": 1795463427.126892,
-    "ast_hash": "c317c5943d81bda90a494dd4ee9a928c",
+    "mtime": 1795463732.280346,
+    "seen": 1795463770.4536767,
+    "ast_hash": "804668884564e3b9d2847db67a49633e",
     "semantic_hash": ""
   },
   "sno-lancement/logo/embleme-blanc.png": {
@@ -738,33 +738,63 @@
     "semantic_hash": ""
   },
   "sno-lancement/visuels/sno-1.png": {
-    "mtime": 1795463339.7561746,
-    "seen": 1795463427.1269324,
+    "mtime": 1795463733.516198,
+    "seen": 1795463770.4540925,
     "ast_hash": "26e3009abdd3207024d152d98e424c99",
     "semantic_hash": ""
   },
   "sno-lancement/visuels/sno-2.png": {
-    "mtime": 1795463339.8521745,
-    "seen": 1795463427.126934,
+    "mtime": 1795463733.604198,
+    "seen": 1795463770.4540968,
     "ast_hash": "79ce340c7235dc8ccc5d8b2093d4ff52",
     "semantic_hash": ""
   },
   "sno-lancement/visuels/sno-3.png": {
-    "mtime": 1795463339.9441745,
-    "seen": 1795463427.1269357,
+    "mtime": 1795463733.696198,
+    "seen": 1795463770.4540985,
     "ast_hash": "efd8b52d80415b27e01e0453e6c079d2",
     "semantic_hash": ""
   },
   "sno-lancement/visuels/sno-4.png": {
-    "mtime": 1795463340.0721745,
-    "seen": 1795463427.126938,
+    "mtime": 1795463733.8161979,
+    "seen": 1795463770.4541,
     "ast_hash": "d850cfee30d4cc9bc9475ebcfc901758",
     "semantic_hash": ""
   },
   "sno-lancement/visuels/sno-5.png": {
-    "mtime": 1795463340.1521745,
-    "seen": 1795463427.12694,
+    "mtime": 1795463733.924198,
+    "seen": 1795463770.4541016,
     "ast_hash": "d3f2bf1ea132edd5f1f8c4657bbdad65",
+    "semantic_hash": ""
+  },
+  "sno-lancement/visuels/sno-10.png": {
+    "mtime": 1795463734.500198,
+    "seen": 1795463770.4540946,
+    "ast_hash": "aa132dd0177a8c9dd41ce6b63f90ffbb",
+    "semantic_hash": ""
+  },
+  "sno-lancement/visuels/sno-6.png": {
+    "mtime": 1795463734.0441978,
+    "seen": 1795463770.4541028,
+    "ast_hash": "e065a75c42f6dc7434f75291243b530f",
+    "semantic_hash": ""
+  },
+  "sno-lancement/visuels/sno-7.png": {
+    "mtime": 1795463734.1681979,
+    "seen": 1795463770.454104,
+    "ast_hash": "e6a5356291c93a5d2a465cb73a335e82",
+    "semantic_hash": ""
+  },
+  "sno-lancement/visuels/sno-8.png": {
+    "mtime": 1795463734.2801979,
+    "seen": 1795463770.4541054,
+    "ast_hash": "926a9afe6c844501673c009c0b2ce141",
+    "semantic_hash": ""
+  },
+  "sno-lancement/visuels/sno-9.png": {
+    "mtime": 1795463734.404198,
+    "seen": 1795463770.4541066,
+    "ast_hash": "c109e039bf1e1ee1ba91cb3d9c0f4a91",
     "semantic_hash": ""
   },
   "radio-bot/package-lock.json": {

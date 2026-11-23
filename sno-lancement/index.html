@@ -48,6 +48,13 @@ button.copy{background:var(--btn);color:var(--btnink);border:0;border-radius:8px
 button:focus-visible,a:focus-visible{outline:3px solid #1877f2;outline-offset:2px}
 .ok{margin-left:10px;color:var(--dim);font-size:14px}
 ul{margin:0;padding-left:1.2em;font-size:15px}li{margin:4px 0}
+.merch{margin-top:40px}
+.merch h2{font:700 clamp(26px,3.5vw,36px)/1.1 "Roboto Condensed","Arial Narrow",sans-serif;margin:0 0 6px}
+.merch>p{color:var(--dim);margin:0 0 18px;max-width:62ch}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.gal figure{margin:0;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 1px 3px #0002}
+.gal a{display:block;line-height:0}.gal img{width:100%;aspect-ratio:1}
+.gal figcaption{padding:10px 14px;font-weight:600;font-size:15px}
 </style>
 </head>
 <body>
@@ -122,6 +129,18 @@ Au cœur du nouveau logo, un S enroulé dans un cercle et un bouton de démarrag
       </section>
     </div>
   </div>
+
+  <section class="merch" aria-labelledby="merch-t">
+    <h2 id="merch-t">Vêtements et objets</h2>
+    <p>Cinq mises en situation de plus, à ajouter à la publication ou à garder pour un deuxième post (par exemple « Le merch SNO arrive »). Même format carré 1080&nbsp;×&nbsp;1080.</p>
+    <div class="gal">
+      <figure><a href="visuels/sno-6.png" target="_blank" rel="noopener"><img src="visuels/sno-6.png" alt="T-shirt blanc avec l’emblème SNO noir sur la poitrine" loading="lazy"></a><figcaption>T-shirt blanc</figcaption></figure>
+      <figure><a href="visuels/sno-7.png" target="_blank" rel="noopener"><img src="visuels/sno-7.png" alt="Sweat à capuche noir avec l’emblème SNO blanc" loading="lazy"></a><figcaption>Sweat à capuche noir</figcaption></figure>
+      <figure><a href="visuels/sno-8.png" target="_blank" rel="noopener"><img src="visuels/sno-8.png" alt="Casquette noire avec l’emblème SNO blanc" loading="lazy"></a><figcaption>Casquette noire</figcaption></figure>
+      <figure><a href="visuels/sno-9.png" target="_blank" rel="noopener"><img src="visuels/sno-9.png" alt="Tote bag écru avec le logo SNO complet" loading="lazy"></a><figcaption>Tote bag écru</figcaption></figure>
+      <figure><a href="visuels/sno-10.png" target="_blank" rel="noopener"><img src="visuels/sno-10.png" alt="Mug noir avec l’emblème SNO blanc" loading="lazy"></a><figcaption>Mug noir</figcaption></figure>
+    </div>
+  </section>
 </main>
 <script>
 {
